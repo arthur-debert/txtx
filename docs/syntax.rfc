@@ -1,0 +1,107 @@
+1. Intro
+
+rfcdoc is a formatter for plain text files based on the old unix way and rfc files. it's meant as an ultra light formatting tool that requires no special syntax nor previewing. 
+
+2RFC Format Test Document - Comprehensive Example
+-----------------------------------------------
+
+Author        John Doe
+Date          March 10, 2025
+Version       1.0
+Status        Draft
+
+This document demonstrates all the syntax features of the RFC format.
+
+1. Numbered Sections
+
+   Numbered sections use the format "1. Section Name" and can be nested.
+   
+   1.1 Nested Section Level 1
+   
+       This is a code block inside a nested section.
+       Code blocks are indented with 4 spaces.
+       They preserve formatting and are useful for examples.
+   
+   1.2 Another Nested Section
+   
+       function testCode() {
+           console.log("This is a code example");
+           return true;
+       }
+   
+   : Alternative Section Format
+
+   This section uses the alternative format with a colon.
+   
+   It's useful for special sections that don't fit the numbered hierarchy.
+
+2. Text Formatting
+
+   2.1 Bold Text
+   
+       *This text is bold* and this text is not.
+       
+       You can use *bold* for emphasis within a paragraph.
+   
+   2.2 Italic Text
+   
+       _This text is italic_ and this text is not.
+       
+       You can use _italic_ for subtle emphasis within a paragraph.
+   
+   2.3 Combined Formatting
+   
+       You can combine *bold* and _italic_ formatting in the same paragraph.
+       
+       However, nesting formats like *_nested_* is not supported.
+
+3. References and Links
+
+   3.1 Document References
+   
+       You can reference other documents using the see: syntax:
+       
+       see: format.rfc.txt
+       
+       Or reference specific sections with anchors:
+       
+       see: format.rfc.txt#section-2
+   
+   3.2 Footnotes
+   
+       You can add footnotes to your document [1] and reference them
+       multiple times [2] as needed.
+
+4. Quotes and Blockquotes
+
+   4.1 Simple Quotes
+   
+       > This is a simple quote.
+       > It can span multiple lines.
+   
+   4.2 Nested Quotes
+   
+       > This is a top-level quote.
+       >> This is a nested quote.
+       > Back to the top-level quote.
+
+5. File 
+
+    5.1 Utf encoded
+
+    5.2 80 chars wide lines.
+
+
+FOOTNOTES
+
+[1] This is the first footnote. Footnotes can contain detailed information that would disrupt the flow of the main text.
+
+[2] This is the second footnote. Footnotes are numbered sequentially.
+
+METADATA EXAMPLE
+
+Title         RFC Format Test Document
+Author        John Doe
+Date          March 10, 2025
+Status        Draft
+Priority      High
