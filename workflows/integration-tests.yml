@@ -1,0 +1,17 @@
+name: "Tests: Integration"
+
+on:
+  workflow_dispatch:
+  push:
+  pull_request:
+
+permissions:
+  checks: write
+  contents: read
+  pull-requests: read
+
+jobs:
+  test:
+    uses: ./.github/workflows/base-setup.yml
+    with:
+      run_command: xvfb-run -a npm test

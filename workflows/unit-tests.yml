@@ -1,0 +1,45 @@
+name: "Tests: Unit"
+
+on:
+  workflow_dispatch:
+  push:
+  pull_request:
+
+permissions:
+  checks: write
+  contents: read
+  pull-requests: read
+
+jobs:
+  test:
+    name: Run Unit Tests
+    uses: ./.github/workflows/base-setup.yml
+    with:
+      run_command: npm run test:unit
+
+  create-check:
+    name: Create Status Check
+    needs: test
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+      - name: Create Check
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const testJobStatus = '${{ needs.test.result }}';
+
+            github.rest.checks.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              name: 'Unit Tests',
+              head_sha: context.sha,
+              status: 'completed',
+              conclusion: testJobStatus === 'success' ? 'success' : 'failure',
+              output: {
+                title: 'Unit Tests Results',
+                summary: testJobStatus === 'success'
+                  ? 'All unit tests passed successfully!'
+                  : 'Some unit tests failed. Please check the logs for details.'
+              }
+            });
