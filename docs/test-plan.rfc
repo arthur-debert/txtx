@@ -40,19 +40,19 @@ and progressing to more complex features.
        - Check that all section types are correctly recognized
        - Note: Current implementation doesn't support nested sections in the outline
        
-   2.2 Section detection - uppercase sections
+   2.2 Section detection - uppercase sections ✓ (src/test/extension.test.js)
        
        - Create a document with uppercase sections
        - Verify they appear in the outline
        - Check that they are properly highlighted
        
-   2.3 Section detection - numbered sections
+   2.3 Section detection - numbered sections ✓ (src/test/extension.test.js)
        
        - Create a document with numbered sections (1., 1.1, etc.)
        - Verify they appear in the outline with correct hierarchy
        - Check that they are properly highlighted
        
-   2.4 Section detection - alternative sections
+   2.4 Section detection - alternative sections ✓ (src/test/extension.test.js)
        
        - Create a document with alternative sections (: Section Name)
        - Verify they appear in the outline

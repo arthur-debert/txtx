@@ -147,7 +147,105 @@ suite('TxtDoc Format Extension Tests', () => {
       isVerbose && console.log('Note: Nested sections are not included in the symbols');
     });
     
-    // We'll add more document structure tests in subsequent implementations
+    // 2.2 Section detection - uppercase sections
+    test('2.2 Section detection - uppercase sections', async function() {
+      this.timeout(10000); // Increase timeout for this test
+      
+      // Open the test document
+      const testFilePath = path.join(__dirname, 'fixtures', 'outline-test.rfc');
+      const document = await openDocument(testFilePath);
+      
+      // Wait for the language mode to be set
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      // Get document symbols
+      const symbols = await vscode.commands.executeCommand(
+        'vscode.executeDocumentSymbolProvider',
+        document.uri
+      );
+      
+      // Verify symbols were returned
+      assert.ok(symbols, 'Document symbols should be returned');
+      assert.ok(symbols.length > 0, 'Document should have at least one symbol');
+      
+      // Find the uppercase section
+      const uppercaseSection = symbols.find(s => s.name === 'UPPERCASE SECTION');
+      assert.ok(uppercaseSection, 'Uppercase section should be detected');
+      
+      // Verify the section range
+      assert.strictEqual(uppercaseSection.location.range.start.line, 22, 'Uppercase section should start at line 22');
+      
+      isVerbose && console.log('Uppercase section detected:', uppercaseSection);
+    });
+    
+    // 2.3 Section detection - numbered sections
+    test('2.3 Section detection - numbered sections', async function() {
+      this.timeout(10000); // Increase timeout for this test
+      
+      // Open the test document
+      const testFilePath = path.join(__dirname, 'fixtures', 'outline-test.rfc');
+      const document = await openDocument(testFilePath);
+      
+      // Wait for the language mode to be set
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      // Get document symbols
+      const symbols = await vscode.commands.executeCommand(
+        'vscode.executeDocumentSymbolProvider',
+        document.uri
+      );
+      
+      // Verify symbols were returned
+      assert.ok(symbols, 'Document symbols should be returned');
+      assert.ok(symbols.length > 0, 'Document should have at least one symbol');
+      
+      // Find the numbered sections
+      const numberedSection1 = symbols.find(s => s.name.includes('1. Numbered Section'));
+      const numberedSection2 = symbols.find(s => s.name.includes('2. Another Numbered Section'));
+      
+      // Verify numbered sections are detected
+      assert.ok(numberedSection1, 'First numbered section should be detected');
+      assert.ok(numberedSection2, 'Second numbered section should be detected');
+      
+      // Verify the section ranges
+      assert.strictEqual(numberedSection1.location.range.start.line, 5, 'First numbered section should start at line 5');
+      assert.strictEqual(numberedSection2.location.range.start.line, 14, 'Second numbered section should start at line 14');
+      
+      isVerbose && console.log('Numbered sections detected:', { numberedSection1, numberedSection2 });
+    });
+    
+    // 2.4 Section detection - alternative sections
+    test('2.4 Section detection - alternative sections', async function() {
+      this.timeout(10000); // Increase timeout for this test
+      
+      // Open the test document
+      const testFilePath = path.join(__dirname, 'fixtures', 'outline-test.rfc');
+      const document = await openDocument(testFilePath);
+      
+      // Wait for the language mode to be set
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      // Get document symbols
+      const symbols = await vscode.commands.executeCommand(
+        'vscode.executeDocumentSymbolProvider',
+        document.uri
+      );
+      
+      // Verify symbols were returned
+      assert.ok(symbols, 'Document symbols should be returned');
+      assert.ok(symbols.length > 0, 'Document should have at least one symbol');
+      
+      // Find the alternative section
+      const alternativeSection = symbols.find(s => s.name.includes('Alternative Section'));
+      
+      // Verify alternative section is detected
+      assert.ok(alternativeSection, 'Alternative section should be detected');
+      
+      // Verify the section range
+      assert.strictEqual(alternativeSection.location.range.start.line, 18, 'Alternative section should start at line 18');
+      
+      isVerbose && console.log('Alternative section detected:', alternativeSection);
+    });
     
   });
   
