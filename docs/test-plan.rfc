@@ -66,59 +66,59 @@ and progressing to more complex features.
 
 3. Syntax Highlighting Tests
 
-   3.1 Text formatting - bold
+   3.1 Text formatting - bold ✓ (src/test/extension.test.js)
        
        - Create text with *bold* formatting
        - Verify the text between asterisks is highlighted as bold
        
-   3.2 Text formatting - italic
+   3.2 Text formatting - italic ✓ (src/test/extension.test.js)
        
        - Create text with _italic_ formatting
        - Verify the text between underscores is highlighted as italic
        
-   3.3 Section types highlighting
+   3.3 Section types highlighting ✓ (src/test/extension.test.js)
        
        - Create a document with all section types
        - Verify each section type is highlighted correctly
        - Check that section titles have the correct highlighting
        
-   3.4 Lists - bullet points
+   3.4 Lists - bullet points ✓ (src/test/extension.test.js)
        
        - Create a list with bullet points (- item)
        - Verify the list items are properly highlighted
        - Check that indentation works correctly
        
-   3.5 Lists - numbered
+   3.5 Lists - numbered ✓ (src/test/extension.test.js)
        
        - Create a numbered list (1. item)
        - Verify the list items are properly highlighted
        - Check that indentation works correctly
        
-   3.6 Lists - lettered
+   3.6 Lists - lettered ✓ (src/test/extension.test.js)
        
        - Create a lettered list (a. item)
        - Verify the list items are properly highlighted
        - Check that indentation works correctly
        
-   3.7 Lists - roman numerals
+   3.7 Lists - roman numerals ✓ (src/test/extension.test.js)
        
        - Create a list with roman numerals (i. item)
        - Verify the list items are properly highlighted
        - Check that indentation works correctly
        
-   3.8 Code blocks
+   3.8 Code blocks ✓ (src/test/extension.test.js)
        
        - Create a code block (indented with 4 spaces)
        - Verify the code block is properly highlighted
        - Check that the code block appears in a monospace font
        
-   3.9 Quotes and blockquotes
+   3.9 Quotes and blockquotes ✓ (src/test/extension.test.js)
        
        - Create quotes (> quote) and nested quotes (>> nested)
        - Verify quotes are properly highlighted
        - Check that nested quotes have different highlighting
        
-   3.10 Metadata
+   3.10 Metadata ✓ (src/test/extension.test.js)
        
        - Create metadata entries (Key     Value)
        - Verify the key and value are properly highlighted
