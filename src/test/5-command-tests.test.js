@@ -208,6 +208,101 @@ UPPERCASE SECTION
       }
     });
     
+    // 5.3 Number footnotes command
+    test('5.3 Number footnotes command', async function() {
+      this.timeout(10000); // Increase timeout for this test
+      
+      // Create a temporary test file with footnotes in random order
+      const tempDir = path.join(__dirname, 'temp');
+      if (!fs.existsSync(tempDir)) {
+        fs.mkdirSync(tempDir);
+      }
+      
+      const testFilePath = path.join(tempDir, 'footnote-test.rfc');
+      const contentWithFootnotes = 
+`RFC Footnote Test Document
+-------------------------
+
+Author        John Doe
+Date          March 10, 2025
+Version       1.0
+Status        Draft
+
+This document tests the number footnotes command.
+
+1. Introduction
+
+   This is the introduction section with a footnote reference[3].
+   Here's another footnote reference[1].
+
+2. Main Section
+
+   This section has a footnote reference[5] in the middle of the text.
+   And another reference at the end of this line[2].
+
+3. Conclusion
+
+   This is the conclusion section with a final footnote reference[4].
+
+FOOTNOTES
+
+[3] This is the third footnote, but should be renumbered to [1].
+[1] This is the first footnote, but should be renumbered to [2].
+[5] This is the fifth footnote, but should be renumbered to [3].
+[2] This is the second footnote, but should be renumbered to [4].
+[4] This is the fourth footnote, but should be renumbered to [5].`;
+      
+      fs.writeFileSync(testFilePath, contentWithFootnotes);
+      
+      try {
+        // Open the test document
+        const document = await openDocument(testFilePath);
+        
+        // Wait for the language mode to be set
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        
+        // Get the editor
+        const editor = vscode.window.activeTextEditor;
+        assert.ok(editor, 'Editor should be active');
+        
+        // Execute the number footnotes command
+        await vscode.commands.executeCommand('txtdoc.numberFootnotes');
+        
+        // Wait for the numbering to complete
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        
+        // Get the updated document text
+        const updatedText = editor.document.getText();
+        
+        isVerbose && console.log('Updated text:', updatedText);
+        
+        // Verify the footnote numbering
+        const lines = updatedText.split('\n');
+        
+        // Check that footnote references are updated
+        assert.ok(updatedText.includes('footnote reference[1]'), 'First footnote reference should be [1]');
+        assert.ok(updatedText.includes('footnote reference[2]'), 'Second footnote reference should be [2]');
+        assert.ok(updatedText.includes('footnote reference[3]'), 'Third footnote reference should be [3]');
+        assert.ok(updatedText.includes('reference at the end of this line[4]'), 'Fourth footnote reference should be [4]');
+        assert.ok(updatedText.includes('final footnote reference[5]'), 'Fifth footnote reference should be [5]');
+        
+        // Check that footnote declarations are updated
+        assert.ok(updatedText.includes('[1] This is the third footnote'), 'First footnote declaration should be [1]');
+        assert.ok(updatedText.includes('[2] This is the first footnote'), 'Second footnote declaration should be [2]');
+        assert.ok(updatedText.includes('[3] This is the fifth footnote'), 'Third footnote declaration should be [3]');
+        assert.ok(updatedText.includes('[4] This is the second footnote'), 'Fourth footnote declaration should be [4]');
+        assert.ok(updatedText.includes('[5] This is the fourth footnote'), 'Fifth footnote declaration should be [5]');
+        
+        // Clean up - close the editor
+        await vscode.commands.executeCommand('workbench.action.closeActiveEditor');
+      } finally {
+        // Clean up - delete the temporary file
+        if (fs.existsSync(testFilePath)) {
+          fs.unlinkSync(testFilePath);
+        }
+      }
+    });
+    
   });
   
 });

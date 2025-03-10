@@ -1,5 +1,6 @@
 const vscode = require("vscode");
 const { SECTION_REGEX, NUMBERED_SECTION_REGEX, ALTERNATIVE_SECTION_REGEX } = require("./constants");
+const { numberFootnotes } = require("./footnoteCommands");
 
 /**
  * Format a document according to the RFC specification
@@ -77,7 +78,7 @@ async function generateTOC(document) {
         }
         
         // Generate the TOC lines
-        const tocLines = generateTOCLiLinesections);
+        const tocLines = generateTOCLines(sections);
         
         // Find the position to insert the TOC
         const tocPosition = findTOCPosition(lines);
@@ -112,6 +113,46 @@ async function generateTOC(document) {
         return true;
     } catch (error) {
         vscode.window.showErrorMessage(`Error generating table of contents: ${error.message}`);
+        return false;
+    }
+}
+
+/**
+ * Apply full formatting to the document
+ * @param {vscode.TextDocument} document - The document to format
+ * @returns {Promise<boolean>} - Whether the formatting was successful
+ */
+async function fullFormatting(document) {
+    // Only format RFC files
+    if (document.languageId !== 'txtdoc' || !document.fileName.endsWith('.rfc')) {
+        vscode.window.showWarningMessage('Full Formatting command is only available for .rfc files');
+        return false;
+    }
+
+    const editor = vscode.window.activeTextEditor;
+    if (!editor) {
+        vscode.window.showErrorMessage('No active editor found');
+        return false;
+    }
+
+    try {
+        // Apply all formatting commands in sequence
+        const formatResult = await formatDocument(document);
+        if (!formatResult) {
+            return false;
+        }
+
+        const tocResult = await generateTOC(document);
+        if (!tocResult) {
+            return false;
+        }
+
+        const footnoteResult = await numberFootnotes(document);
+        
+        vscode.window.showInformationMessage('Full formatting applied successfully');
+        return true;
+    } catch (error) {
+        vscode.window.showErrorMessage(`Error applying full formatting: ${error.message}`);
         return false;
     }
 }
@@ -473,14 +514,28 @@ function registerFormatCommands(context, outputChannel) {
         }
     });
     
+    // Register the full formatting command
+    const fullFormattingCommand = vscode.commands.registerCommand('txtdoc.fullFormatting', async () => {
+        const editor = vscode.window.activeTextEditor;
+        if (editor && editor.document.languageId === 'txtdoc') {
+            outputChannel.appendLine('Executing Full Formatting command');
+            await fullFormatting(editor.document);
+        } else {
+            vscode.window.showWarningMessage('Full Formatting command is only available for TxtDoc files');
+        }
+    });
+    
     context.subscriptions.push(formatDocumentCommand);
     context.subscriptions.push(generateTOCCommand);
+    context.subscriptions.push(fullFormattingCommand);
     outputChannel.appendLine('Format Document command registered');
     outputChannel.appendLine('Generate TOC command registered');
+    outputChannel.appendLine('Full Formatting command registered');
 }
 
 module.exports = {
     registerFormatCommands,
     formatDocument,
-    generateTOC
+    generateTOC,
+    fullFormatting
 };

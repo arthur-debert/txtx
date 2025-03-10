@@ -196,7 +196,7 @@ and progressing to more complex features.
        - Run the Generate TOC command
        - Verify a table of contents is created with links to sections
        
-   5.3 Number footnotes command
+   5.3 Number footnotes command ✓ (src/extension/footnoteCommands.js)
        
        - Create a document with footnotes in random order
        - Run the Number Footnotes command

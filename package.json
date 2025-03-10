@@ -60,6 +60,16 @@
         "command": "txtdoc.generateTOC",
         "title": "TxtDoc: Generate Table of Contents",
         "category": "TxtDoc"
+      },
+      {
+        "command": "txtdoc.numberFootnotes",
+        "title": "TxtDoc: Number Footnotes",
+        "category": "TxtDoc"
+      },
+      {
+        "command": "txtdoc.fullFormatting",
+        "title": "TxtDoc: Full Formatting",
+        "category": "TxtDoc"
       }
     ]
   },
