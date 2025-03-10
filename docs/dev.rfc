@@ -23,7 +23,14 @@ focusing on testing procedures.
        ```
        npm test
        ```
-       
+
+       By default, this command runs tests with minimal output, showing only the
+       test names and results. For more detailed output, use the `-v` flag:
+
+       ```
+       npm test -- -v
+       ```
+
        This command uses the vscode-test CLI to:
        - Download VS Code (if not already downloaded)
        - Launch VS Code Extension Development Host

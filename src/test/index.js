@@ -2,12 +2,16 @@ const path = require('path');
 const Mocha = require('mocha');
 const { glob } = require('glob');
 
+// Determine if we're in verbose mode
+const isVerbose = process.env.VERBOSE === 'true';
+
 function run() {
   // Create the mocha test
   const mocha = new Mocha({
     ui: 'tdd',
     color: true,
-    reporter: 'list',
+    // Use list reporter for verbose mode, min reporter for non-verbose mode
+    reporter: isVerbose ? 'list' : 'min',
     timeout: 10000,
     fullTrace: true
   });
@@ -17,9 +21,15 @@ function run() {
   return new Promise((resolve, reject) => {
     // Find all test files
     glob('**/*.test.js', { cwd: testsRoot })
-      .then(files => {
-        console.log('\n======= RUNNING TEST FILES =======');
-        files.forEach(f => console.log(`- ${f}`));
+      .then(files => {        
+        // Only show detailed logs in verbose mode
+        if (isVerbose) {
+          console.log('\n======= RUNNING TEST FILES =======');
+          files.forEach(f => console.log(`- ${f}`));
+        } else {
+          // In non-verbose mode, just show a simple message
+          console.log(`Running ${files.length} test files...`);
+        }
         console.log('==================================\n');
         
         // Add files to the test suite
@@ -28,7 +38,7 @@ function run() {
         try {
           // Run the mocha test
           const runner = mocha.run(failures => {
-            console.log(`\n======= TEST RESULTS: ${failures} failures =======\n`);
+            isVerbose && console.log(`\n======= TEST RESULTS: ${failures} failures =======\n`);
             if (failures > 0) {
               reject(new Error(`${failures} tests failed.`));
             } else {

@@ -1,11 +1,14 @@
 const assert = require('assert');
 const vscode = require('vscode');
 
+// Determine if we're in verbose mode
+const isVerbose = process.env.VERBOSE === 'true';
+
 suite('Extension Test Suite', () => {
-  console.log('RUNNING TESTS: Extension Test Suite');
+  isVerbose && console.log('RUNNING TESTS: Extension Test Suite');
   
   suiteTeardown(() => {
-    console.log('TESTS COMPLETED: Extension Test Suite');
+    isVerbose && console.log('TESTS COMPLETED: Extension Test Suite');
     vscode.window.showInformationMessage('All tests done!');
   });
 

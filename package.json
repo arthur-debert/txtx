@@ -56,7 +56,7 @@
   ],
   "main": "./extension.js",
   "scripts": {
-    "test": "vscode-test",
+    "test": "node ./src/test/run-with-verbosity.js",
     "test:manual": "node ./src/test/runTest.js"
   },
   "repository": {
