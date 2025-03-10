@@ -2,7 +2,7 @@ const vscode = require("vscode");
 const { SECTION_REGEX, NUMBERED_SECTION_REGEX, ALTERNATIVE_SECTION_REGEX } = require("./constants");
 const { numberFootnotes } = require("./footnoteCommands");
 const { sendNotification } = require("./notifications");
-const vscodeLib = require("../../vscode.lib");
+const vscodeLib = require("./vscode.lib");
 
 /**
  * Format a document according to the RFC specification

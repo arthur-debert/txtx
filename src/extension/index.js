@@ -7,7 +7,7 @@ const { registerPathCompletionProvider } = require("./pathCompletionProvider");
 const { registerFormatCommands } = require("./formatCommands");
 const { registerFootnoteCommands } = require("./footnoteCommands");
 const { registerReferenceCommands } = require("./referenceCommands");
-const vscodeLib = require("../../vscode.lib");
+const vscodeLib = require("./vscode.lib");
 
 let outputChannel;
 

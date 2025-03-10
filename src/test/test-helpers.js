@@ -1,4 +1,4 @@
-const vscodeLib = require('../../vscode.lib');
+const vscodeLib = require('../extension/vscode.lib');
 const { setNotificationConfig, enableNotification, disableNotification, enableAllNotifications, disableAllNotifications, getNotificationConfig } = require('../extension/notifications');
 
 // Get verbose flag from environment

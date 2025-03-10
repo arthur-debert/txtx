@@ -2,7 +2,7 @@ const assert = require('assert');
 const vscode = require('vscode');
 const path = require('path');
 const { isVerbose, openDocument, getDocumentSections, createTestEnv, configureNotifications, enableTestNotification, resetNotificationConfig } = require('./test-helpers');
-const vscodeLib = require('../../vscode.lib');
+const vscodeLib = require('../extension/vscode.lib');
 
 suite('RfcDoc Format Extension Tests', function() {
   

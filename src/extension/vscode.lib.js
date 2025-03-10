@@ -7,7 +7,7 @@
 
 const vscode = require('vscode');
 const path = require('path');
-const { sendNotification } = require('./src/extension/notifications');
+const { sendNotification } = require('./notifications');
 const fs = require('fs');
 
 /**

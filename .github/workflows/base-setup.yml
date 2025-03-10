@@ -20,19 +20,10 @@ jobs:
           node-version: "20"
           cache: "npm"
 
-      - name: Cache VSCode
-        uses: actions/cache@v4
-        with:
-          path: .vscode-test
-          key: ${{ runner.os }}-vscode-${{ hashFiles('package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-vscode-
-
       - name: Install dependencies
         run: npm ci
 
       - name: Run command
-        timeout-minutes: 10
         run: ${{ inputs.run_command }}
 
       - name: Upload test results

@@ -3,7 +3,7 @@ const path = require("path");
 const fs = require("fs");
 const { DOCUMENT_REFERENCE_REGEX, SECTION_REGEX, NUMBERED_SECTION_REGEX, ALTERNATIVE_SECTION_REGEX } = require("./constants");
 const { sendNotification } = require("./notifications");
-const vscodeLib = require("../../vscode.lib");
+const vscodeLib = require("./vscode.lib");
 
 /**
  * Check that all document references point to valid targets
