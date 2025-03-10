@@ -12,9 +12,13 @@
   ],
   "folding": {
     "markers": {
-      "start": "^[A-Za-z0-9].*$\\n^-+$",
-      "end": "^$"
+      "start": "^([A-Za-z0-9].*$\\n^-+$|^[A-Z][^\\n]*$|^\\s{4})",
+      "end": "^(?!\\s{4})$"
     }
   },
-  "wordPattern": "\\w+"
+  "wordPattern": "\\w+",
+  "indentationRules": {
+    "increaseIndentPattern": "^(\\s*-\\s+|\\s*\\d+\\.\\s+|\\s*[a-z]\\.\\s+|\\s*[ivx]+\\.\\s+)",
+    "decreaseIndentPattern": "^\\s*$"
+  }
 }

@@ -24,6 +24,7 @@
   "repository": {
     "title": {
       "match": "^([^\\n]+)\\n-+$",
+      "name": "meta.title.txtdoc",
       "captures": {
         "1": {
           "name": "markup.heading.txtdoc"
@@ -32,6 +33,7 @@
     },
     "section": {
       "match": "^([A-Z][^\\n]*)$",
+      "name": "meta.section.txtdoc",
       "captures": {
         "1": {
           "name": "entity.name.section.txtdoc"
@@ -90,12 +92,13 @@
     "code_block": {
       "begin": "^\\s{4}",
       "end": "^(?!\\s{4})",
-      "name": "markup.raw.block.txtdoc"
+      "name": "markup.raw.block.txtdoc",
+      "contentName": "meta.embedded.block.txtdoc"
     },
     "quote": {
       "patterns": [
         {
-          "name": "markup.quote.txtdoc",
+          "name": "meta.quote.txtdoc markup.quote.txtdoc",
           "match": "^>\\s+(.+)$",
           "captures": {
             "1": {
@@ -104,7 +107,7 @@
           }
         },
         {
-          "name": "markup.quote.nested.txtdoc",
+          "name": "meta.quote.nested.txtdoc markup.quote.nested.txtdoc",
           "match": "^>>\\s+(.+)$",
           "captures": {
             "1": {

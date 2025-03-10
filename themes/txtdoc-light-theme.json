@@ -15,14 +15,15 @@
     {
       "scope": "markup.heading.txtdoc",
       "settings": {
-        "foreground": "#0000FF",
+        "foreground": "#999",
+        "background": "#AAA",
         "fontStyle": "bold"
       }
     },
     {
       "scope": "entity.name.section.txtdoc",
       "settings": {
-        "foreground": "#008080",
+        "foreground": "#666",
         "fontStyle": "bold"
       }
     },

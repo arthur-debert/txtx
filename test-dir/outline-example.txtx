@@ -1,0 +1,52 @@
+Document Outline Example
+-----------------------
+
+This file demonstrates the document outline support in the TxtDoc extension.
+
+First Section
+
+This is the content of the first section. The outline view should show the title
+and this section as separate items, with the section nested under the title.
+
+Second Section
+
+This section contains a code block:
+
+    function exampleFunction() {
+        console.log("This is a code block");
+        return true;
+    }
+
+The code block should appear in the outline view, nested under this section.
+
+Third Section
+
+This section contains a nested section.
+
+Nested Subsection
+
+This subsection should appear in the outline view, nested under the Third Section.
+
+    // Another code block
+    const x = 10;
+    const y = 20;
+    console.log(x + y);
+
+Fourth Section
+
+This section contains quotes:
+
+> This is a quoted line.
+>> This is a nested quoted line.
+
+The quotes are not shown in the outline view, but they are highlighted in the editor.
+
+Final Notes
+
+The outline view provides a hierarchical view of the document structure, making
+it easier to navigate through large documents.
+
+    // Final code block
+    function finalExample() {
+        return "Done!";
+    }

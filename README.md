@@ -8,6 +8,7 @@ format, a plain text documentation format following old-school Unix guidelines.
 This extension provides syntax highlighting for the following elements in TxtDoc
 files:
 
+- **Document Outline**: Automatic outline view for sections and code blocks
 - **Titles**: Underlined with dashes
 
   ```text
@@ -55,11 +56,23 @@ files:
   >> This is a nested quoted line.
   ```
 
-- **Emphasis**: Using "\_" around text
+- **Emphasis**: Using "_" around text
 
   ```text
   _Note_
   ```
+
+## Document Outline
+
+The extension provides document outline support for TxtDoc files:
+
+1. Open a TxtDoc file (`.txt` or `.txtx`)
+2. Open the Outline view in the Explorer sidebar
+3. The outline will show:
+   - Sections (starting with a capital letter)
+   - Code blocks (indented with 4 spaces)
+
+The outline is hierarchical, with code blocks nested under their parent sections when applicable.
 
 ## Themes
 
@@ -128,3 +141,9 @@ To test with only specific extensions enabled:
 - Initial release
 - Basic syntax highlighting for TxtDoc format
 - Custom dark and light themes
+
+### 0.2.0
+
+- Added document outline support for sections and code blocks
+- Improved folding markers for better code organization
+- Enhanced syntax highlighting with meta scopes
