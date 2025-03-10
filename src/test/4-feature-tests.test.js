@@ -13,7 +13,7 @@ suite('RfcDoc Format Extension Tests', function() {
       this.timeout(10000); // Increase timeout for this test
       
       // Open the test document
-      const testFilePath = path.join(__dirname, '..', '..', 'fixtures', 'arrow-test.txtx');
+      const testFilePath = path.join(__dirname, '..', '..', 'fixtures', 'arrow-test.rfc');
       const document = await openDocument(testFilePath);
       
       // Wait for the language mode to be set
@@ -55,7 +55,7 @@ suite('RfcDoc Format Extension Tests', function() {
       this.timeout(10000); // Increase timeout for this test
       
       // Open the test document
-      const testFilePath = path.join(__dirname, '..', '..', 'fixtures', 'arrow-test.txtx');
+      const testFilePath = path.join(__dirname, '..', '..', 'fixtures', 'arrow-test.rfc');
       const document = await openDocument(testFilePath);
       
       // Wait for the language mode to be set
@@ -97,7 +97,7 @@ suite('RfcDoc Format Extension Tests', function() {
       this.timeout(10000); // Increase timeout for this test
       
       // Open the test document
-      const testFilePath = path.join(__dirname, '..', '..', 'fixtures', 'arrow-test.txtx');
+      const testFilePath = path.join(__dirname, '..', '..', 'fixtures', 'arrow-test.rfc');
       const document = await openDocument(testFilePath);
       
       // Wait for the language mode to be set
@@ -139,7 +139,7 @@ suite('RfcDoc Format Extension Tests', function() {
       this.timeout(10000); // Increase timeout for this test
       
       // Open the test document
-      const testFilePath = path.join(__dirname, '..', '..', 'fixtures', 'arrow-test.txtx');
+      const testFilePath = path.join(__dirname, '..', '..', 'fixtures', 'arrow-test.rfc');
       const document = await openDocument(testFilePath);
       
       // Wait for the language mode to be set
@@ -181,7 +181,7 @@ suite('RfcDoc Format Extension Tests', function() {
       this.timeout(10000); // Increase timeout for this test
       
       // Open the test document
-      const testFilePath = path.join(__dirname, '..', '..', 'fixtures', 'emoticon-test.txtx');
+      const testFilePath = path.join(__dirname, '..', '..', 'fixtures', 'emoticon-test.rfc');
       const document = await openDocument(testFilePath);
       
       // Wait for the language mode to be set
@@ -223,7 +223,7 @@ suite('RfcDoc Format Extension Tests', function() {
       this.timeout(10000); // Increase timeout for this test
       
       // Open the test document
-      const testFilePath = path.join(__dirname, '..', '..', 'fixtures', 'emoticon-test.txtx');
+      const testFilePath = path.join(__dirname, '..', '..', 'fixtures', 'emoticon-test.rfc');
       const document = await openDocument(testFilePath);
       
       // Wait for the language mode to be set
@@ -263,7 +263,7 @@ suite('RfcDoc Format Extension Tests', function() {
       this.timeout(10000); // Increase timeout for this test
       
       // Open the test document
-      const testFilePath = path.join(__dirname, '..', '..', 'fixtures', 'path-completion-test.txtx');
+      const testFilePath = path.join(__dirname, '..', '..', 'fixtures', 'path-completion-test.rfc');
       const document = await openDocument(testFilePath);
       
       // Wait for the language mode to be set
@@ -303,7 +303,7 @@ suite('RfcDoc Format Extension Tests', function() {
       this.timeout(10000); // Increase timeout for this test
       
       // Open the test document
-      const testFilePath = path.join(__dirname, '..', '..', 'fixtures', 'path-completion-test.txtx');
+      const testFilePath = path.join(__dirname, '..', '..', 'fixtures', 'path-completion-test.rfc');
       const document = await openDocument(testFilePath);
       
       // Wait for the language mode to be set
