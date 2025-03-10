@@ -32,7 +32,7 @@ if (!isVerbose) {
 }
 
 // Create a copy of the .vscode-test.js file with appropriate reporter
-const configPath = path.resolve(__dirname, '../../.vscode-test.js');
+const configPath = path.resolve(__dirname, './vscode-test.js');
 const originalConfig = fs.readFileSync(configPath, 'utf8');
 
 // Create a temporary config file with the appropriate reporter
@@ -74,7 +74,8 @@ env.VSCODE_TEST_CONFIG = tempConfigPath;
 
 // Run the vscode-test CLI with the appropriate arguments
 const vscodeTest = path.resolve(__dirname, '../../node_modules/.bin/vscode-test');
-const child = spawn(vscodeTest, [], {
+// Add the --config option to specify the config file path
+const child = spawn(vscodeTest, ['--config', tempConfigPath], {
   env,
   stdio: isVerbose ? 'inherit' : ['ignore', 'pipe', 'pipe'],
   shell: true

@@ -22,7 +22,7 @@ if (!isVerbose) {
 }
 
 // Create a copy of the .vscode-test.js file with appropriate reporter
-const configPath = path.resolve(__dirname, '../../.vscode-test.js');
+const configPath = path.resolve(__dirname, './vscode-test.js');
 const fs = require('fs');
 const originalConfig = fs.readFileSync(configPath, 'utf8');
 
@@ -56,8 +56,11 @@ fs.writeFileSync(tempConfigPath, modifiedConfig);
 env.VSCODE_TEST_CONFIG = tempConfigPath;
 
 // Run the vscode-test CLI with the appropriate arguments
+// Add the --config option to specify the config file path
 const vscodeTest = path.resolve(__dirname, '../../node_modules/.bin/vscode-test');
-const child = spawn(vscodeTest, testArgs, {
+
+// Add the --config option to the arguments
+const child = spawn(vscodeTest, ['--config', tempConfigPath, ...testArgs], {
   env,
   stdio: isVerbose ? 'inherit' : ['ignore', 'pipe', 'pipe'],
   shell: true
