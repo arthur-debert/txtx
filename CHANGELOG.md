@@ -6,7 +6,9 @@ file.
 ## [0.5.0] - 2025-03-10
 
 ### Added
+
 - File and folder path completion
+- Added support for .rfc file extension
 - Disabled default symbol completion to focus on emoticons and paths
 
 ## [0.4.0] - 2025-03-10
@@ -15,7 +17,8 @@ file.
 
 ## [0.3.0] - 2025-03-10
 
-- Arrow transformation feature: automatically transforms arrow notations to Unicode arrows
+- Arrow transformation feature: automatically transforms arrow notations to
+  Unicode arrows
   - Supports right (->), left (<-), up (^-), and down (v-) arrows
 
 ## [0.2.0] - 2025-03-10

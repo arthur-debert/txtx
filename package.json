@@ -3,13 +3,13 @@
   "displayName": "TxtDoc Format",
   "description": "Syntax highlighting for TxtDoc format",
   "version": "0.5.0",
+  "publisher": "txtdoc",
   "engines": {
     "vscode": "^1.60.0"
   },
   "categories": [
     "Programming Languages"
   ],
-  "publisher": "txtdoc",
   "keywords": [
     "txtdoc",
     "documentation",
@@ -25,8 +25,8 @@
           "txtdoc"
         ],
         "extensions": [
-          ".txt",
-          ".txtx"
+          ".txtx",
+          ".rfc"
         ],
         "configuration": "./language-configuration.json"
       }
@@ -54,5 +54,18 @@
   "activationEvents": [
     "onLanguage:txtdoc"
   ],
-  "main": "./extension.js"
+  "main": "./extension.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/txtdoc/txtdoc-format.git"
+  },
+  "homepage": "https://github.com/txtdoc/txtdoc-format",
+  "bugs": {
+    "url": "https://github.com/txtdoc/txtdoc-format/issues"
+  },
+  "author": "TxtDoc Team",
+  "license": "MIT",
+  "devDependencies": {
+    "@vscode/vsce": "^3.2.2"
+  }
 }

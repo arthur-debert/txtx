@@ -1,7 +1,7 @@
 # TxtDoc Format
 
-A Visual Studio Code extension that provides syntax highlighting for TxtDoc
-format, a plain text documentation format following old-school Unix guidelines.
+A Visual Studio Code extension that provides syntax highlighting for plain text
+files following old-school Unix guidelines.
 
 ## Features
 
@@ -9,6 +9,49 @@ This extension provides syntax highlighting for the following elements in TxtDoc
 files:
 
 - **Document Outline**: Automatic outline view for sections and code blocks
+- **Arrow Transformations**: Automatically transforms arrow notations to
+    Unicode arrows
+- **Theming**
+- **Path Completion**: Automatic completion for file and folder paths
+
+## Document Outline
+
+The extension provides document outline support for TxtDoc files:
+
+1. Open a TxtDoc file (`.txt`, `.txtx`, or `.rfc`)
+2. Open the Outline view in the Explorer sidebar
+3. The outline will show:
+   - Sections (starting with a capital letter)
+   - Code blocks (indented with 4 spaces)
+
+The outline is hierarchical, with code blocks nested under their parent sections
+when applicable.
+
+## Themes
+
+This extension includes two custom themes specifically designed for TxtDoc
+files:
+
+- **TxtDoc Dark**: A dark theme optimized for TxtDoc syntax
+- **TxtDoc Light**: A light theme optimized for TxtDoc syntax
+
+For information on how to customize these themes or create your own, see the
+[VSCode Theme Customization Primer](docs/vscode-theme-primer.md).
+
+To activate a theme:
+
+1. Press `Ctrl+K Ctrl+T` or go to File > Preferences > Color Theme
+2. Select either "TxtDoc Dark" or "TxtDoc Light" from the list
+
+## Installation
+
+1. Open VS Code
+2. Press `Ctrl+Shift+X` or `Cmd+Shift+X` to open the Extensions view
+3. Search for "TxtDoc Format"
+4. Click Install
+
+## Defs
+
 - **Titles**: Underlined with dashes
 
   ```text
@@ -56,13 +99,14 @@ files:
   >> This is a nested quoted line.
   ```
 
-- **Emphasis**: Using "_" around text
+- **Emphasis**: Using "\_" around text
 
   ```text
   _Note_
   ```
 
-- **Arrow Transformations**: Automatically transforms arrow notations to Unicode arrows
+- **Arrow Transformations**: Automatically transforms arrow notations to Unicode
+  arrows
 
   ```text
   -> transforms to → (right arrow)
@@ -92,13 +136,14 @@ files:
 
 The extension provides document outline support for TxtDoc files:
 
-1. Open a TxtDoc file (`.txt` or `.txtx`)
+1. Open a TxtDoc file (`.txt`, `.txtx`, or `.rfc`)
 2. Open the Outline view in the Explorer sidebar
 3. The outline will show:
    - Sections (starting with a capital letter)
    - Code blocks (indented with 4 spaces)
 
-The outline is hierarchical, with code blocks nested under their parent sections when applicable.
+The outline is hierarchical, with code blocks nested under their parent sections
+when applicable.
 
 ## Themes
 
@@ -108,7 +153,8 @@ files:
 - **TxtDoc Dark**: A dark theme optimized for TxtDoc syntax
 - **TxtDoc Light**: A light theme optimized for TxtDoc syntax
 
-For information on how to customize these themes or create your own, see the [VSCode Theme Customization Primer](docs/vscode-theme-primer.md).
+For information on how to customize these themes or create your own, see the
+[VSCode Theme Customization Primer](docs/vscode-theme-primer.md).
 
 To activate a theme:
 
@@ -124,8 +170,8 @@ To activate a theme:
 
 ## Usage
 
-The extension automatically activates for all `.txt` and `.txtx` files. If you want to
-manually set a file to use TxtDoc highlighting:
+The extension automatically activates for all `.txt`, `.txtx`, and `.rfc` files. If you
+want to manually set a file to use TxtDoc highlighting:
 
 1. Open the file
 2. Click on the language mode indicator in the bottom-right corner of VS Code
@@ -137,20 +183,22 @@ To test the extension:
 
 1. Open the Run and Debug view in VSCode (Ctrl+Shift+D or Cmd+Shift+D on Mac)
 2. From the dropdown menu at the top, select "Extension (with sample)"
-3. Click the green play button or press F5 to launch a new window with the extension loaded
+3. Click the green play button or press F5 to launch a new window with the
+   extension loaded
 4. The test-dir directory will open in the new window
-5. Open the sample.txt and sample.txtx files in the test-dir directory
+5. Open the sample.txt, sample.txtx, and sample.rfc files in the test-dir directory
 6. Check the "txtos" output channel in the Output panel to see debug logs
 7. Verify that both files use the TxtDoc highlighting
 
 To test with only specific extensions enabled:
 
 1. Open the Run and Debug view in VSCode (Ctrl+Shift+D or Cmd+Shift+D on Mac)
-2. From the dropdown menu at the top, select "Extension (with required extensions only)"
+2. From the dropdown menu at the top, select "Extension (with required
+   extensions only)"
 3. Click the green play button or press F5 to launch a new window
 4. The test-dir directory will open in the new window
 5. Only the TxtDoc Format, Markdown, and Prettier extensions will be enabled
-6. Open the sample.txt or sample.txtx file to test the highlighting
+6. Open the sample.txt, sample.txtx, or sample.rfc file to test the highlighting
 
 ## Requirements
 
