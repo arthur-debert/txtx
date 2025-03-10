@@ -55,6 +55,10 @@
     "onLanguage:txtdoc"
   ],
   "main": "./extension.js",
+  "scripts": {
+    "test": "vscode-test",
+    "test:manual": "node ./src/test/runTest.js"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/txtdoc/txtdoc-format.git"
@@ -66,6 +70,10 @@
   "author": "TxtDoc Team",
   "license": "MIT",
   "devDependencies": {
-    "@vscode/vsce": "^3.2.2"
+    "@types/mocha": "^10.0.10",
+    "@vscode/test-cli": "^0.0.10",
+    "@vscode/test-electron": "^2.4.1",
+    "@vscode/vsce": "^3.2.2",
+    "mocha": "^11.1.0"
   }
 }
