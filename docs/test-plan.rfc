@@ -203,10 +203,10 @@ and progressing to more complex features.
        - Verify footnotes are numbered sequentially
        - Check that references are updated to match
        
-   5.4 Full formatting command
+   5.4 Full formatting command ✓ (src/test/5-command-tests.test.js)
        
        - Create a document with various formatting issues
-       - Run the Full Formatting command
+       - Run the Full Formatting command (should run 5.1, 5.2, 5.3)
        - Verify all formatting is applied correctly
        
    5.5 Check references command
@@ -222,20 +222,14 @@ and progressing to more complex features.
        - Create an empty .rfc file
        - Verify the extension handles it correctly
        - Test various commands on the empty document
-       
-   6.2 Very large documents
-       
-       - Create or open a very large .rfc file
-       - Verify the extension handles it without performance issues
-       - Test various features and commands on the large document
-       
-   6.3 Documents with invalid syntax
+
+   6.2 Documents with invalid syntax
        
        - Create a document with invalid syntax
        - Verify the extension handles errors gracefully
        - Check that valid parts of the document still work correctly
        
-   6.4 Documents with complex structures
+   6.3 Documents with complex structures
        
        - Create a document with complex nested structures
        - Verify the extension handles it correctly

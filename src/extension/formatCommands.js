@@ -227,7 +227,7 @@ function generateTOCLines(sections) {
     ];
     
     for (const section of sections) {
-        // Add indentation for subsections
+        // Add indentation for subsections (single level of indentation)
         const indent = section.level > 1 ? '    ' : '';
         
         // Add the section to the TOC
@@ -316,11 +316,18 @@ function formatLines(lines) {
     let inCodeBlock = false;
     let inQuote = false;
     let inMetadata = false;
+    let skipNextLine = false;
     
     for (let i = 0; i < lines.length; i++) {
+        // Skip this line if it was marked to be skipped
+        if (skipNextLine) {
+            skipNextLine = false;
+            continue;
+        }
+        
         let line = lines[i];
         
-        // Trim trailing whitespace
+        // Trim trailing whitespace 
         line = line.trimRight();
         
         // Check for section headers
@@ -339,9 +346,14 @@ function formatLines(lines) {
             formattedLines.push(line);
             
             // Ensure there's a blank line after section headers
-            if (i < lines.length - 1 && lines[i + 1] !== '') {
-                formattedLines.push('');
+            formattedLines.push('');
+            
+            // Skip the next line if it's already blank to avoid double blank lines
+            if (i < lines.length - 1 && lines[i + 1].trim() === '') {
+                skipNextLine = true;
             }
+            
+            // Continue to the next line
             continue;
         }
         
