@@ -1,0 +1,86 @@
+{
+  "name": "TxtDoc Dark",
+  "type": "dark",
+  "colors": {
+    "editor.background": "#1E1E1E",
+    "editor.foreground": "#D4D4D4",
+    "editorLineNumber.foreground": "#858585",
+    "editor.selectionBackground": "#264F78",
+    "editor.selectionHighlightBackground": "#2D2D30"
+  },
+  "tokenColors": [
+    {
+      "scope": "markup.heading.txtdoc",
+      "settings": {
+        "foreground": "#569CD6",
+        "fontStyle": "bold"
+      }
+    },
+    {
+      "scope": "entity.name.section.txtdoc",
+      "settings": {
+        "foreground": "#4EC9B0",
+        "fontStyle": "bold"
+      }
+    },
+    {
+      "scope": [
+        "markup.list.unnumbered.txtdoc",
+        "markup.list.numbered.txtdoc",
+        "markup.list.lettered.txtdoc",
+        "markup.list.roman.txtdoc"
+      ],
+      "settings": {
+        "foreground": "#CE9178"
+      }
+    },
+    {
+      "scope": [
+        "markup.list.number.txtdoc",
+        "markup.list.letter.txtdoc",
+        "markup.list.roman.txtdoc"
+      ],
+      "settings": {
+        "foreground": "#B5CEA8",
+        "fontStyle": "bold"
+      }
+    },
+    {
+      "scope": "markup.list.item.txtdoc",
+      "settings": {
+        "foreground": "#D4D4D4"
+      }
+    },
+    {
+      "scope": "markup.raw.block.txtdoc",
+      "settings": {
+        "foreground": "#DCDCAA",
+        "background": "#1E1E1E"
+      }
+    },
+    {
+      "scope": [
+        "markup.quote.content.txtdoc",
+        "markup.quote.nested.content.txtdoc"
+      ],
+      "settings": {
+        "foreground": "#608B4E",
+        "fontStyle": "italic"
+      }
+    },
+    {
+      "scope": "markup.quote.nested.content.txtdoc",
+      "settings": {
+        "foreground": "#6A9955",
+        "fontStyle": "italic"
+      }
+    },
+    {
+      "scope": "markup.italic.txtdoc",
+      "settings": {
+        "foreground": "#C586C0",
+        "fontStyle": "italic"
+      }
+    }
+  ]
+}

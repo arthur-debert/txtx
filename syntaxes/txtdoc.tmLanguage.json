@@ -1,0 +1,126 @@
+{
+  "name": "TxtDoc",
+  "scopeName": "text.txtdoc",
+  "patterns": [
+    {
+      "include": "#title"
+    },
+    {
+      "include": "#section"
+    },
+    {
+      "include": "#list"
+    },
+    {
+      "include": "#code_block"
+    },
+    {
+      "include": "#quote"
+    },
+    {
+      "include": "#emphasis"
+    }
+  ],
+  "repository": {
+    "title": {
+      "match": "^([^\\n]+)\\n-+$",
+      "captures": {
+        "1": {
+          "name": "markup.heading.txtdoc"
+        }
+      }
+    },
+    "section": {
+      "match": "^([A-Z][^\\n]*)$",
+      "captures": {
+        "1": {
+          "name": "entity.name.section.txtdoc"
+        }
+      }
+    },
+    "list": {
+      "patterns": [
+        {
+          "name": "markup.list.unnumbered.txtdoc",
+          "match": "^\\s*-\\s+(.+)$",
+          "captures": {
+            "1": {
+              "name": "markup.list.item.txtdoc"
+            }
+          }
+        },
+        {
+          "name": "markup.list.numbered.txtdoc",
+          "match": "^\\s*(\\d+)\\. (.+)$",
+          "captures": {
+            "1": {
+              "name": "markup.list.number.txtdoc"
+            },
+            "2": {
+              "name": "markup.list.item.txtdoc"
+            }
+          }
+        },
+        {
+          "name": "markup.list.lettered.txtdoc",
+          "match": "^\\s*([a-z])\\. (.+)$",
+          "captures": {
+            "1": {
+              "name": "markup.list.letter.txtdoc"
+            },
+            "2": {
+              "name": "markup.list.item.txtdoc"
+            }
+          }
+        },
+        {
+          "name": "markup.list.roman.txtdoc",
+          "match": "^\\s*(i|ii|iii|iv|v|vi|vii|viii|ix|x)\\. (.+)$",
+          "captures": {
+            "1": {
+              "name": "markup.list.roman.txtdoc"
+            },
+            "2": {
+              "name": "markup.list.item.txtdoc"
+            }
+          }
+        }
+      ]
+    },
+    "code_block": {
+      "begin": "^\\s{4}",
+      "end": "^(?!\\s{4})",
+      "name": "markup.raw.block.txtdoc"
+    },
+    "quote": {
+      "patterns": [
+        {
+          "name": "markup.quote.txtdoc",
+          "match": "^>\\s+(.+)$",
+          "captures": {
+            "1": {
+              "name": "markup.quote.content.txtdoc"
+            }
+          }
+        },
+        {
+          "name": "markup.quote.nested.txtdoc",
+          "match": "^>>\\s+(.+)$",
+          "captures": {
+            "1": {
+              "name": "markup.quote.nested.content.txtdoc"
+            }
+          }
+        }
+      ]
+    },
+    "emphasis": {
+      "match": "_(.*?)_",
+      "captures": {
+        "1": {
+          "name": "markup.italic.txtdoc"
+        }
+      }
+    }
+  }
+}

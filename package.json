@@ -1,0 +1,58 @@
+{
+  "name": "txtdoc-format",
+  "displayName": "TxtDoc Format",
+  "description": "Syntax highlighting for TxtDoc format",
+  "version": "0.1.0",
+  "engines": {
+    "vscode": "^1.60.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "publisher": "txtdoc",
+  "keywords": [
+    "txtdoc",
+    "documentation",
+    "plain text",
+    "syntax highlighting"
+  ],
+  "contributes": {
+    "languages": [
+      {
+        "id": "txtdoc",
+        "aliases": [
+          "TxtDoc",
+          "txtdoc"
+        ],
+        "extensions": [
+          ".txt",
+          ".txtx"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "txtdoc",
+        "scopeName": "text.txtdoc",
+        "path": "./syntaxes/txtdoc.tmLanguage.json"
+      }
+    ],
+    "themes": [
+      {
+        "label": "TxtDoc Dark",
+        "uiTheme": "vs-dark",
+        "path": "./themes/txtdoc-dark-theme.json"
+      },
+      {
+        "label": "TxtDoc Light",
+        "uiTheme": "vs",
+        "path": "./themes/txtdoc-light-theme.json"
+      }
+    ]
+  },
+  "activationEvents": [
+    "onLanguage:txtdoc"
+  ],
+  "main": "./extension.js"
+}

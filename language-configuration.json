@@ -1,0 +1,20 @@
+{
+  "comments": {
+    // We don't have specific comment syntax in this format
+  },
+  "brackets": [
+    // No specific bracket pairs
+  ],
+  "autoClosingPairs": [["_", "_"]],
+  "surroundingPairs": [
+    ["_", "_"],
+    [">", ""]
+  ],
+  "folding": {
+    "markers": {
+      "start": "^[A-Za-z0-9].*$\\n^-+$",
+      "end": "^$"
+    }
+  },
+  "wordPattern": "\\w+"
+}
