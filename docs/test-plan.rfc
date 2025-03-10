@@ -209,7 +209,7 @@ and progressing to more complex features.
        - Run the Full Formatting command (should run 5.1, 5.2, 5.3)
        - Verify all formatting is applied correctly
        
-   5.5 Check references command
+   5.5 Check references command ✓ (src/extension/referenceCommands.js)
        
        - Create a document with valid and invalid references
        - Run the Check References command

@@ -6,6 +6,7 @@ const { registerEmoticonFeature } = require("./emoticonFeature");
 const { registerPathCompletionProvider } = require("./pathCompletionProvider");
 const { registerFormatCommands } = require("./formatCommands");
 const { registerFootnoteCommands } = require("./footnoteCommands");
+const { registerReferenceCommands } = require("./referenceCommands");
 
 let outputChannel;
 
@@ -53,6 +54,9 @@ function activate(context) {
 
     // Register the footnote commands
     registerFootnoteCommands(context, outputChannel);
+    
+    // Register the reference commands
+    registerReferenceCommands(context, outputChannel);
     
     console.log('TxtDoc Format extension activated');
 }

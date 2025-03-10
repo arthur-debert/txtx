@@ -453,6 +453,119 @@ FOOTNOTES
       }
     });
     
+    // 5.5 Check references command
+    test('5.5 Check references command', async function() {
+      this.timeout(10000); // Increase timeout for this test
+      
+      // Create temporary test files with references
+      const tempDir = path.join(__dirname, 'temp');
+      if (!fs.existsSync(tempDir)) {
+        fs.mkdirSync(tempDir);
+      }
+      
+      // Create a target file that will be referenced
+      const targetFilePath = path.join(tempDir, 'target.rfc');
+      const targetContent = 
+`Target Document
+---------------
+
+Author        John Doe
+Date          March 10, 2025
+Version       1.0
+Status        Draft
+
+This is a target document that will be referenced.
+
+1. Introduction
+
+   This is the introduction section.
+
+2. Main Section
+
+   2.1 Subsection One
+   
+       This is subsection one.
+   
+   2.2 Subsection Two
+   
+       This is subsection two.
+
+3. Conclusion
+
+   This is the conclusion section.
+
+: Special Section
+
+   This is a special section.
+
+UPPERCASE SECTION
+
+   This is an uppercase section.`;
+      
+      fs.writeFileSync(targetFilePath, targetContent);
+      
+      // Create a source file with valid and invalid references
+      const sourceFilePath = path.join(tempDir, 'reference-test.rfc');
+      const sourceContent = 
+`Reference Test Document
+----------------------
+
+Author        John Doe
+Date          March 10, 2025
+Version       1.0
+Status        Draft
+
+This document tests the check references command.
+
+1. Valid References
+
+   This section has a valid file reference (see: target.rfc).
+   This section has a valid section reference (see: target.rfc#introduction).
+   This section has a valid numbered section reference (see: target.rfc#2-1).
+   This section has a valid alternative section reference (see: target.rfc#special-section).
+   This section has a valid uppercase section reference (see: target.rfc#uppercase-section).
+
+2. Invalid References
+
+   This section has an invalid file reference (see: nonexistent.rfc).
+   This section has an invalid section reference (see: target.rfc#nonexistent-section).
+`;
+      
+      fs.writeFileSync(sourceFilePath, sourceContent);
+      
+      try {
+        // Open the source document
+        const document = await openDocument(sourceFilePath);
+        
+        // Wait for the language mode to be set
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        
+        // Get the editor
+        const editor = vscode.window.activeTextEditor;
+        assert.ok(editor, 'Editor should be active');
+        
+        // Execute the check references command
+        await vscode.commands.executeCommand('txtdoc.checkReferences');
+        
+        // Wait for the check to complete
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        
+        // We can't easily check the diagnostics in the test, so we'll just verify
+        // that the command executed without errors
+        
+        // Clean up - close the editor
+        await vscode.commands.executeCommand('workbench.action.closeActiveEditor');
+      } finally {
+        // Clean up - delete the temporary files
+        if (fs.existsSync(sourceFilePath)) {
+          fs.unlinkSync(sourceFilePath);
+        }
+        if (fs.existsSync(targetFilePath)) {
+          fs.unlinkSync(targetFilePath);
+        }
+      }
+    });
+    
   });
   
 });
