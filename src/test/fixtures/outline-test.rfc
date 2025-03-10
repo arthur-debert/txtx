@@ -1,0 +1,25 @@
+Test Document for Outline
+----------------------
+
+This document tests the outline/symbol provider functionality.
+
+1. Numbered Section
+
+   This is a numbered section.
+   
+   1.1 Nested Numbered Section
+   
+       This is a nested numbered section with a code block.
+       The code block should be properly indented.
+
+2. Another Numbered Section
+
+   This is another numbered section.
+
+: Alternative Section
+
+   This is an alternative section format.
+
+UPPERCASE SECTION
+
+   This is the original section format.
