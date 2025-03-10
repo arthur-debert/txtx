@@ -12,27 +12,27 @@ and progressing to more complex features.
 
 1. Basic Extension Tests ✓
 
-   1.1 Extension loads ✓ (src/test/extension.test.js)
+   1.1 Extension loads ✓ (src/test/1-basic-extension.test.js)
        
        - Test that the extension is properly loaded in VSCode
        - Verify the extension appears in the Extensions view
        - Check that the extension ID matches "txtdoc.txtdoc-format"
        
-   1.2 Extension is active in .rfc files ✓ (src/test/extension.test.js)
+   1.2 Extension is active in .rfc files ✓ (src/test/1-basic-extension.test.js)
        
        - Open an .rfc file
        - Verify the extension activates automatically
        - Check the language mode is set to "TxtDoc"
        - Verify the extension's output channel shows activation message
        
-   1.3 Extension exports ✓ (src/test/extension.test.js)
+   1.3 Extension exports ✓ (src/test/1-basic-extension.test.js)
        
        - Verify the extension exports the expected functions
        - Check that activate and deactivate functions are exported
 
 2. Document Structure Tests ✓
 
-   2.1 Document outline/symbol provider ✓ (src/test/extension.test.js)
+   2.1 Document outline/symbol provider ✓ (src/test/2-document-structure.test.js)
        
        - Open an .rfc file with various section types
        - Open the Outline view in VSCode
@@ -40,25 +40,25 @@ and progressing to more complex features.
        - Check that all section types are correctly recognized
        - Note: Current implementation doesn't support nested sections in the outline
        
-   2.2 Section detection - uppercase sections ✓ (src/test/extension.test.js)
+   2.2 Section detection - uppercase sections ✓ (src/test/2-document-structure.test.js)
        
        - Create a document with uppercase sections
        - Verify they appear in the outline
        - Check that they are properly highlighted
        
-   2.3 Section detection - numbered sections ✓ (src/test/extension.test.js)
+   2.3 Section detection - numbered sections ✓ (src/test/2-document-structure.test.js)
        
        - Create a document with numbered sections (1., 1.1, etc.)
        - Verify they appear in the outline with correct hierarchy
        - Check that they are properly highlighted
        
-   2.4 Section detection - alternative sections ✓ (src/test/extension.test.js)
+   2.4 Section detection - alternative sections ✓ (src/test/2-document-structure.test.js)
        
        - Create a document with alternative sections (: Section Name)
        - Verify they appear in the outline
        - Check that they are properly highlighted
        
-   2.5 Folding markers ✓ (src/test/extension.test.js)
+   2.5 Folding markers ✓ (src/test/2-document-structure.test.js)
        
        - Create a document with various section types and content
        - Test folding each section type
@@ -66,59 +66,59 @@ and progressing to more complex features.
 
 3. Syntax Highlighting Tests
 
-   3.1 Text formatting - bold ✓ (src/test/extension.test.js)
+   3.1 Text formatting - bold ✓ (src/test/3-syntax-highlighting.test.js)
        
        - Create text with *bold* formatting
        - Verify the text between asterisks is highlighted as bold
        
-   3.2 Text formatting - italic ✓ (src/test/extension.test.js)
+   3.2 Text formatting - italic ✓ (src/test/3-syntax-highlighting.test.js)
        
        - Create text with _italic_ formatting
        - Verify the text between underscores is highlighted as italic
        
-   3.3 Section types highlighting ✓ (src/test/extension.test.js)
+   3.3 Section types highlighting ✓ (src/test/3-syntax-highlighting.test.js)
        
        - Create a document with all section types
        - Verify each section type is highlighted correctly
        - Check that section titles have the correct highlighting
        
-   3.4 Lists - bullet points ✓ (src/test/extension.test.js)
+   3.4 Lists - bullet points ✓ (src/test/3-syntax-highlighting.test.js)
        
        - Create a list with bullet points (- item)
        - Verify the list items are properly highlighted
        - Check that indentation works correctly
        
-   3.5 Lists - numbered ✓ (src/test/extension.test.js)
+   3.5 Lists - numbered ✓ (src/test/3-syntax-highlighting.test.js)
        
        - Create a numbered list (1. item)
        - Verify the list items are properly highlighted
        - Check that indentation works correctly
        
-   3.6 Lists - lettered ✓ (src/test/extension.test.js)
+   3.6 Lists - lettered ✓ (src/test/3-syntax-highlighting.test.js)
        
        - Create a lettered list (a. item)
        - Verify the list items are properly highlighted
        - Check that indentation works correctly
        
-   3.7 Lists - roman numerals ✓ (src/test/extension.test.js)
+   3.7 Lists - roman numerals ✓ (src/test/3-syntax-highlighting.test.js)
        
        - Create a list with roman numerals (i. item)
        - Verify the list items are properly highlighted
        - Check that indentation works correctly
        
-   3.8 Code blocks ✓ (src/test/extension.test.js)
+   3.8 Code blocks ✓ (src/test/3-syntax-highlighting.test.js)
        
        - Create a code block (indented with 4 spaces)
        - Verify the code block is properly highlighted
        - Check that the code block appears in a monospace font
        
-   3.9 Quotes and blockquotes ✓ (src/test/extension.test.js)
+   3.9 Quotes and blockquotes ✓ (src/test/3-syntax-highlighting.test.js)
        
        - Create quotes (> quote) and nested quotes (>> nested)
        - Verify quotes are properly highlighted
        - Check that nested quotes have different highlighting
        
-   3.10 Metadata ✓ (src/test/extension.test.js)
+   3.10 Metadata ✓ (src/test/3-syntax-highlighting.test.js)
        
        - Create metadata entries (Key     Value)
        - Verify the key and value are properly highlighted
@@ -266,3 +266,12 @@ IMPLEMENTATION NOTES
 - Each test should be implemented one at a time
 - Do not proceed to the next test until the current test is passing
 - When a test passes, mark it as done in this document and link to the test file/function
+
+TEST FILE ORGANIZATION
+
+- Tests have been organized into separate files by category:
+  - src/test/1-basic-extension.test.js: Basic extension functionality tests
+  - src/test/2-document-structure.test.js: Document structure and outline tests
+  - src/test/3-syntax-highlighting.test.js: Syntax highlighting tests
+  - src/test/extension.test.js: Main entry point that imports all test files
+  - src/test/test-helpers.js: Shared helper functions used across test files
