@@ -3,8 +3,14 @@ const vscode = require("vscode");
 const path = require("path");
 
 // Regular expressions for matching different elements
-const SECTION_REGEX = /^([A-Z][^\n]*)$/gm;
+const SECTION_REGEX = /^([A-Z][^\n:]*)$/gm; // Exclude lines with colons (metadata)
+const NUMBERED_SECTION_REGEX = /^([0-9]+(?:\.[0-9]+)*)\. ([^\n]*)$/gm;
+const ALTERNATIVE_SECTION_REGEX = /^: ([^\n]*)$/gm;
+const FOOTNOTE_REGEX = /^\[(\d+)\] (.+)$/gm;
+const METADATA_REGEX = /^([A-Za-z0-9 ]+)\s{2,}(.+)$/gm; // Metadata pattern
 const CODE_BLOCK_START_REGEX = /^(\s{4}.*)/gm;
+const FOOTNOTE_REFERENCE_REGEX = /\[(\d+)\]/g;
+const DOCUMENT_REFERENCE_REGEX = /see:\s+([^#\s]+)(?:#([a-zA-Z0-9-]+))?/g;
 const QUOTE_REGEX = /^>\s+(.+)$/gm;
 const NESTED_QUOTE_REGEX = /^>>\s+(.+)$/gm;
 
@@ -101,8 +107,15 @@ function activate(context) {
     context.subscriptions.push(
         vscode.languages.registerDocumentSymbolProvider(selector, documentSymbolProvider)
     );
+
+    // Register document link provider for footnotes and references
+    const documentLinkProvider = new TxtDocDocumentLinkProvider();
+    context.subscriptions.push(
+        vscode.languages.registerDocumentLinkProvider(selector, documentLinkProvider)
+    );
     
     outputChannel.appendLine('Document symbol provider registered for outline support');
+    outputChannel.appendLine('Document link provider registered for footnotes and references');
     
     // Register the arrow transformation feature
     registerArrowTransformations(context);
@@ -432,9 +445,10 @@ async function getPathCompletionItems(documentUri, pathPrefix) {
  */
 class TxtDocDocumentSymbolProvider {
     provideDocumentSymbols(document, token) {
-        const symbols = [];
+        const symbols = []; // Store all symbols for internal reference
+        const sectionMap = new Map(); // Map to track section hierarchy by level
         const text = document.getText();
-        let match;
+        let match, startPos, endPos, range, symbol;
 
         // Find sections
         SECTION_REGEX.lastIndex = 0;
@@ -443,11 +457,11 @@ class TxtDocDocumentSymbolProvider {
                 return [];
             }
             
-            const startPos = document.positionAt(match.index);
-            const endPos = document.positionAt(match.index + match[0].length);
-            const range = new vscode.Range(startPos, endPos);
+            startPos = document.positionAt(match.index);
+            endPos = document.positionAt(match.index + match[0].length);
+            range = new vscode.Range(startPos, endPos);
             
-            const symbol = new vscode.DocumentSymbol(
+            symbol = new vscode.DocumentSymbol(
                 match[1].trim(),
                 'Section',
                 vscode.SymbolKind.File,
@@ -457,47 +471,79 @@ class TxtDocDocumentSymbolProvider {
             
             symbols.push(symbol);
         }
-        
-        // Find code blocks
-        CODE_BLOCK_START_REGEX.lastIndex = 0;
-        while ((match = CODE_BLOCK_START_REGEX.exec(text)) !== null) {
+
+        // Find numbered sections
+        NUMBERED_SECTION_REGEX.lastIndex = 0;
+        while ((match = NUMBERED_SECTION_REGEX.exec(text)) !== null) {
             if (token.isCancellationRequested) {
                 return [];
             }
             
-            // Find the end of the code block
-            let blockEnd = match.index + match[0].length;
-            let nextLine = text.indexOf('\n', blockEnd);
+            startPos = document.positionAt(match.index);
+            endPos = document.positionAt(match.index + match[0].length);
+            range = new vscode.Range(startPos, endPos);
             
-            while (nextLine !== -1 && text.substring(nextLine + 1, nextLine + 5).match(/^\s{4}/)) {
-                blockEnd = nextLine;
-                nextLine = text.indexOf('\n', blockEnd + 1);
-            }
+            const sectionNumber = match[1];
+            const sectionTitle = match[2].trim();
+            const sectionLevel = sectionNumber.split('.').length;
             
-            const startPos = document.positionAt(match.index);
-            const endPos = document.positionAt(blockEnd);
-            const range = new vscode.Range(startPos, endPos);
-            
-            // Extract the first line of the code block for the name
-            const firstLine = match[1].trim();
-            const blockName = firstLine.length > 0 ? firstLine : 'Code Block';
-            
-            const symbol = new vscode.DocumentSymbol(
-                blockName,
-                'Code Block',
-                vscode.SymbolKind.Function,
+            symbol = new vscode.DocumentSymbol(
+                `${sectionNumber}. ${sectionTitle}`,
+                'Numbered Section',
+                vscode.SymbolKind.File,
                 range,
                 range
             );
             
-            // Add code block to the appropriate parent if it exists
-            const parentSymbol = this.findParentSymbol(symbols, startPos);
-            if (parentSymbol && parentSymbol.kind === vscode.SymbolKind.File) {
-                parentSymbol.children.push(symbol);
-            } else {
+            // Handle section hierarchy
+            if (sectionLevel === 1) {
+                // Top-level section
                 symbols.push(symbol);
+                sectionMap.set(sectionNumber, symbol);
+            } else {
+                // Nested section, find parent
+                const parentNumber = sectionNumber.substring(0, sectionNumber.lastIndexOf('.'));
+                const parentSymbol = sectionMap.get(parentNumber);
+                
+                if (parentSymbol) {
+                    parentSymbol.children.push(symbol);
+                } else {
+                    // If parent not found, add to top level
+                    symbols.push(symbol);
+                }
+                
+                // Store this section for potential children
+                sectionMap.set(sectionNumber, symbol);
             }
         }
+
+        // Find alternative sections
+        ALTERNATIVE_SECTION_REGEX.lastIndex = 0;
+        while ((match = ALTERNATIVE_SECTION_REGEX.exec(text)) !== null) {
+            if (token.isCancellationRequested) {
+                return [];
+            }
+            
+            startPos = document.positionAt(match.index);
+            endPos = document.positionAt(match.index + match[0].length);
+            range = new vscode.Range(startPos, endPos);
+            
+            symbol = new vscode.DocumentSymbol(
+                match[1].trim(),
+                'Alternative Section',
+                vscode.SymbolKind.File,
+                range,
+                range
+            );
+            
+            symbols.push(symbol);
+        }
+
+        // Find footnotes
+        // We're not adding footnotes to the outline view
+        
+        // Find code blocks
+        // We're not adding code blocks to the outline view
         
         return symbols;
     }
@@ -516,6 +562,103 @@ class TxtDocDocumentSymbolProvider {
             }
         }
         return null;
+    }
+}
+
+/**
+ * Document Link Provider for TxtDoc files
+ * Provides clickable links for footnotes and document references
+ */
+class TxtDocDocumentLinkProvider {
+    provideDocumentLinks(document, token) {
+        const links = [];
+        const text = document.getText();
+        
+        // Find footnote references and link them to their declarations
+        this.findFootnoteLinks(document, text, links, token);
+        
+        // Find document references and link them to the referenced files
+        this.findDocumentReferenceLinks(document, text, links, token);
+        
+        return links;
+    }
+    
+    /**
+     * Find footnote references and create links to their declarations
+     * @param {vscode.TextDocument} document 
+     * @param {string} text 
+     * @param {vscode.DocumentLink[]} links 
+     * @param {vscode.CancellationToken} token 
+     */
+    findFootnoteLinks(document, text, links, token) {
+        // First, find all footnote declarations and their positions
+        const footnoteDeclarations = new Map();
+        let match;
+        
+        FOOTNOTE_REGEX.lastIndex = 0;
+        while ((match = FOOTNOTE_REGEX.exec(text)) !== null) {
+            if (token.isCancellationRequested) return;
+            
+            const footnoteNumber = match[1];
+            const position = document.positionAt(match.index);
+            footnoteDeclarations.set(footnoteNumber, position);
+        }
+        
+        // Then find all footnote references and link them to their declarations
+        FOOTNOTE_REFERENCE_REGEX.lastIndex = 0;
+        while ((match = FOOTNOTE_REFERENCE_REGEX.exec(text)) !== null) {
+            if (token.isCancellationRequested) return;
+            
+            const footnoteNumber = match[1];
+            const declarationPosition = footnoteDeclarations.get(footnoteNumber);
+            
+            if (declarationPosition) {
+                const startPos = document.positionAt(match.index);
+                const endPos = document.positionAt(match.index + match[0].length);
+                const range = new vscode.Range(startPos, endPos);
+                
+                // Create a document-internal link
+                const target = document.uri.with({ 
+                    fragment: `L${declarationPosition.line + 1}` 
+                });
+                
+                links.push(new vscode.DocumentLink(range, target));
+            }
+        }
+    }
+    
+    /**
+     * Find document references and create links to the referenced files
+     * @param {vscode.TextDocument} document 
+     * @param {string} text 
+     * @param {vscode.DocumentLink[]} links 
+     * @param {vscode.CancellationToken} token 
+     */
+    findDocumentReferenceLinks(document, text, links, token) {
+        DOCUMENT_REFERENCE_REGEX.lastIndex = 0;
+        let match;
+        
+        while ((match = DOCUMENT_REFERENCE_REGEX.exec(text)) !== null) {
+            if (token.isCancellationRequested) return;
+            
+            const filePath = match[1];
+            const anchor = match[2] || '';
+            
+            const startPos = document.positionAt(match.index);
+            const endPos = document.positionAt(match.index + match[0].length);
+            const range = new vscode.Range(startPos, endPos);
+            
+            // Resolve the file path relative to the current document
+            const documentDir = path.dirname(document.uri.fsPath);
+            const targetPath = path.resolve(documentDir, filePath);
+            
+            // Create a link to the target file
+            const target = vscode.Uri.file(targetPath).with({
+                fragment: anchor
+            });
+            
+            links.push(new vscode.DocumentLink(range, target));
+        }
     }
 }
 

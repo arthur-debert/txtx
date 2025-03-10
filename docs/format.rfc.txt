@@ -90,26 +90,33 @@ This project uses txt for docs, mostly following the old-school unix guidelines.
 
     1.1 Session Name
 
-    Note however, that this should distinguish between normal numbered list.
-    (As long as it's a numerical formatting)
+    Note: To distinguish from regular numbered lists, numbered sessions MUST:
+    - Be preceded by an empty line
+    - Have no indentation
+    - Contain only the number, period, space, and title
+    - Not be part of a sequence of list items
 
     11.c. Alternative Declaration
 
     If no dashes nor single lines are present, a session is defined by a colon + 
     single line, preceded by an empty line and succeeded by an empty line.
+    The colon must be at the beginning of the line with no preceding spaces.
 
     : Session Name
 
 12. References: 
 
     The editor can index and link documents and sections from the internal doc 
-    representations, as sessions are anchors (lowercased, alphanumerical, 
-    spaces to dashes) and can be linked to by using the following syntax:
+    representations. Sessions serve as anchors where the anchor ID follows these rules:
+    - Convert all text to lowercase
+    - Remove non-alphanumeric characters except spaces
+    - Convert spaces to dashes
+    
+    To link to a section:
+    
+    see: docs/format.rfc.txt#11-a (file path + # + anchor ID)
 
-    One can however create explicit refs, both to sessions and arbitrary text, 
-    by using the following syntax: 
-
-    see: docs/format.rfc.txt#11.a (that is file path + # + anchor name)
+    The extension will validate links on save and provide autocomplete suggestions.
 
 13. Footnotes:
 
@@ -123,3 +130,98 @@ This project uses txt for docs, mostly following the old-school unix guidelines.
 
     The extension will automatically number the footnotes and create the 
     reference links.
+
+14. Advanced Formatting:
+
+    14.a. Tables:
+    Not supported in this format. Use pre-formatted text with spaces or code blocks.
+
+    14.b. Images:
+    Not supported directly. Store images separately and reference their location.
+
+
+15. Implementation Notes:
+
+    15.a. Extension Features:
+    - Syntax highlighting for this format
+    - Section folding
+    - Navigation to references/anchors
+    - Footnote management
+    - Basic formatting commands
+
+    15.b. Parsing Strategy:
+    The parser should use a line-by-line approach, tracking context (lists,
+    code blocks, etc.) as it processes text.
+
+16. Optional Format Elements:
+
+    16.a. Metadata Headers
+    
+    Key-value metadata can be placed at the beginning or end of the document:
+    - One pair per line
+    - Field name on left, value on right
+    - At least 2 spaces separating field name and value
+    - Left-aligned field names, values can be right-aligned for visual appeal
+    
+    Example:
+    
+    Network Working Group                                         S. Bradner
+    Request for Comments: 2026                            Harvard University
+    BCP: 9                                                      October 1996
+    Obsoletes: 1602
+    
+    16.b. Document Title
+    
+    A centered document title can be placed near the top of the document,
+    typically after metadata headers and before the main content:
+    
+    Example:
+    
+    Network Working Group                                         S. Bradner
+    // ...other metadata...
+    
+    
+                  The Internet Standards Process -- Revision 3
+    
+    
+    16.c. Table of Contents
+    
+    A table of contents can be included with section numbers and optional page 
+    numbers:
+    - Begins with "Table of Contents" header
+    - Each entry includes section number, title, and optional page number
+    - Nested sections are indented
+    - Dots typically connect the title to the page number
+    
+    Example:
+    
+    Table of Contents
+    
+       1.  INTRODUCTION....................................................2
+         1.1  Internet Standards...........................................3
+         1.2  The Internet Standards Process...............................3
+         1.3  Organization of This Document................................5
+       2.  INTERNET STANDARDS-RELATED PUBLICATIONS.........................5
+         2.1  Requests for Comments (RFCs).................................5
+    
+    The extension provides a command to generate a TOC automatically based on
+    the document's sessions. The TOC title is configurable in extension settings.
+    
+    TOCs are optional but recommended for longer documents.
+
+17. Extension Commands:
+
+    17.a. Format Document
+    Applies consistent formatting according to this specification.
+    
+    17.b. Generate TOC
+    Creates or updates a table of contents based on document sessions.
+    
+    
+    17.c. Number Footnotes
+    Automatically numbers footnotes and ensures references are correct.
+
+    17.d Full Formatting
+    Applies commands that preceed this including metadata, title, TOC, and footnotes.
+
+    17.e Checks that all document references point to valid targets. (not part of full formatting)

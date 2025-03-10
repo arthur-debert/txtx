@@ -1,0 +1,135 @@
+RFC Format Test Document - Comprehensive Example
+-----------------------------------------------
+
+Author        John Doe
+Date          March 10, 2025
+Version       1.0
+Status        Draft
+
+This document demonstrates all the syntax features of the RFC format.
+
+1. Numbered Sections
+
+   Numbered sections use the format "1. Section Name" and can be nested.
+   
+   1.1 Nested Section Level 1
+   
+       This is a code block inside a nested section.
+       Code blocks are indented with 4 spaces.
+       They preserve formatting and are useful for examples.
+   
+   1.2 Another Nested Section
+   
+       function testCode() {
+           console.log("This is a code example");
+           return true;
+       }
+   
+   1.3 Lists Inside Sections
+   
+       - Bullet point 1
+       - Bullet point 2
+       - Bullet point 3
+       
+       1. Numbered list item 1
+       2. Numbered list item 2
+       3. Numbered list item 3
+       
+       a. Lettered list item a
+       b. Lettered list item b
+       
+       i. Roman numeral list item i
+       ii. Roman numeral list item ii
+
+2. Text Formatting
+
+   2.1 Bold Text
+   
+       *This text is bold* and this text is not.
+       
+       You can use *bold* for emphasis within a paragraph.
+   
+   2.2 Italic Text
+   
+       _This text is italic_ and this text is not.
+       
+       You can use _italic_ for subtle emphasis within a paragraph.
+   
+   2.3 Combined Formatting
+   
+       You can combine *bold* and _italic_ formatting in the same paragraph.
+       
+       However, nesting formats like *_nested_* is not supported.
+
+3. References and Links
+
+   3.1 Document References
+   
+       You can reference other documents using the see: syntax:
+       
+       see: format.rfc.txt
+       
+       Or reference specific sections with anchors:
+       
+       see: format.rfc.txt#section-2
+   
+   3.2 Footnotes
+   
+       You can add footnotes to your document [1] and reference them
+       multiple times [2] as needed.
+
+4. Quotes and Blockquotes
+
+   4.1 Simple Quotes
+   
+       > This is a simple quote.
+       > It can span multiple lines.
+   
+   4.2 Nested Quotes
+   
+       > This is a top-level quote.
+       >> This is a nested quote.
+       > Back to the top-level quote.
+
+: Alternative Section Format
+
+   This section uses the alternative format with a colon.
+   
+   It's useful for special sections that don't fit the numbered hierarchy.
+
+UPPERCASE SECTION FORMAT
+
+   This section uses the traditional uppercase format.
+   
+   It's still supported for backward compatibility.
+
+ARROWS AND SPECIAL CHARACTERS
+
+   The extension supports automatic conversion of arrow notation:
+   
+   -> becomes →
+   <- becomes ←
+   ^- becomes ↑
+   v- becomes ↓
+
+EMOTICONS
+
+   The extension supports emoticon shortcuts:
+   
+   :smile: becomes 🙂
+   :laugh: becomes 😄
+   :sad: becomes ☹️
+
+FOOTNOTES
+
+[1] This is the first footnote. Footnotes can contain detailed information that would disrupt the flow of the main text.
+
+[2] This is the second footnote. Footnotes are numbered sequentially.
+
+METADATA EXAMPLE
+
+Title         RFC Format Test Document
+Author        John Doe
+Date          March 10, 2025
+Status        Draft
+Priority      High

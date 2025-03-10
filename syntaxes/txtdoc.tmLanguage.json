@@ -9,6 +9,12 @@
       "include": "#section"
     },
     {
+      "include": "#numbered_section"
+    },
+    {
+      "include": "#alternative_section"
+    },
+    {
       "include": "#list"
     },
     {
@@ -19,6 +25,12 @@
     },
     {
       "include": "#bold"
+    },
+    {
+      "include": "#footnote_reference"
+    },
+    {
+      "include": "#reference"
     },
     {
       "include": "#emphasis"
@@ -37,6 +49,27 @@
     "section": {
       "match": "^([A-Z][^\\n]*)$",
       "name": "meta.section.txtdoc",
+      "captures": {
+        "1": {
+          "name": "entity.name.section.txtdoc"
+        }
+      }
+    },
+    "numbered_section": {
+      "match": "^([0-9]+(?:\\.[0-9]+)*)\\.\\s+([^\\n]*)$",
+      "name": "meta.section.numbered.txtdoc",
+      "captures": {
+        "1": {
+          "name": "entity.name.section.number.txtdoc"
+        },
+        "2": {
+          "name": "entity.name.section.title.txtdoc"
+        }
+      }
+    },
+    "alternative_section": {
+      "match": "^:\\s+([^\\n]*)$",
+      "name": "meta.section.alternative.txtdoc",
       "captures": {
         "1": {
           "name": "entity.name.section.txtdoc"
@@ -97,6 +130,51 @@
       "end": "^(?!\\s{4})",
       "name": "markup.raw.block.txtdoc",
       "contentName": "meta.embedded.block.txtdoc"
+    },
+    "footnote_reference": {
+      "match": "\\[(\\d+)\\]",
+      "name": "meta.footnote.reference.txtdoc",
+      "captures": {
+        "1": {
+          "name": "constant.numeric.footnote.txtdoc"
+        }
+      }
+    },
+    "footnote_declaration": {
+      "match": "^\\[(\\d+)\\]\\s+(.+)$",
+      "name": "meta.footnote.declaration.txtdoc",
+      "captures": {
+        "1": {
+          "name": "constant.numeric.footnote.txtdoc"
+        },
+        "2": {
+          "name": "markup.quote.footnote.txtdoc"
+        }
+      }
+    },
+    "reference": {
+      "match": "see:\\s+([^#\\s]+)(?:#([\\w-]+))?",
+      "name": "meta.reference.txtdoc",
+      "captures": {
+        "1": {
+          "name": "string.unquoted.reference.path.txtdoc"
+        },
+        "2": {
+          "name": "string.unquoted.reference.anchor.txtdoc"
+        }
+      }
+    },
+    "metadata": {
+      "match": "^([A-Za-z0-9 ]+)\\s{2,}(.+)$",
+      "name": "meta.metadata.txtdoc",
+      "captures": {
+        "1": {
+          "name": "variable.parameter.metadata.key.txtdoc"
+        },
+        "2": {
+          "name": "string.unquoted.metadata.value.txtdoc"
+        }
+      }
     },
     "quote": {
       "patterns": [
