@@ -49,6 +49,13 @@
         "uiTheme": "vs",
         "path": "./themes/txtdoc-light-theme.json"
       }
+    ],
+    "commands": [
+      {
+        "command": "txtdoc.formatDocument",
+        "title": "TxtDoc: Format Document",
+        "category": "TxtDoc"
+      }
     ]
   },
   "activationEvents": [

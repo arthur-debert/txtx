@@ -184,7 +184,7 @@ and progressing to more complex features.
 
 5. Command Tests
 
-   5.1 Format document command
+   5.1 Format document command ✓ (src/test/5-command-tests.test.js)
        
        - Create a document with inconsistent formatting
        - Run the Format Document command

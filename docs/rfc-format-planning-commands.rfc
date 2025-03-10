@@ -3,7 +3,7 @@ Implementation Plan for TxtDoc Format v2 (.rfc) - Commands
 
 This document outlines the implementation plan for the extension commands
 required to support the v2 format for .rfc files as defined in
-'docs/format.rfc.txt'.
+'docs/format-planning-syntax.rfc"
 
 1. Overview
    

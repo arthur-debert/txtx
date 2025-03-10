@@ -4,6 +4,7 @@ const TxtDocDocumentLinkProvider = require("./documentLinkProvider");
 const { registerArrowTransformations } = require("./arrowTransformations");
 const { registerEmoticonFeature } = require("./emoticonFeature");
 const { registerPathCompletionProvider } = require("./pathCompletionProvider");
+const { registerFormatCommands } = require("./formatCommands");
 
 let outputChannel;
 
@@ -45,6 +46,9 @@ function activate(context) {
     
     // Register the path completion provider
     registerPathCompletionProvider(context, outputChannel);
+    
+    // Register the format commands
+    registerFormatCommands(context, outputChannel);
     
     console.log('TxtDoc Format extension activated');
 }
