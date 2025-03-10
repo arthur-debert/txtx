@@ -32,6 +32,7 @@ jobs:
         run: npm ci
 
       - name: Run command
+        timeout-minutes: 10
         run: ${{ inputs.run_command }}
 
       - name: Upload test results
