@@ -12,7 +12,7 @@ const yaml = require('js-yaml');
 function loadYamlFile(filePath, outputChannel) {
     try {
         // Resolve the file path relative to the extension directory
-        const extensionPath = vscode.extensions.getExtension('txtdoc-format').extensionPath;
+        const extensionPath = vscode.extensions.getExtension('rfcdoc-format').extensionPath;
         const fullPath = path.resolve(extensionPath, filePath);
         
         // Read and parse the YAML file

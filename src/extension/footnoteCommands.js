@@ -9,7 +9,7 @@ const { sendNotification } = require("./notifications");
  */
 async function numberFootnotes(document) {
     // Only process RFC files
-    if (document.languageId !== 'txtdoc' || !document.fileName.endsWith('.rfc')) {
+    if (document.languageId !== 'rfcdoc' || !document.fileName.endsWith('.rfc')) {
         sendNotification('FOOTNOTE_RFC_ONLY');
         return false;
     }
@@ -109,13 +109,13 @@ async function numberFootnotes(document) {
  */
 function registerFootnoteCommands(context, outputChannel) {
     // Register the number footnotes command
-    const numberFootnotesCommand = vscode.commands.registerCommand('txtdoc.numberFootnotes', async () => {
+    const numberFootnotesCommand = vscode.commands.registerCommand('rfcdoc.numberFootnotes', async () => {
         const editor = vscode.window.activeTextEditor;
-        if (editor && editor.document.languageId === 'txtdoc') {
+        if (editor && editor.document.languageId === 'rfcdoc') {
             outputChannel.appendLine('Executing Number Footnotes command');
             await numberFootnotes(editor.document);
         } else {
-            sendNotification('FOOTNOTE_TXTDOC_ONLY');
+            sendNotification('FOOTNOTE_RFCDOC_ONLY');
         }
     });
     

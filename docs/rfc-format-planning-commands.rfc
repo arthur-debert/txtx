@@ -1,4 +1,4 @@
-Implementation Plan for TxtDoc Format v2 (.rfc) - Commands
+Implementation Plan for RfcDoc Format v2 (.rfc) - Commands
 -------------------------------------------------------
 
 This document outlines the implementation plan for the extension commands
@@ -42,9 +42,9 @@ required to support the v2 format for .rfc files as defined in
        - Register a new command in package.json:
          "commands": [
            {
-             "command": "txtdoc.formatDocument",
-             "title": "TxtDoc: Format Document",
-             "category": "TxtDoc"
+             "command": "rfcdoc.formatDocument",
+             "title": "RfcDoc: Format Document",
+             "category": "RfcDoc"
            }
          ]
        
@@ -61,9 +61,9 @@ required to support the v2 format for .rfc files as defined in
        - Register the command in the activate function:
          
          context.subscriptions.push(
-           vscode.commands.registerCommand('txtdoc.formatDocument', () => {
+           vscode.commands.registerCommand('rfcdoc.formatDocument', () => {
              const editor = vscode.window.activeTextEditor;
-             if (editor && editor.document.languageId === 'txtdoc') {
+             if (editor && editor.document.languageId === 'rfcdoc') {
                formatDocument(editor.document);
              }
            })
@@ -79,9 +79,9 @@ required to support the v2 format for .rfc files as defined in
        - Register a new command in package.json:
          "commands": [
            {
-             "command": "txtdoc.generateTOC",
-             "title": "TxtDoc: Generate Table of Contents",
-             "category": "TxtDoc"
+             "command": "rfcdoc.generateTOC",
+             "title": "RfcDoc: Generate Table of Contents",
+             "category": "RfcDoc"
            }
          ]
        
@@ -97,9 +97,9 @@ required to support the v2 format for .rfc files as defined in
        - Register the command in the activate function:
          
          context.subscriptions.push(
-           vscode.commands.registerCommand('txtdoc.generateTOC', () => {
+           vscode.commands.registerCommand('rfcdoc.generateTOC', () => {
              const editor = vscode.window.activeTextEditor;
-             if (editor && editor.document.languageId === 'txtdoc') {
+             if (editor && editor.document.languageId === 'rfcdoc') {
                generateTOC(editor.document);
              }
            })
@@ -115,9 +115,9 @@ required to support the v2 format for .rfc files as defined in
        - Register a new command in package.json:
          "commands": [
            {
-             "command": "txtdoc.numberFootnotes",
-             "title": "TxtDoc: Number Footnotes",
-             "category": "TxtDoc"
+             "command": "rfcdoc.numberFootnotes",
+             "title": "RfcDoc: Number Footnotes",
+             "category": "RfcDoc"
            }
          ]
        
@@ -134,9 +134,9 @@ required to support the v2 format for .rfc files as defined in
        - Register the command in the activate function:
          
          context.subscriptions.push(
-           vscode.commands.registerCommand('txtdoc.numberFootnotes', () => {
+           vscode.commands.registerCommand('rfcdoc.numberFootnotes', () => {
              const editor = vscode.window.activeTextEditor;
-             if (editor && editor.document.languageId === 'txtdoc') {
+             if (editor && editor.document.languageId === 'rfcdoc') {
                numberFootnotes(editor.document);
              }
            })
@@ -151,9 +151,9 @@ required to support the v2 format for .rfc files as defined in
        - Register a new command in package.json:
          "commands": [
            {
-             "command": "txtdoc.fullFormatting",
-             "title": "TxtDoc: Full Formatting",
-             "category": "TxtDoc"
+             "command": "rfcdoc.fullFormatting",
+             "title": "RfcDoc: Full Formatting",
+             "category": "RfcDoc"
            }
          ]
        
@@ -169,9 +169,9 @@ required to support the v2 format for .rfc files as defined in
        - Register the command in the activate function:
          
          context.subscriptions.push(
-           vscode.commands.registerCommand('txtdoc.fullFormatting', () => {
+           vscode.commands.registerCommand('rfcdoc.fullFormatting', () => {
              const editor = vscode.window.activeTextEditor;
-             if (editor && editor.document.languageId === 'txtdoc') {
+             if (editor && editor.document.languageId === 'rfcdoc') {
                fullFormatting(editor.document);
              }
            })
@@ -187,9 +187,9 @@ required to support the v2 format for .rfc files as defined in
        - Register a new command in package.json:
          "commands": [
            {
-             "command": "txtdoc.checkReferences",
-             "title": "TxtDoc: Check References",
-             "category": "TxtDoc"
+             "command": "rfcdoc.checkReferences",
+             "title": "RfcDoc: Check References",
+             "category": "RfcDoc"
            }
          ]
        
@@ -205,9 +205,9 @@ required to support the v2 format for .rfc files as defined in
        - Register the command in the activate function:
          
          context.subscriptions.push(
-           vscode.commands.registerCommand('txtdoc.checkReferences', () => {
+           vscode.commands.registerCommand('rfcdoc.checkReferences', () => {
              const editor = vscode.window.activeTextEditor;
-             if (editor && editor.document.languageId === 'txtdoc') {
+             if (editor && editor.document.languageId === 'rfcdoc') {
                checkReferences(editor.document);
              }
            })

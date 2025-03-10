@@ -3,7 +3,7 @@ const vscode = require('vscode');
 const path = require('path');
 const { isVerbose, openDocument } = require('./test-helpers');
 
-suite('TxtDoc Format Extension Tests', function() {
+suite('RfcDoc Format Extension Tests', function() {
 
   // 3. Syntax Highlighting Tests
   suite('3. Syntax Highlighting Tests', function() {
@@ -33,7 +33,7 @@ suite('TxtDoc Format Extension Tests', function() {
       isVerbose && console.log('Bold text found at line:', boldTextLine, 'char:', boldTextChar);
 
       // Verify the document has the correct language ID
-      assert.strictEqual(document.languageId, 'txtdoc', 'Document should have txtdoc language ID');
+      assert.strictEqual(document.languageId, 'rfcdoc', 'Document should have rfcdoc language ID');
       
       // Verify the bold text pattern is found in the document
       assert.ok(boldTextPosition > -1, 'Bold text pattern (*bold*) should be found in the document');
@@ -69,7 +69,7 @@ suite('TxtDoc Format Extension Tests', function() {
       isVerbose && console.log('Italic text found at line:', italicTextLine, 'char:', italicTextChar);
 
       // Verify the document has the correct language ID
-      assert.strictEqual(document.languageId, 'txtdoc', 'Document should have txtdoc language ID');
+      assert.strictEqual(document.languageId, 'rfcdoc', 'Document should have rfcdoc language ID');
       
       // Verify the italic text pattern is found in the document
       assert.ok(italicTextPosition > -1, 'Italic text pattern (_italic_) should be found in the document');
@@ -116,7 +116,7 @@ suite('TxtDoc Format Extension Tests', function() {
       isVerbose && console.log('Uppercase section found at line:', uppercaseSectionLine, 'char:', uppercaseSectionChar);
       
       // Verify the document has the correct language ID
-      assert.strictEqual(document.languageId, 'txtdoc', 'Document should have txtdoc language ID');
+      assert.strictEqual(document.languageId, 'rfcdoc', 'Document should have rfcdoc language ID');
       
       // Verify the section patterns are found in the document
       assert.ok(numberedSectionPosition > -1, 'Numbered section pattern should be found in the document');
@@ -154,7 +154,7 @@ suite('TxtDoc Format Extension Tests', function() {
       isVerbose && console.log('Bullet point list found at line:', bulletListLine, 'char:', bulletListChar);
 
       // Verify the document has the correct language ID
-      assert.strictEqual(document.languageId, 'txtdoc', 'Document should have txtdoc language ID');
+      assert.strictEqual(document.languageId, 'rfcdoc', 'Document should have rfcdoc language ID');
       
       // Verify the bullet point list pattern is found in the document
       assert.ok(bulletListPosition > -1, 'Bullet point list pattern should be found in the document');
@@ -190,7 +190,7 @@ suite('TxtDoc Format Extension Tests', function() {
       isVerbose && console.log('Numbered list found at line:', numberedListLine, 'char:', numberedListChar);
 
       // Verify the document has the correct language ID
-      assert.strictEqual(document.languageId, 'txtdoc', 'Document should have txtdoc language ID');
+      assert.strictEqual(document.languageId, 'rfcdoc', 'Document should have rfcdoc language ID');
       
       // Verify the numbered list pattern is found in the document
       assert.ok(numberedListPosition > -1, 'Numbered list pattern should be found in the document');
@@ -226,7 +226,7 @@ suite('TxtDoc Format Extension Tests', function() {
       isVerbose && console.log('Lettered list found at line:', letteredListLine, 'char:', letteredListChar);
 
       // Verify the document has the correct language ID
-      assert.strictEqual(document.languageId, 'txtdoc', 'Document should have txtdoc language ID');
+      assert.strictEqual(document.languageId, 'rfcdoc', 'Document should have rfcdoc language ID');
       
       // Verify the lettered list pattern is found in the document
       assert.ok(letteredListPosition > -1, 'Lettered list pattern should be found in the document');
@@ -262,7 +262,7 @@ suite('TxtDoc Format Extension Tests', function() {
       isVerbose && console.log('Roman numeral list found at line:', romanListLine, 'char:', romanListChar);
 
       // Verify the document has the correct language ID
-      assert.strictEqual(document.languageId, 'txtdoc', 'Document should have txtdoc language ID');
+      assert.strictEqual(document.languageId, 'rfcdoc', 'Document should have rfcdoc language ID');
       
       // Verify the roman numeral list pattern is found in the document
       assert.ok(romanListPosition > -1, 'Roman numeral list pattern should be found in the document');
@@ -298,7 +298,7 @@ suite('TxtDoc Format Extension Tests', function() {
       isVerbose && console.log('Code block found at line:', codeBlockLine, 'char:', codeBlockChar);
 
       // Verify the document has the correct language ID
-      assert.strictEqual(document.languageId, 'txtdoc', 'Document should have txtdoc language ID');
+      assert.strictEqual(document.languageId, 'rfcdoc', 'Document should have rfcdoc language ID');
       
       // Verify the code block pattern is found in the document
       assert.ok(codeBlockPosition > -1, 'Code block pattern should be found in the document');
@@ -340,7 +340,7 @@ suite('TxtDoc Format Extension Tests', function() {
       isVerbose && console.log('Nested quote found at line:', nestedQuoteLine, 'char:', nestedQuoteChar);
 
       // Verify the document has the correct language ID
-      assert.strictEqual(document.languageId, 'txtdoc', 'Document should have txtdoc language ID');
+      assert.strictEqual(document.languageId, 'rfcdoc', 'Document should have rfcdoc language ID');
       
       // Verify the quote patterns are found in the document
       assert.ok(quotePosition > -1, 'Quote pattern should be found in the document');
@@ -367,7 +367,7 @@ suite('TxtDoc Format Extension Tests', function() {
       const text = document.getText();
       
       // Find the position of metadata
-      const metadataPosition = text.indexOf('Author        TxtDoc Team');
+      const metadataPosition = text.indexOf('Author        RfcDoc Team');
       assert.ok(metadataPosition > -1, 'Metadata should be found in the document');
       
       // Convert position to line and character
@@ -377,7 +377,7 @@ suite('TxtDoc Format Extension Tests', function() {
       isVerbose && console.log('Metadata found at line:', metadataLine, 'char:', metadataChar);
 
       // Verify the document has the correct language ID
-      assert.strictEqual(document.languageId, 'txtdoc', 'Document should have txtdoc language ID');
+      assert.strictEqual(document.languageId, 'rfcdoc', 'Document should have rfcdoc language ID');
       
       // Verify the metadata pattern is found in the document
       assert.ok(metadataPosition > -1, 'Metadata pattern should be found in the document');

@@ -31,7 +31,7 @@ const notificationConfig = {
     FOOTNOTE_NO_EDITOR: false,
     FOOTNOTE_SUCCESS: false,
     FOOTNOTE_ERROR: false,
-    FOOTNOTE_TXTDOC_ONLY: false,
+    FOOTNOTE_RFCDOC_ONLY: false,
     
     // Reference Commands
     REFERENCE_RFC_ONLY: false,
@@ -122,9 +122,9 @@ const notifications = {
         type: "error",
         message: (error) => `Error numbering footnotes: ${error.message}`
     },
-    FOOTNOTE_TXTDOC_ONLY: {
+    FOOTNOTE_RFCDOC_ONLY: {
         type: "warning",
-        message: "Number Footnotes command is only available for TxtDoc files"
+        message: "Number Footnotes command is only available for RfcDoc files"
     },
     
     // Reference Commands

@@ -11,7 +11,7 @@ const vscodeLib = require("../../vscode.lib");
  */
 async function formatDocument(document) {
     // Only format RFC files
-    if (document.languageId !== 'txtdoc' || !document.fileName.endsWith('.rfc')) {
+    if (document.languageId !== 'rfcdoc' || !document.fileName.endsWith('.rfc')) {
         sendNotification('FORMAT_RFC_ONLY');
         return false;
     }
@@ -49,7 +49,7 @@ async function formatDocument(document) {
  */
 async function generateTOC(document) {
     // Only generate TOC for RFC files
-    if (document.languageId !== 'txtdoc' || !document.fileName.endsWith('.rfc')) {
+    if (document.languageId !== 'rfcdoc' || !document.fileName.endsWith('.rfc')) {
         sendNotification('TOC_RFC_ONLY');
         return false;
     }
@@ -116,7 +116,7 @@ async function generateTOC(document) {
  */
 async function fullFormatting(document) {
     // Only format RFC files
-    if (document.languageId !== 'txtdoc' || !document.fileName.endsWith('.rfc')) {
+    if (document.languageId !== 'rfcdoc' || !document.fileName.endsWith('.rfc')) {
         sendNotification('FULL_FORMAT_RFC_ONLY');
         return false;
     }
@@ -443,14 +443,14 @@ function registerFormatCommands(context, outputChannel) {
     // Register commands using vscodeLib
     const formatDocumentCommand = vscodeLib.registerCommand(
         context, 
-        'txtdoc.formatDocument', 
+        'rfcdoc.formatDocument', 
         formatDocument, 
         outputChannel
     );
     
-    const generateTOCCommand = vscodeLib.registerCommand(context, 'txtdoc.generateTOC', generateTOC, outputChannel);
+    const generateTOCCommand = vscodeLib.registerCommand(context, 'rfcdoc.generateTOC', generateTOC, outputChannel);
     
-    const fullFormattingCommand = vscodeLib.registerCommand(context, 'txtdoc.fullFormatting', fullFormatting, outputChannel);
+    const fullFormattingCommand = vscodeLib.registerCommand(context, 'rfcdoc.fullFormatting', fullFormatting, outputChannel);
     
     // Log registration
     outputChannel.appendLine('Format Document command registered');

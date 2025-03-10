@@ -4,7 +4,7 @@ const path = require('path');
 const { isVerbose, openDocument, getDocumentSections, createTestEnv, configureNotifications, enableTestNotification, resetNotificationConfig } = require('./test-helpers');
 const vscodeLib = require('../../vscode.lib');
 
-suite('TxtDoc Format Extension Tests', function() {
+suite('RfcDoc Format Extension Tests', function() {
   
   // 5. Command Tests
   suite('5. Command Tests', function() {
@@ -61,7 +61,7 @@ This text should be indented.
         // Get the editor using vscodeLib
         const editor = vscodeLib.getActiveEditor();
         assert.ok(editor, 'Editor should be active');
-        await vscodeLib.executeCommand('txtdoc.formatDocument');
+        await vscodeLib.executeCommand('rfcdoc.formatDocument');
         // Wait for the formatting to complete
         await new Promise(resolve => setTimeout(resolve, 2000));
         
@@ -171,7 +171,7 @@ UPPERCASE SECTION
         assert.ok(editor, 'Editor should be active');
         
         // Execute the generate TOC command
-        await vscodeLib.executeCommand('txtdoc.generateTOC');
+        await vscodeLib.executeCommand('rfcdoc.generateTOC');
         
         // Wait for the TOC generation to complete
         await new Promise(resolve => setTimeout(resolve, 2000));
@@ -256,7 +256,7 @@ FOOTNOTES
         assert.ok(editor, 'Editor should be active');
         
         // Execute the number footnotes command
-        await vscodeLib.executeCommand('txtdoc.numberFootnotes');
+        await vscodeLib.executeCommand('rfcdoc.numberFootnotes');
         
         // Wait for the numbering to complete
         await new Promise(resolve => setTimeout(resolve, 2000));
@@ -353,7 +353,7 @@ FOOTNOTES
         assert.ok(editor, 'Editor should be active');
         
         // Execute the full formatting command
-        await vscodeLib.executeCommand('txtdoc.fullFormatting');
+        await vscodeLib.executeCommand('rfcdoc.fullFormatting');
         
         // Wait for the formatting to complete
         await new Promise(resolve => setTimeout(resolve, 3000));
@@ -517,7 +517,7 @@ This document tests the check references command.
         assert.ok(editor, 'Editor should be active');
         
         // Execute the check references command
-        await vscodeLib.executeCommand('txtdoc.checkReferences');
+        await vscodeLib.executeCommand('rfcdoc.checkReferences');
         
         // Wait for the check to complete
         await new Promise(resolve => setTimeout(resolve, 2000));

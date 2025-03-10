@@ -1,6 +1,6 @@
 const vscode = require("vscode");
-const TxtDocDocumentSymbolProvider = require("./documentSymbolProvider");
-const TxtDocDocumentLinkProvider = require("./documentLinkProvider");
+const RfcDocDocumentSymbolProvider = require("./documentSymbolProvider");
+const RfcDocDocumentLinkProvider = require("./documentLinkProvider");
 const { registerTransformations } = require("./transformations");
 const { registerInsertions } = require("./insertions");
 const { registerPathCompletionProvider } = require("./pathCompletionProvider");
@@ -21,19 +21,19 @@ function activate(context) {
     context.subscriptions.push(outputChannel);
     
     // Log activation
-    outputChannel.appendLine('TxtDoc Format extension is now active!');
+    outputChannel.appendLine('RfcDoc Format extension is now active!');
     outputChannel.appendLine(`Activated at: ${new Date().toLocaleString()}`);
     
     // Register document symbol provider for outline support
-    const documentSymbolProvider = new TxtDocDocumentSymbolProvider();
-    const selector = { language: 'txtdoc', scheme: 'file' };
+    const documentSymbolProvider = new RfcDocDocumentSymbolProvider();
+    const selector = { language: 'rfcdoc', scheme: 'file' };
     
     context.subscriptions.push(
         vscode.languages.registerDocumentSymbolProvider(selector, documentSymbolProvider)
     );
 
     // Register document link provider for footnotes and references
-    const documentLinkProvider = new TxtDocDocumentLinkProvider();
+    const documentLinkProvider = new RfcDocDocumentLinkProvider();
     context.subscriptions.push(
         vscode.languages.registerDocumentLinkProvider(selector, documentLinkProvider)
     );
@@ -59,7 +59,7 @@ function activate(context) {
     // Register the reference commands
     registerReferenceCommands(context, outputChannel);
     
-    console.log('TxtDoc Format extension activated');
+    console.log('RfcDoc Format extension activated');
 }
 
 /**
@@ -67,7 +67,7 @@ function activate(context) {
  */
 function deactivate() {
     if (outputChannel) {
-        outputChannel.appendLine('TxtDoc Format extension is now deactivated!');
+        outputChannel.appendLine('RfcDoc Format extension is now deactivated!');
         outputChannel.dispose();
     }
 }

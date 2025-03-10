@@ -7,10 +7,10 @@ const {
 } = require("./constants");
 
 /**
- * Document Link Provider for TxtDoc files
+ * Document Link Provider for RfcDoc files
  * Provides clickable links for footnotes and document references
  */
-class TxtDocDocumentLinkProvider {
+class RfcDocDocumentLinkProvider {
     provideDocumentLinks(document, token) {
         const links = [];
         const text = document.getText();
@@ -103,4 +103,4 @@ class TxtDocDocumentLinkProvider {
     }
 }
 
-module.exports = TxtDocDocumentLinkProvider;
+module.exports = RfcDocDocumentLinkProvider;

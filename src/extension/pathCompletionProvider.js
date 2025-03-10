@@ -10,7 +10,7 @@ const { PATH_COMPLETION_TRIGGERS } = require("./constants");
 function registerPathCompletionProvider(context, outputChannel) {
     // Register completion provider for file/folder paths
     const completionProvider = vscode.languages.registerCompletionItemProvider(
-        { language: 'txtdoc', scheme: 'file' },
+        { language: 'rfcdoc', scheme: 'file' },
         {
             async provideCompletionItems(document, position, token, context) {
                 // Check if we're in a path context

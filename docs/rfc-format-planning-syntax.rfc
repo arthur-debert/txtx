@@ -1,4 +1,4 @@
-Implementation Plan for TxtDoc Format v2 (.rfc) - Syntax Changes
+Implementation Plan for RfcDoc Format v2 (.rfc) - Syntax Changes
 -----------------------------------------------------------------
 
 This document outlines the implementation plan for the syntax changes required
@@ -74,7 +74,7 @@ to support the v2 format for .rfc files as defined in 'docs/format.rfc.txt'.
    
    3.2 Update Syntax Highlighting
    
-       Changes needed to syntaxes/txtdoc.tmLanguage.json:
+       Changes needed to syntaxes/rfcdoc.tmLanguage.json:
        
        - Update existing patterns for titles, sections, lists
        - Add new patterns for:
@@ -92,7 +92,7 @@ to support the v2 format for .rfc files as defined in 'docs/format.rfc.txt'.
          "match": "\\*(.*?)\\*",
          "captures": {
            "1": {
-             "name": "markup.bold.txtdoc"
+             "name": "markup.bold.rfcdoc"
            }
          }
        }
@@ -100,13 +100,13 @@ to support the v2 format for .rfc files as defined in 'docs/format.rfc.txt'.
        Numbered session pattern:
        {
          "match": "^([0-9]+(?:\\.[0-9]+)*)\\. ([^\\n]*)$",
-         "name": "meta.section.numbered.txtdoc",
+         "name": "meta.section.numbered.rfcdoc",
          "captures": {
            "1": {
-             "name": "entity.name.section.number.txtdoc"
+             "name": "entity.name.section.number.rfcdoc"
            },
            "2": {
-             "name": "entity.name.section.title.txtdoc"
+             "name": "entity.name.section.title.rfcdoc"
            }
          }
        }
@@ -114,10 +114,10 @@ to support the v2 format for .rfc files as defined in 'docs/format.rfc.txt'.
        Alternative session pattern:
        {
          "match": "^: ([^\\n]*)$",
-         "name": "meta.section.alternative.txtdoc",
+         "name": "meta.section.alternative.rfcdoc",
          "captures": {
            "1": {
-             "name": "entity.name.section.txtdoc"
+             "name": "entity.name.section.rfcdoc"
            }
          }
        }
@@ -125,10 +125,10 @@ to support the v2 format for .rfc files as defined in 'docs/format.rfc.txt'.
        Footnote reference pattern:
        {
          "match": "\\[(\\d+)\\]",
-         "name": "meta.footnote.reference.txtdoc",
+         "name": "meta.footnote.reference.rfcdoc",
          "captures": {
            "1": {
-             "name": "constant.numeric.footnote.txtdoc"
+             "name": "constant.numeric.footnote.rfcdoc"
            }
          }
        }
@@ -136,13 +136,13 @@ to support the v2 format for .rfc files as defined in 'docs/format.rfc.txt'.
        Footnote declaration pattern:
        {
          "match": "^\\[(\\d+)\\] (.+)$",
-         "name": "meta.footnote.declaration.txtdoc",
+         "name": "meta.footnote.declaration.rfcdoc",
          "captures": {
            "1": {
-             "name": "constant.numeric.footnote.txtdoc"
+             "name": "constant.numeric.footnote.rfcdoc"
            },
            "2": {
-             "name": "markup.quote.footnote.txtdoc"
+             "name": "markup.quote.footnote.rfcdoc"
            }
          }
        }
@@ -150,13 +150,13 @@ to support the v2 format for .rfc files as defined in 'docs/format.rfc.txt'.
        Reference pattern:
        {
          "match": "see: ([^#\\s]+)(?:#([\\w-]+))?",
-         "name": "meta.reference.txtdoc",
+         "name": "meta.reference.rfcdoc",
          "captures": {
            "1": {
-             "name": "string.unquoted.reference.path.txtdoc"
+             "name": "string.unquoted.reference.path.rfcdoc"
            },
            "2": {
-             "name": "string.unquoted.reference.anchor.txtdoc"
+             "name": "string.unquoted.reference.anchor.rfcdoc"
            }
          }
        }
@@ -164,20 +164,20 @@ to support the v2 format for .rfc files as defined in 'docs/format.rfc.txt'.
        Metadata header pattern:
        {
          "match": "^([A-Za-z0-9 ]+)\\s{2,}(.+)$",
-         "name": "meta.metadata.txtdoc",
+         "name": "meta.metadata.rfcdoc",
          "captures": {
            "1": {
-             "name": "variable.parameter.metadata.key.txtdoc"
+             "name": "variable.parameter.metadata.key.rfcdoc"
            },
            "2": {
-             "name": "string.unquoted.metadata.value.txtdoc"
+             "name": "string.unquoted.metadata.value.rfcdoc"
            }
          }
        }
    
    3.3 Update Document Symbol Provider
    
-       Changes needed to TxtDocDocumentSymbolProvider class in extension.js:
+       Changes needed to RfcDocDocumentSymbolProvider class in extension.js:
        
        - Update section detection regex
        - Add support for numbered sessions
@@ -202,7 +202,7 @@ to support the v2 format for .rfc files as defined in 'docs/format.rfc.txt'.
        - Add new document symbol provider patterns
        - Update activation events
    
-   4.2 syntaxes/txtdoc.tmLanguage.json:
+   4.2 syntaxes/rfcdoc.tmLanguage.json:
        - Update patterns for new syntax features
        - Add new patterns for new features
    

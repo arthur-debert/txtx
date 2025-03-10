@@ -25,8 +25,8 @@ function registerTransformations(context, outputChannel) {
     // Register a text document change listener
     context.subscriptions.push(
         vscode.workspace.onDidChangeTextDocument(async (event) => {
-            // Only process txtdoc files
-            if (event.document.languageId !== 'txtdoc') return;
+            // Only process rfcdoc files
+            if (event.document.languageId !== 'rfcdoc') return;
             
             // Check if any of the changes might contain transformation patterns
             const containsTransformationPattern = event.contentChanges.some(change => {
@@ -45,7 +45,7 @@ function registerTransformations(context, outputChannel) {
     // Also register a document save listener to ensure transformations are applied on save
     context.subscriptions.push(
         vscode.workspace.onWillSaveTextDocument(async (event) => {
-            if (event.document.languageId === 'txtdoc') {
+            if (event.document.languageId === 'rfcdoc') {
                 // Add a task to apply transformations before saving
                 event.waitUntil(applyTransformations(event.document));
             }
@@ -54,7 +54,7 @@ function registerTransformations(context, outputChannel) {
     
     // Process the active document on activation
     if (vscode.window.activeTextEditor && 
-        vscode.window.activeTextEditor.document.languageId === 'txtdoc') {
+        vscode.window.activeTextEditor.document.languageId === 'rfcdoc') {
         applyTransformations(vscode.window.activeTextEditor.document);
     }
     

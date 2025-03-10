@@ -12,7 +12,7 @@ const vscodeLib = require("../../vscode.lib");
  */
 async function checkReferences(document) {
     // Only process RFC files
-    if (document.languageId !== 'txtdoc' || !document.fileName.endsWith('.rfc')) {
+    if (document.languageId !== 'rfcdoc' || !document.fileName.endsWith('.rfc')) {
         sendNotification('REFERENCE_RFC_ONLY');
         return false;
     }
@@ -103,7 +103,7 @@ async function checkReferences(document) {
             sendNotification('REFERENCE_ALL_VALID');
         } else {
             // Create a diagnostic collection for the document
-            const diagnosticCollection = vscodeLib.createDiagnosticCollection('txtdoc-references');
+            const diagnosticCollection = vscodeLib.createDiagnosticCollection('rfcdoc-references');
             vscodeLib.setDiagnostics(diagnosticCollection, document.uri, diagnostics.map(d => vscodeLib.createDiagnostic(d.range, d.message, d.severity)));
             
             sendNotification('REFERENCE_INVALID_FOUND', diagnostics.length);
@@ -183,7 +183,7 @@ function registerReferenceCommands(context, outputChannel) {
     // Register the check references command
     const checkReferencesCommand = vscodeLib.registerCommand(
         context, 
-        'txtdoc.checkReferences', 
+        'rfcdoc.checkReferences', 
         checkReferences, 
         outputChannel
     );

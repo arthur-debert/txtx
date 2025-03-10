@@ -3,7 +3,7 @@ const vscode = require('vscode');
 const path = require('path');
 const { isVerbose, openDocument } = require('./test-helpers');
 
-suite('TxtDoc Format Extension Tests', function() {
+suite('RfcDoc Format Extension Tests', function() {
   
   // 2. Document Structure Tests
   suite('2. Document Structure Tests', function() {

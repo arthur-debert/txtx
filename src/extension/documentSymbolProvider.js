@@ -6,10 +6,10 @@ const {
 } = require("./constants");
 
 /**
- * Document Symbol Provider for TxtDoc files
+ * Document Symbol Provider for RfcDoc files
  * Provides outline support for titles, sections, and code blocks
  */
-class TxtDocDocumentSymbolProvider {
+class RfcDocDocumentSymbolProvider {
     provideDocumentSymbols(document, token) {
         const symbols = []; // Store all symbols for internal reference
         const sectionMap = new Map(); // Map to track section hierarchy by level
@@ -131,4 +131,4 @@ class TxtDocDocumentSymbolProvider {
     }
 }
 
-module.exports = TxtDocDocumentSymbolProvider;
+module.exports = RfcDocDocumentSymbolProvider;

@@ -41,8 +41,8 @@ function registerEmoticonFeature(context, outputChannel) {
     // Register text document change listener
     context.subscriptions.push(
         vscode.workspace.onDidChangeTextDocument(async (event) => {
-            // Only process txtdoc files
-            if (event.document.languageId !== 'txtdoc') return;
+            // Only process rfcdoc files
+            if (event.document.languageId !== 'rfcdoc') return;
             
             const editor = vscode.window.activeTextEditor;
             if (!editor || editor.document !== event.document) return;

@@ -3,7 +3,7 @@ const vscode = require('vscode');
 const path = require('path');
 const { isVerbose, openDocument } = require('./test-helpers');
 
-suite('TxtDoc Format Extension Tests', function() {
+suite('RfcDoc Format Extension Tests', function() {
   
   // 1. Basic Extension Tests
   suite('1. Basic Extension Tests', function() {
@@ -11,7 +11,7 @@ suite('TxtDoc Format Extension Tests', function() {
     // 1.1 Extension loads
     test('1.1 Extension loads', function() {
       // Check that the extension is loaded
-      const extension = vscode.extensions.getExtension('txtdoc.txtdoc-format');
+      const extension = vscode.extensions.getExtension('rfcdoc.rfcdoc-format');
       assert.ok(extension, 'Extension should be loaded');
     });
     
@@ -23,17 +23,17 @@ suite('TxtDoc Format Extension Tests', function() {
       const testFilePath = path.join(__dirname, '..', '..', 'fixtures', 'rfc-test.rfc');
       const document = await openDocument(testFilePath);
       
-      // Check that the language ID is set to txtdoc
-      assert.strictEqual(document.languageId, 'txtdoc', 'Language ID should be txtdoc');
+      // Check that the language ID is set to rfcdoc
+      assert.strictEqual(document.languageId, 'rfcdoc', 'Language ID should be rfcdoc');
       
       // Get the extension
-      const extension = vscode.extensions.getExtension('txtdoc.txtdoc-format');
+      const extension = vscode.extensions.getExtension('rfcdoc.rfcdoc-format');
       assert.ok(extension, 'Extension should be available');
       
       // Note: In the test environment, the extension might not be fully activated
       // but we can still test its functionality
       
-      isVerbose && console.log('TxtDoc Format extension activated');
+      isVerbose && console.log('RfcDoc Format extension activated');
     });
     
     // 1.3 Extension exports
@@ -46,8 +46,8 @@ suite('TxtDoc Format Extension Tests', function() {
       const testFilePath = path.join(__dirname, '..', '..', 'fixtures', 'rfc-test.rfc');
       const document = await openDocument(testFilePath);
       
-      // Check that the language ID is set to txtdoc
-      assert.strictEqual(document.languageId, 'txtdoc', 'Language ID should be txtdoc');
+      // Check that the language ID is set to rfcdoc
+      assert.strictEqual(document.languageId, 'rfcdoc', 'Language ID should be rfcdoc');
       
       // Verify that the document can be opened and processed
       assert.ok(document, 'Document should be opened successfully');

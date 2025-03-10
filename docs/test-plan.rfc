@@ -1,12 +1,12 @@
-TxtDoc Format Extension Test Plan
+RfcDoc Format Extension Test Plan
 ---------------------------------
 
-Author        TxtDoc Team
+Author        RfcDoc Team
 Date          March 10, 2025
 Version       1.0
 Status        Draft
 
-This document outlines a comprehensive test plan for the TxtDoc Format extension.
+This document outlines a comprehensive test plan for the RfcDoc Format extension.
 The tests are organized in a step-by-step manner, starting with basic functionality
 and progressing to more complex features.
 
@@ -16,13 +16,13 @@ and progressing to more complex features.
        
        - Test that the extension is properly loaded in VSCode
        - Verify the extension appears in the Extensions view
-       - Check that the extension ID matches "txtdoc.txtdoc-format"
+       - Check that the extension ID matches "rfcdoc.rfcdoc-format"
        
    1.2 Extension is active in .rfc files ✓ (src/test/1-basic-extension.test.js)
        
        - Open an .rfc file
        - Verify the extension activates automatically
-       - Check the language mode is set to "TxtDoc"
+       - Check the language mode is set to "RfcDoc"
        - Verify the extension's output channel shows activation message
        
    1.3 Extension exports ✓ (src/test/1-basic-extension.test.js)

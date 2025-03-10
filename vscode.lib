@@ -213,11 +213,11 @@ async function executeCommand(command, ...args) {
 function registerCommand(context, command, callback, outputChannel) {
   const commandRegistration = vscode.commands.registerCommand(command, async () => {
     const editor = vscode.window.activeTextEditor;
-    if (editor && editor.document.languageId === 'txtdoc') {
+    if (editor && editor.document.languageId === 'rfcdoc') {
       outputChannel?.appendLine(`Executing ${command} command`);
       await callback(editor.document);
     } else {
-      sendNotification('FOOTNOTE_TXTDOC_ONLY');
+      sendNotification('FOOTNOTE_RFCDOC_ONLY');
     }
   });
   
