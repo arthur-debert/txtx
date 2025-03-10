@@ -20,7 +20,7 @@ async function main() {
         '--disable-extensions',
         '--log=trace',
         '--verbose',
-        path.resolve(extensionDevelopmentPath, 'test-dir')
+        path.resolve(extensionDevelopmentPath, 'fixtures')
       ],
       extensionTestsEnv: [
         { name: 'MOCHA_REPORTER', value: 'list' }
