@@ -58,7 +58,7 @@ and progressing to more complex features.
        - Verify they appear in the outline
        - Check that they are properly highlighted
        
-   2.5 Folding markers
+   2.5 Folding markers ✓ (src/test/extension.test.js)
        
        - Create a document with various section types and content
        - Test folding each section type

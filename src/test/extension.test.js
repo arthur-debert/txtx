@@ -247,6 +247,65 @@ suite('TxtDoc Format Extension Tests', () => {
       isVerbose && console.log('Alternative section detected:', alternativeSection);
     });
     
+    // 2.5 Folding markers
+    test('2.5 Folding markers', async function() {
+      this.timeout(10000); // Increase timeout for this test
+      
+      // Open the test document
+      const testFilePath = path.join(__dirname, 'fixtures', 'outline-test.rfc');
+      const document = await openDocument(testFilePath);
+      
+      // Wait for the language mode to be set
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      // Get folding ranges
+      const foldingRanges = await vscode.commands.executeCommand(
+        'vscode.executeFoldingRangeProvider',
+        document.uri
+      );
+      
+      // Verify folding ranges were returned
+      assert.ok(foldingRanges, 'Folding ranges should be returned');
+      assert.ok(foldingRanges.length > 0, 'Document should have at least one folding range');
+      
+      isVerbose && console.log('Folding ranges:', JSON.stringify(foldingRanges, null, 2));
+      
+      // Based on the actual folding ranges returned, we can see that:
+      // - The title section doesn't have a folding range
+      // - Each section has its own folding range
+      // - The nested code block has its own folding range
+      
+      // Find folding range for the first numbered section (lines 5-13)
+      const numberedSectionFoldingRange = foldingRanges.find(range => 
+        range.start === 5 && range.end >= 13
+      );
+      assert.ok(numberedSectionFoldingRange, 'Numbered section should have a folding range');
+      
+      // Find folding range for the nested code block (lines 9-13)
+      const codeBlockFoldingRange = foldingRanges.find(range => 
+        range.start === 9 && range.end >= 13
+      );
+      assert.ok(codeBlockFoldingRange, 'Code block should have a folding range');
+      
+      // Find folding range for another numbered section (lines 14-17)
+      const anotherNumberedSectionFoldingRange = foldingRanges.find(range => 
+        range.start === 14 && range.end >= 17
+      );
+      assert.ok(anotherNumberedSectionFoldingRange, 'Another numbered section should have a folding range');
+      
+      // Find folding range for alternative section (lines 18-21)
+      const alternativeSectionFoldingRange = foldingRanges.find(range => 
+        range.start === 18 && range.end >= 21
+      );
+      assert.ok(alternativeSectionFoldingRange, 'Alternative section should have a folding range');
+      
+      // Find folding range for uppercase section (lines 22-24)
+      const uppercaseSectionFoldingRange = foldingRanges.find(range => 
+        range.start === 22 && range.end >= 24
+      );
+      assert.ok(uppercaseSectionFoldingRange, 'Uppercase section should have a folding range');
+    });
+    
   });
   
 });
