@@ -55,6 +55,11 @@
         "command": "txtdoc.formatDocument",
         "title": "TxtDoc: Format Document",
         "category": "TxtDoc"
+      },
+      {
+        "command": "txtdoc.generateTOC",
+        "title": "TxtDoc: Generate Table of Contents",
+        "category": "TxtDoc"
       }
     ]
   },
@@ -64,7 +69,8 @@
   "main": "./extension.js",
   "scripts": {
     "test": "node ./src/test/run-with-verbosity.js",
-    "test:manual": "node ./src/test/runTest.js"
+    "test:manual": "node ./src/test/runTest.js",
+    "test:single": "node ./src/test/run-single-test.js"
   },
   "repository": {
     "type": "git",

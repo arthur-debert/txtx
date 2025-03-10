@@ -190,7 +190,7 @@ and progressing to more complex features.
        - Run the Format Document command
        - Verify the document is properly formatted
        
-   5.2 Generate TOC command
+   5.2 Generate TOC command ✓ (src/test/5-command-tests.test.js)
        
        - Create a document with multiple sections
        - Run the Generate TOC command

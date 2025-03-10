@@ -2,7 +2,7 @@ const assert = require('assert');
 const vscode = require('vscode');
 const path = require('path');
 const fs = require('fs');
-const { isVerbose, openDocument } = require('./test-helpers');
+const { isVerbose, openDocument, getDocumentSections } = require('./test-helpers');
 
 suite('TxtDoc Format Extension Tests', function() {
   
@@ -103,6 +103,100 @@ This text should be indented.
         const quoteLine = lines.findIndex(line => line.includes('This is a quote'));
         assert.ok(quoteLine > -1, 'Quotes should be preserved');
         assert.ok(lines[quoteLine].startsWith('>'), 'Quotes should start with >');
+        
+        // Clean up - close the editor
+        await vscode.commands.executeCommand('workbench.action.closeActiveEditor');
+      } finally {
+        // Clean up - delete the temporary file
+        if (fs.existsSync(testFilePath)) {
+          fs.unlinkSync(testFilePath);
+        }
+      }
+    });
+    
+    // 5.2 Generate TOC command
+    test('5.2 Generate TOC command', async function() {
+      this.timeout(10000); // Increase timeout for this test
+      
+      // Create a temporary test file with sections
+      const tempDir = path.join(__dirname, 'temp');
+      if (!fs.existsSync(tempDir)) {
+        fs.mkdirSync(tempDir);
+      }
+      
+      const testFilePath = path.join(tempDir, 'toc-test.rfc');
+      const contentWithoutTOC = 
+`RFC TOC Test Document
+-------------------
+
+Author        John Doe
+Date          March 10, 2025
+Version       1.0
+Status        Draft
+
+This document tests the generate TOC command.
+
+1. Introduction
+
+   This is the introduction section.
+
+2. Main Section
+
+   2.1 Subsection One
+   
+       This is subsection one.
+   
+   2.2 Subsection Two
+   
+       This is subsection two.
+
+3. Conclusion
+
+   This is the conclusion section.
+
+: Special Section
+
+   This is a special section.
+
+UPPERCASE SECTION
+
+   This is an uppercase section.`;
+      
+      fs.writeFileSync(testFilePath, contentWithoutTOC);
+      
+      try {
+        // Open the test document
+        const document = await openDocument(testFilePath);
+        
+        // Wait for the language mode to be set
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        
+        // Get the editor
+        const editor = vscode.window.activeTextEditor;
+        assert.ok(editor, 'Editor should be active');
+        
+        // Execute the generate TOC command
+        await vscode.commands.executeCommand('txtdoc.generateTOC');
+        
+        // Wait for the TOC generation to complete
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        
+        // Get the updated document text
+        const textWithTOC = editor.document.getText();
+        
+        isVerbose && console.log('Text with TOC:', textWithTOC);
+        
+        // Verify the TOC was generated
+        assert.ok(textWithTOC.includes('TABLE OF CONTENTS'), 'TOC header should be present');
+        
+        // Check that all sections are in the TOC
+        assert.ok(textWithTOC.includes('1. Introduction'), 'Introduction should be in TOC');
+        assert.ok(textWithTOC.includes('2. Main Section'), 'Main Section should be in TOC');
+        assert.ok(textWithTOC.includes('    2.1 Subsection One'), 'Subsection One should be in TOC with indentation');
+        assert.ok(textWithTOC.includes('    2.2 Subsection Two'), 'Subsection Two should be in TOC with indentation');
+        assert.ok(textWithTOC.includes('3. Conclusion'), 'Conclusion should be in TOC');
+        assert.ok(textWithTOC.includes(': Special Section') || textWithTOC.includes('Special Section'), 'Special Section should be in TOC');
+        assert.ok(textWithTOC.includes('UPPERCASE SECTION'), 'UPPERCASE SECTION should be in TOC');
         
         // Clean up - close the editor
         await vscode.commands.executeCommand('workbench.action.closeActiveEditor');
