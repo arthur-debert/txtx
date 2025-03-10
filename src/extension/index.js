@@ -1,8 +1,8 @@
 const vscode = require("vscode");
 const TxtDocDocumentSymbolProvider = require("./documentSymbolProvider");
 const TxtDocDocumentLinkProvider = require("./documentLinkProvider");
-const { registerArrowTransformations } = require("./arrowTransformations");
-const { registerEmoticonFeature } = require("./emoticonFeature");
+const { registerTransformations } = require("./transformations");
+const { registerInsertions } = require("./insertions");
 const { registerPathCompletionProvider } = require("./pathCompletionProvider");
 const { registerFormatCommands } = require("./formatCommands");
 const { registerFootnoteCommands } = require("./footnoteCommands");
@@ -41,11 +41,11 @@ function activate(context) {
     outputChannel.appendLine('Document symbol provider registered for outline support');
     outputChannel.appendLine('Document link provider registered for footnotes and references');
     
-    // Register the arrow transformation feature
-    registerArrowTransformations(context, outputChannel);
+    // Register the transformations feature
+    registerTransformations(context, outputChannel);
     
-    // Register the emoticon feature
-    registerEmoticonFeature(context, outputChannel);
+    // Register the insertions feature
+    registerInsertions(context, outputChannel);
     
     // Register the path completion provider
     registerPathCompletionProvider(context, outputChannel);

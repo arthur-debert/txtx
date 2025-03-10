@@ -1,0 +1,8 @@
+# Transformations
+# Each entry is a list where:
+# - First item is the pattern (regex)
+# - Second item is the replacement value
+- ["->(?!\\w)", "→"]  # Right arrow
+- ["<-(?!\\w)", "←"]  # Left arrow
+- ["\\^-(?!\\w)", "↑"]  # Up arrow
+- ["v-(?!\\w)", "↓"]  # Down arrow

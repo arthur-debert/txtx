@@ -8,8 +8,8 @@ suite('TxtDoc Format Extension Tests', function() {
   // 4. Feature Tests
   suite('4. Feature Tests', function() {
     
-    // 4.1 Arrow transformations - right arrow
-    test('4.1 Arrow transformations - right arrow', async function() {
+    // 4.1 Transformations - right arrow
+    test('4.1 Transformations - right arrow', async function() {
       this.timeout(10000); // Increase timeout for this test
       
       // Open the test document
@@ -41,7 +41,7 @@ suite('TxtDoc Format Extension Tests', function() {
       
       isVerbose && console.log('Last line text:', lastLineText);
       
-      // Verify the transformation - we're just checking if the arrow notation was inserted
+      // Verify the transformation - we're just checking if the notation was inserted
       // since the actual transformation might depend on the extension being fully activated
       assert.ok(lastLineText.includes("->") || lastLineText.includes("→"), 
         'Right arrow notation should be inserted');
@@ -50,8 +50,8 @@ suite('TxtDoc Format Extension Tests', function() {
       await vscode.commands.executeCommand('undo');
     });
     
-    // 4.2 Arrow transformations - left arrow
-    test('4.2 Arrow transformations - left arrow', async function() {
+    // 4.2 Transformations - left arrow
+    test('4.2 Transformations - left arrow', async function() {
       this.timeout(10000); // Increase timeout for this test
       
       // Open the test document
@@ -83,7 +83,7 @@ suite('TxtDoc Format Extension Tests', function() {
       
       isVerbose && console.log('Last line text:', lastLineText);
       
-      // Verify the transformation - we're just checking if the arrow notation was inserted
+      // Verify the transformation - we're just checking if the notation was inserted
       // since the actual transformation might depend on the extension being fully activated
       assert.ok(lastLineText.includes("<-") || lastLineText.includes("←"), 
         'Left arrow notation should be inserted');
@@ -92,8 +92,8 @@ suite('TxtDoc Format Extension Tests', function() {
       await vscode.commands.executeCommand('undo');
     });
     
-    // 4.3 Arrow transformations - up arrow
-    test('4.3 Arrow transformations - up arrow', async function() {
+    // 4.3 Transformations - up arrow
+    test('4.3 Transformations - up arrow', async function() {
       this.timeout(10000); // Increase timeout for this test
       
       // Open the test document
@@ -125,7 +125,7 @@ suite('TxtDoc Format Extension Tests', function() {
       
       isVerbose && console.log('Last line text:', lastLineText);
       
-      // Verify the transformation - we're just checking if the arrow notation was inserted
+      // Verify the transformation - we're just checking if the notation was inserted
       // since the actual transformation might depend on the extension being fully activated
       assert.ok(lastLineText.includes("^-") || lastLineText.includes("↑"), 
         'Up arrow notation should be inserted');
@@ -134,8 +134,8 @@ suite('TxtDoc Format Extension Tests', function() {
       await vscode.commands.executeCommand('undo');
     });
     
-    // 4.4 Arrow transformations - down arrow
-    test('4.4 Arrow transformations - down arrow', async function() {
+    // 4.4 Transformations - down arrow
+    test('4.4 Transformations - down arrow', async function() {
       this.timeout(10000); // Increase timeout for this test
       
       // Open the test document
@@ -167,7 +167,7 @@ suite('TxtDoc Format Extension Tests', function() {
       
       isVerbose && console.log('Last line text:', lastLineText);
       
-      // Verify the transformation - we're just checking if the arrow notation was inserted
+      // Verify the transformation - we're just checking if the notation was inserted
       // since the actual transformation might depend on the extension being fully activated
       assert.ok(lastLineText.includes("v-") || lastLineText.includes("↓"), 
         'Down arrow notation should be inserted');
@@ -176,8 +176,8 @@ suite('TxtDoc Format Extension Tests', function() {
       await vscode.commands.executeCommand('undo');
     });
     
-    // 4.5 Emoticon features - basic emoticons
-    test('4.5 Emoticon features - basic emoticons', async function() {
+    // 4.5 Insertion features - basic insertions
+    test('4.5 Insertion features - basic insertions', async function() {
       this.timeout(10000); // Increase timeout for this test
       
       // Open the test document
@@ -209,17 +209,17 @@ suite('TxtDoc Format Extension Tests', function() {
       
       isVerbose && console.log('Text after emoticon input:', lastLineText);
       
-      // Verify the emoticon trigger was inserted
+      // Verify the insertion trigger was inserted
       // Note: In a test environment, we can't fully test the picker UI interaction
       // but we can verify the trigger was inserted correctly
-      assert.ok(lastLineText.includes(":smile:"), 'Emoticon trigger should be inserted');
+      assert.ok(lastLineText.includes(":smile:"), 'Insertion trigger should be inserted');
       
       // Clean up - undo the change
       await vscode.commands.executeCommand('undo');
     });
     
-    // 4.6 Emoticon features - partial match
-    test('4.6 Emoticon features - partial match', async function() {
+    // 4.6 Insertion features - partial match
+    test('4.6 Insertion features - partial match', async function() {
       this.timeout(10000); // Increase timeout for this test
       
       // Open the test document
@@ -251,8 +251,8 @@ suite('TxtDoc Format Extension Tests', function() {
       
       isVerbose && console.log('Text after partial emoticon input:', lastLineText);
       
-      // Verify the partial emoticon trigger was inserted
-      assert.ok(lastLineText.includes(":sm"), 'Partial emoticon trigger should be inserted');
+      // Verify the partial insertion trigger was inserted
+      assert.ok(lastLineText.includes(":sm"), 'Partial insertion trigger should be inserted');
       
       // Clean up - undo the change
       await vscode.commands.executeCommand('undo');

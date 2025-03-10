@@ -10,52 +10,8 @@ const DOCUMENT_REFERENCE_REGEX = /see:\s+([^#\s]+)(?:#([a-zA-Z0-9-]+))?/g;
 const QUOTE_REGEX = /^>\s+(.+)$/gm;
 const NESTED_QUOTE_REGEX = /^>>\s+(.+)$/gm;
 
-// Arrow transformation mappings
-const ARROW_TRANSFORMATIONS = [
-    { pattern: /->(?!\w)/g, replacement: '→' }, // Right arrow
-    { pattern: /<-(?!\w)/g, replacement: '←' }, // Left arrow
-    { pattern: /\^-(?!\w)/g, replacement: '↑' }, // Up arrow
-    { pattern: /v-(?!\w)/g, replacement: '↓' }  // Down arrow
-];
-
-// Emoticon mappings
-const EMOTICONS = [
-    { name: "Smiley, happy face", emoticon: "🙂" },
-    { name: "Laughing, big grin, grinning with glasses", emoticon: "😄" },
-    { name: "Laughing", emoticon: "😂" },
-    { name: "Very happy or double chin", emoticon: ":-)" },
-    { name: "Frown, sad, pouting", emoticon: "☹️" },
-    { name: "Crying", emoticon: "😢" },
-    { name: "Tears of happiness", emoticon: "🥲" },
-    { name: "Angry", emoticon: "😠" },
-    { name: "Horror, disgust, sadness, great dismay", emoticon: "😫" },
-    { name: "Surprise, shock", emoticon: "😮" },
-    { name: "Cat face, curled mouth, cutesy, playful, mischievous", emoticon: "😺" },
-    { name: "Lion smile, evil cat, playfulness", emoticon: "😼" },
-    { name: "Kiss", emoticon: "😘" },
-    { name: "Wink, smirk", emoticon: "😉" },
-    { name: "Tongue sticking out, cheeky/playful, blowing a raspberry", emoticon: "😛" },
-    { name: "Skeptical, annoyed, undecided, uneasy, hesitant", emoticon: "🤔" },
-    { name: "Straight face, no expression, indecision", emoticon: "😐" },
-    { name: "Embarrassed, blushing", emoticon: "😳" },
-    { name: "Sealed lips, wearing braces, tongue-tied", emoticon: "🤐" },
-    { name: "Angel, halo, saint, innocent", emoticon: "😇" },
-    { name: "Evil, devilish", emoticon: "😈" },
-    { name: "Cool, bored, yawning", emoticon: "😎" },
-    { name: "Tongue-in-cheek", emoticon: "😏" },
-    { name: "Partied all night", emoticon: "🥴" },
-    { name: "Drunk, confused", emoticon: "😵" },
-    { name: "Being sick", emoticon: "🤒" },
-    { name: "Dumb, dunce-like", emoticon: "<:-|" },
-    { name: "Scepticism, disbelief, disapproval", emoticon: "🤨" },
-    { name: "Grimacing, nervous, awkward", emoticon: "😬" },
-    { name: "Skull and crossbones", emoticon: "💀" },
-    { name: "Chicken", emoticon: "🐔" },
-    { name: "Shrugs", emoticon: "¯\\_(ツ)_/¯" }
-];
-
-// Regular expression to match emoticon search pattern
-const EMOTICON_SEARCH_REGEX = /:([a-zA-Z0-9_]+)/g;
+// Regular expression to match insertion search pattern
+const INSERTION_SEARCH_REGEX = /:([a-zA-Z0-9_]+)/g;
 
 // Path completion trigger characters
 const PATH_COMPLETION_TRIGGERS = ['/'];
@@ -72,8 +28,6 @@ module.exports = {
     DOCUMENT_REFERENCE_REGEX,
     QUOTE_REGEX,
     NESTED_QUOTE_REGEX,
-    ARROW_TRANSFORMATIONS,
-    EMOTICONS,
-    EMOTICON_SEARCH_REGEX,
+    INSERTION_SEARCH_REGEX,
     PATH_COMPLETION_TRIGGERS
 };
