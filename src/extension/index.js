@@ -7,6 +7,7 @@ const { registerPathCompletionProvider } = require("./pathCompletionProvider");
 const { registerFormatCommands } = require("./formatCommands");
 const { registerFootnoteCommands } = require("./footnoteCommands");
 const { registerReferenceCommands } = require("./referenceCommands");
+const vscodeLib = require("../../vscode.lib");
 
 let outputChannel;
 
@@ -16,7 +17,7 @@ let outputChannel;
  */
 function activate(context) {
     // Create output channel
-    outputChannel = vscode.window.createOutputChannel('txtos');
+    outputChannel = vscodeLib.createOutputChannel('txtos');
     context.subscriptions.push(outputChannel);
     
     // Log activation

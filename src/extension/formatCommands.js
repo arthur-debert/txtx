@@ -1,6 +1,7 @@
 const vscode = require("vscode");
 const { SECTION_REGEX, NUMBERED_SECTION_REGEX, ALTERNATIVE_SECTION_REGEX } = require("./constants");
 const { numberFootnotes } = require("./footnoteCommands");
+const vscodeLib = require("../../vscode.lib");
 
 /**
  * Format a document according to the RFC specification
@@ -14,7 +15,7 @@ async function formatDocument(document) {
         return false;
     }
 
-    const editor = vscode.window.activeTextEditor;
+    const editor = vscodeLib.getActiveEditor();
     if (!editor) {
         vscode.window.showErrorMessage('No active editor found');
         return false;
@@ -29,16 +30,10 @@ async function formatDocument(document) {
         const formattedLines = formatLines(lines);
         
         // Replace the entire document text
-        const fullRange = new vscode.Range(
-            new vscode.Position(0, 0),
-            new vscode.Position(document.lineCount - 1, document.lineAt(document.lineCount - 1).text.length)
-        );
+        const fullRange = vscodeLib.getDocumentRange(document);
         
-        await editor.edit(editBuilder => {
-            editBuilder.replace(fullRange, formattedLines.join('\n'));
-        });
-        
-        vscode.window.showInformationMessage('Document formatted successfully');
+        await vscodeLib.applyEdit(editor, fullRange, formattedLines.join('\n'));
+        vscodeLib.showInformationMessage('Document formatted successfully');
         return true;
     } catch (error) {
         vscode.window.showErrorMessage(`Error formatting document: ${error.message}`);
@@ -58,7 +53,7 @@ async function generateTOC(document) {
         return false;
     }
 
-    const editor = vscode.window.activeTextEditor;
+    const editor = vscodeLib.getActiveEditor();
     if (!editor) {
         vscode.window.showErrorMessage('No active editor found');
         return false;
@@ -70,7 +65,7 @@ async function generateTOC(document) {
         const lines = text.split('\n');
 
         // Find all sections in the document
-        const sections = findSections(text);
+        const sections = vscodeLib.findSections(text, SECTION_REGEX, NUMBERED_SECTION_REGEX, ALTERNATIVE_SECTION_REGEX);
         
         if (sections.length === 0) {
             vscode.window.showWarningMessage('No sections found in the document');
@@ -96,16 +91,12 @@ async function generateTOC(document) {
                 new vscode.Position(startLine, 0),
                 new vscode.Position(endLine, lines[endLine].length)
             );
-            
-            await editor.edit(editBuilder => {
-                editBuilder.replace(range, tocLines.join('\n'));
-            });
+
+            await vscodeLib.applyEdit(editor, range, tocLines.join('\n'));
         } else {
             // Insert a new TOC
             const position = new vscode.Position(tocPosition, 0);
-            
-            await editor.edit(editBuilder => {
-                editBuilder.insert(position, tocLines.join('\n') + '\n\n');
+            await editor.edit(editBuilder => { editBuilder.insert(position, tocLines.join('\n') + '\n\n');
             });
         }
         
@@ -129,7 +120,7 @@ async function fullFormatting(document) {
         return false;
     }
 
-    const editor = vscode.window.activeTextEditor;
+    const editor = vscodeLib.getActiveEditor();
     if (!editor) {
         vscode.window.showErrorMessage('No active editor found');
         return false;
@@ -149,68 +140,12 @@ async function fullFormatting(document) {
 
         const footnoteResult = await numberFootnotes(document);
         
-        vscode.window.showInformationMessage('Full formatting applied successfully');
+        vscodeLib.showInformationMessage('Full formatting applied successfully');
         return true;
     } catch (error) {
         vscode.window.showErrorMessage(`Error applying full formatting: ${error.message}`);
         return false;
     }
-}
-
-/**
- * Find all sections in the document text
- * @param {string} text - The document text
- * @returns {Array<{name: string, level: number, line: number, prefix: string}>} - The sections
- */
-function findSections(text) {
-    const sections = [];
-    const lines = text.split('\n');
-    
-    // Find uppercase sections
-    SECTION_REGEX.lastIndex = 0;
-    let match;
-    while ((match = SECTION_REGEX.exec(text)) !== null) {
-        const lineIndex = text.substring(0, match.index).split('\n').length - 1;
-        sections.push({
-            name: match[1].trim(),
-            level: 1,
-            line: lineIndex,
-            prefix: ''
-        });
-    }
-    
-    // Find numbered sections
-    NUMBERED_SECTION_REGEX.lastIndex = 0;
-    while ((match = NUMBERED_SECTION_REGEX.exec(text)) !== null) {
-        const lineIndex = text.substring(0, match.index).split('\n').length - 1;
-        const sectionNumber = match[1];
-        const sectionTitle = match[2].trim();
-        const sectionLevel = sectionNumber.split('.').length;
-        
-        sections.push({
-            name: `${sectionNumber}. ${sectionTitle}`,
-            level: sectionLevel,
-            line: lineIndex,
-            prefix: `${sectionNumber}.`
-        });
-    }
-    
-    // Find alternative sections
-    ALTERNATIVE_SECTION_REGEX.lastIndex = 0;
-    while ((match = ALTERNATIVE_SECTION_REGEX.exec(text)) !== null) {
-        const lineIndex = text.substring(0, match.index).split('\n').length - 1;
-        sections.push({
-            name: `: ${match[1].trim()}`,
-            level: 1,
-            line: lineIndex,
-            prefix: ':'
-        });
-    }
-    
-    // Sort sections by line number
-    sections.sort((a, b) => a.line - b.line);
-    
-    return sections;
 }
 
 /**
@@ -504,42 +439,19 @@ function isList(line) {
  * @param {vscode.OutputChannel} outputChannel - The output channel
  */
 function registerFormatCommands(context, outputChannel) {
-    // Register the format document command
-    const formatDocumentCommand = vscode.commands.registerCommand('txtdoc.formatDocument', async () => {
-        const editor = vscode.window.activeTextEditor;
-        if (editor && editor.document.languageId === 'txtdoc') {
-            outputChannel.appendLine('Executing Format Document command');
-            await formatDocument(editor.document);
-        } else {
-            vscode.window.showWarningMessage('Format Document command is only available for TxtDoc files');
-        }
-    });
+    // Register commands using vscodeLib
+    const formatDocumentCommand = vscodeLib.registerCommand(
+        context, 
+        'txtdoc.formatDocument', 
+        formatDocument, 
+        outputChannel
+    );
     
-    // Register the generate TOC command
-    const generateTOCCommand = vscode.commands.registerCommand('txtdoc.generateTOC', async () => {
-        const editor = vscode.window.activeTextEditor;
-        if (editor && editor.document.languageId === 'txtdoc') {
-            outputChannel.appendLine('Executing Generate TOC command');
-            await generateTOC(editor.document);
-        } else {
-            vscode.window.showWarningMessage('Generate TOC command is only available for TxtDoc files');
-        }
-    });
+    const generateTOCCommand = vscodeLib.registerCommand(context, 'txtdoc.generateTOC', generateTOC, outputChannel);
     
-    // Register the full formatting command
-    const fullFormattingCommand = vscode.commands.registerCommand('txtdoc.fullFormatting', async () => {
-        const editor = vscode.window.activeTextEditor;
-        if (editor && editor.document.languageId === 'txtdoc') {
-            outputChannel.appendLine('Executing Full Formatting command');
-            await fullFormatting(editor.document);
-        } else {
-            vscode.window.showWarningMessage('Full Formatting command is only available for TxtDoc files');
-        }
-    });
+    const fullFormattingCommand = vscodeLib.registerCommand(context, 'txtdoc.fullFormatting', fullFormatting, outputChannel);
     
-    context.subscriptions.push(formatDocumentCommand);
-    context.subscriptions.push(generateTOCCommand);
-    context.subscriptions.push(fullFormattingCommand);
+    // Log registration
     outputChannel.appendLine('Format Document command registered');
     outputChannel.appendLine('Generate TOC command registered');
     outputChannel.appendLine('Full Formatting command registered');

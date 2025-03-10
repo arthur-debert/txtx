@@ -1,8 +1,8 @@
 const assert = require('assert');
 const vscode = require('vscode');
 const path = require('path');
-const fs = require('fs');
-const { isVerbose, openDocument, getDocumentSections } = require('./test-helpers');
+const { isVerbose, openDocument, getDocumentSections, createTestEnv } = require('./test-helpers');
+const vscodeLib = require('../../vscode.lib');
 
 suite('TxtDoc Format Extension Tests', function() {
   
@@ -13,17 +13,11 @@ suite('TxtDoc Format Extension Tests', function() {
     test('5.1 Format document command', async function() {
       this.timeout(10000); // Increase timeout for this test
       
-      // Create a temporary test file with inconsistent formatting
-      const tempDir = path.join(__dirname, 'temp');
-      if (!fs.existsSync(tempDir)) {
-        fs.mkdirSync(tempDir);
-      }
-      
-      const testFilePath = path.join(tempDir, 'format-test.rfc');
+      // Create a test environment and temporary file
+      const testEnv = createTestEnv(path.join(__dirname, 'temp'));
       const unformattedContent = 
 `RFC Format Test Document
 -----------------------
-
 Author    John Doe
 Date    March 10, 2025
 Version    1.0
@@ -44,7 +38,7 @@ This text should be indented.
 > This is a quote
 >> This is a nested quote`;
       
-      fs.writeFileSync(testFilePath, unformattedContent);
+      const testFilePath = testEnv.createFile('format-test.rfc', unformattedContent);
       
       try {
         // Open the test document
@@ -53,13 +47,10 @@ This text should be indented.
         // Wait for the language mode to be set
         await new Promise(resolve => setTimeout(resolve, 1000));
         
-        // Get the editor
-        const editor = vscode.window.activeTextEditor;
+        // Get the editor using vscodeLib
+        const editor = vscodeLib.getActiveEditor();
         assert.ok(editor, 'Editor should be active');
-        
-        // Execute the format document command
-        await vscode.commands.executeCommand('txtdoc.formatDocument');
-        
+        await vscodeLib.executeCommand('txtdoc.formatDocument');
         // Wait for the formatting to complete
         await new Promise(resolve => setTimeout(resolve, 2000));
         
@@ -105,12 +96,10 @@ This text should be indented.
         assert.ok(lines[quoteLine].startsWith('>'), 'Quotes should start with >');
         
         // Clean up - close the editor
-        await vscode.commands.executeCommand('workbench.action.closeActiveEditor');
+        await vscodeLib.closeActiveEditor();
       } finally {
         // Clean up - delete the temporary file
-        if (fs.existsSync(testFilePath)) {
-          fs.unlinkSync(testFilePath);
-        }
+        testEnv.cleanup();
       }
     });
     
@@ -118,14 +107,9 @@ This text should be indented.
     test('5.2 Generate TOC command', async function() {
       this.timeout(10000); // Increase timeout for this test
       
-      // Create a temporary test file with sections
-      const tempDir = path.join(__dirname, 'temp');
-      if (!fs.existsSync(tempDir)) {
-        fs.mkdirSync(tempDir);
-      }
-      
-      const testFilePath = path.join(tempDir, 'toc-test.rfc');
-      const contentWithoutTOC = 
+      // Create a test environment and temporary file
+      const testEnv = createTestEnv(path.join(__dirname, 'temp'));
+      const contentWithoutTOC =
 `RFC TOC Test Document
 -------------------
 
@@ -162,7 +146,7 @@ UPPERCASE SECTION
 
    This is an uppercase section.`;
       
-      fs.writeFileSync(testFilePath, contentWithoutTOC);
+      const testFilePath = testEnv.createFile('toc-test.rfc', contentWithoutTOC);
       
       try {
         // Open the test document
@@ -172,11 +156,11 @@ UPPERCASE SECTION
         await new Promise(resolve => setTimeout(resolve, 1000));
         
         // Get the editor
-        const editor = vscode.window.activeTextEditor;
+        const editor = vscodeLib.getActiveEditor();
         assert.ok(editor, 'Editor should be active');
         
         // Execute the generate TOC command
-        await vscode.commands.executeCommand('txtdoc.generateTOC');
+        await vscodeLib.executeCommand('txtdoc.generateTOC');
         
         // Wait for the TOC generation to complete
         await new Promise(resolve => setTimeout(resolve, 2000));
@@ -201,12 +185,10 @@ UPPERCASE SECTION
         assert.ok(textWithTOC.includes('UPPERCASE SECTION'), 'UPPERCASE SECTION should be in TOC');
         
         // Clean up - close the editor
-        await vscode.commands.executeCommand('workbench.action.closeActiveEditor');
+        await vscodeLib.closeActiveEditor();
       } finally {
         // Clean up - delete the temporary file
-        if (fs.existsSync(testFilePath)) {
-          fs.unlinkSync(testFilePath);
-        }
+        testEnv.cleanup();
       }
     });
     
@@ -214,14 +196,9 @@ UPPERCASE SECTION
     test('5.3 Number footnotes command', async function() {
       this.timeout(10000); // Increase timeout for this test
       
-      // Create a temporary test file with footnotes in random order
-      const tempDir = path.join(__dirname, 'temp');
-      if (!fs.existsSync(tempDir)) {
-        fs.mkdirSync(tempDir);
-      }
-      
-      const testFilePath = path.join(tempDir, 'footnote-test.rfc');
-      const contentWithFootnotes = 
+      // Create a test environment and temporary file
+      const testEnv = createTestEnv(path.join(__dirname, 'temp'));
+      const contentWithFootnotes =
 `RFC Footnote Test Document
 -------------------------
 
@@ -254,7 +231,7 @@ FOOTNOTES
 [2] This is the second footnote, but should be renumbered to [4].
 [4] This is the fourth footnote, but should be renumbered to [5].`;
       
-      fs.writeFileSync(testFilePath, contentWithFootnotes);
+      const testFilePath = testEnv.createFile('footnote-test.rfc', contentWithFootnotes);
       
       try {
         // Open the test document
@@ -264,11 +241,11 @@ FOOTNOTES
         await new Promise(resolve => setTimeout(resolve, 1000));
         
         // Get the editor
-        const editor = vscode.window.activeTextEditor;
+        const editor = vscodeLib.getActiveEditor();
         assert.ok(editor, 'Editor should be active');
         
         // Execute the number footnotes command
-        await vscode.commands.executeCommand('txtdoc.numberFootnotes');
+        await vscodeLib.executeCommand('txtdoc.numberFootnotes');
         
         // Wait for the numbering to complete
         await new Promise(resolve => setTimeout(resolve, 2000));
@@ -296,12 +273,10 @@ FOOTNOTES
         assert.ok(updatedText.includes('[5] This is the fourth footnote'), 'Fifth footnote declaration should be [5]');
         
         // Clean up - close the editor
-        await vscode.commands.executeCommand('workbench.action.closeActiveEditor');
+        await vscodeLib.closeActiveEditor();
       } finally {
         // Clean up - delete the temporary file
-        if (fs.existsSync(testFilePath)) {
-          fs.unlinkSync(testFilePath);
-        }
+        testEnv.cleanup();
       }
     });
     
@@ -309,14 +284,9 @@ FOOTNOTES
     test('5.4 Full formatting command', async function() {
       this.timeout(15000); // Increase timeout for this test
       
-      // Create a temporary test file with various formatting issues
-      const tempDir = path.join(__dirname, 'temp');
-      if (!fs.existsSync(tempDir)) {
-        fs.mkdirSync(tempDir);
-      }
-      
-      const testFilePath = path.join(tempDir, 'full-format-test.rfc');
-      const unformattedContent = 
+      // Create a test environment and temporary file
+      const testEnv = createTestEnv(path.join(__dirname, 'temp'));
+      const unformattedContent =
 `RFC Full Format Test Document
 --------------------------
 
@@ -358,7 +328,7 @@ FOOTNOTES
 [2] This is the second footnote, but should be renumbered to [4].
 [4] This is the fourth footnote, but should be renumbered to [5].`;
       
-      fs.writeFileSync(testFilePath, unformattedContent);
+      const testFilePath = testEnv.createFile('full-format-test.rfc', unformattedContent);
       
       try {
         // Open the test document
@@ -368,11 +338,11 @@ FOOTNOTES
         await new Promise(resolve => setTimeout(resolve, 1000));
         
         // Get the editor
-        const editor = vscode.window.activeTextEditor;
+        const editor = vscodeLib.getActiveEditor();
         assert.ok(editor, 'Editor should be active');
         
         // Execute the full formatting command
-        await vscode.commands.executeCommand('txtdoc.fullFormatting');
+        await vscodeLib.executeCommand('txtdoc.fullFormatting');
         
         // Wait for the formatting to complete
         await new Promise(resolve => setTimeout(resolve, 3000));
@@ -444,12 +414,10 @@ FOOTNOTES
         assert.ok(formattedText.includes('[5] This is the fourth footnote'), 'Fifth footnote declaration should be [5]');
         
         // Clean up - close the editor
-        await vscode.commands.executeCommand('workbench.action.closeActiveEditor');
+        await vscodeLib.closeActiveEditor();
       } finally {
         // Clean up - delete the temporary file
-        if (fs.existsSync(testFilePath)) {
-          fs.unlinkSync(testFilePath);
-        }
+        testEnv.cleanup();
       }
     });
     
@@ -458,14 +426,8 @@ FOOTNOTES
       this.timeout(10000); // Increase timeout for this test
       
       // Create temporary test files with references
-      const tempDir = path.join(__dirname, 'temp');
-      if (!fs.existsSync(tempDir)) {
-        fs.mkdirSync(tempDir);
-      }
-      
-      // Create a target file that will be referenced
-      const targetFilePath = path.join(tempDir, 'target.rfc');
-      const targetContent = 
+      const testEnv = createTestEnv(path.join(__dirname, 'temp'));
+      const targetContent =
 `Target Document
 ---------------
 
@@ -502,11 +464,10 @@ UPPERCASE SECTION
 
    This is an uppercase section.`;
       
-      fs.writeFileSync(targetFilePath, targetContent);
+      const targetFilePath = testEnv.createFile('target.rfc', targetContent);
       
       // Create a source file with valid and invalid references
-      const sourceFilePath = path.join(tempDir, 'reference-test.rfc');
-      const sourceContent = 
+      const sourceContent =
 `Reference Test Document
 ----------------------
 
@@ -531,7 +492,7 @@ This document tests the check references command.
    This section has an invalid section reference (see: target.rfc#nonexistent-section).
 `;
       
-      fs.writeFileSync(sourceFilePath, sourceContent);
+      const sourceFilePath = testEnv.createFile('reference-test.rfc', sourceContent);
       
       try {
         // Open the source document
@@ -541,28 +502,19 @@ This document tests the check references command.
         await new Promise(resolve => setTimeout(resolve, 1000));
         
         // Get the editor
-        const editor = vscode.window.activeTextEditor;
+        const editor = vscodeLib.getActiveEditor();
         assert.ok(editor, 'Editor should be active');
         
         // Execute the check references command
-        await vscode.commands.executeCommand('txtdoc.checkReferences');
+        await vscodeLib.executeCommand('txtdoc.checkReferences');
         
         // Wait for the check to complete
         await new Promise(resolve => setTimeout(resolve, 2000));
         
-        // We can't easily check the diagnostics in the test, so we'll just verify
-        // that the command executed without errors
-        
         // Clean up - close the editor
-        await vscode.commands.executeCommand('workbench.action.closeActiveEditor');
+        await vscodeLib.closeActiveEditor();
       } finally {
-        // Clean up - delete the temporary files
-        if (fs.existsSync(sourceFilePath)) {
-          fs.unlinkSync(sourceFilePath);
-        }
-        if (fs.existsSync(targetFilePath)) {
-          fs.unlinkSync(targetFilePath);
-        }
+        testEnv.cleanup();
       }
     });
     

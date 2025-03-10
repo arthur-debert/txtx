@@ -2,6 +2,7 @@ const vscode = require("vscode");
 const path = require("path");
 const fs = require("fs");
 const { DOCUMENT_REFERENCE_REGEX, SECTION_REGEX, NUMBERED_SECTION_REGEX, ALTERNATIVE_SECTION_REGEX } = require("./constants");
+const vscodeLib = require("../../vscode.lib");
 
 /**
  * Check that all document references point to valid targets
@@ -15,7 +16,7 @@ async function checkReferences(document) {
         return false;
     }
 
-    const editor = vscode.window.activeTextEditor;
+    const editor = vscodeLib.getActiveEditor();
     if (!editor) {
         vscode.window.showErrorMessage('No active editor found');
         return false;
@@ -48,7 +49,7 @@ async function checkReferences(document) {
         }
         
         if (references.length === 0) {
-            vscode.window.showInformationMessage('No document references found');
+            vscodeLib.showInformationMessage('No document references found');
             return true;
         }
         
@@ -98,11 +99,11 @@ async function checkReferences(document) {
         
         // Report the results
         if (diagnostics.length === 0) {
-            vscode.window.showInformationMessage('All references are valid');
+            vscodeLib.showInformationMessage('All references are valid');
         } else {
             // Create a diagnostic collection for the document
-            const diagnosticCollection = vscode.languages.createDiagnosticCollection('txtdoc-references');
-            diagnosticCollection.set(document.uri, diagnostics.map(d => new vscode.Diagnostic(d.range, d.message, d.severity)));
+            const diagnosticCollection = vscodeLib.createDiagnosticCollection('txtdoc-references');
+            vscodeLib.setDiagnostics(diagnosticCollection, document.uri, diagnostics.map(d => vscodeLib.createDiagnostic(d.range, d.message, d.severity)));
             
             vscode.window.showWarningMessage(`Found ${diagnostics.length} invalid references`);
         }
@@ -179,18 +180,13 @@ async function checkAnchorExists(content, anchor) {
  */
 function registerReferenceCommands(context, outputChannel) {
     // Register the check references command
-    const checkReferencesCommand = vscode.commands.registerCommand('txtdoc.checkReferences', async () => {
-        const editor = vscode.window.activeTextEditor;
-        if (editor && editor.document.languageId === 'txtdoc') {
-            outputChannel.appendLine('Executing Check References command');
-            await checkReferences(editor.document);
-        } else {
-            vscode.window.showWarningMessage('Check References command is only available for TxtDoc files');
-        }
-    });
+    const checkReferencesCommand = vscodeLib.registerCommand(
+        context, 
+        'txtdoc.checkReferences', 
+        checkReferences, 
+        outputChannel
+    );
     
-    context.subscriptions.push(checkReferencesCommand);
-    outputChannel.appendLine('Check References command registered');
 }
 
 module.exports = {
