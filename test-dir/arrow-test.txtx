@@ -1,0 +1,24 @@
+Arrow Transformation Test
+-----------------------
+
+This file tests the arrow transformation feature.
+
+Arrow Notations:
+
+→ Right arrow should transform to →
+← Left arrow should transform to ←
+↑ Up arrow should transform to ↑
+↓ Down arrow should transform to ↓
+
+Multiple arrows on one line: → and ← and ↑ and ↓
+
+Arrows in code blocks (should not transform):
+
+    → This is in a code block
+    ← This is in a code block
+    ↑ This is in a code block
+    ↓ This is in a code block
+
+End of test file.
+
+:

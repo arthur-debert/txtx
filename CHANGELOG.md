@@ -3,6 +3,21 @@
 All notable changes to the "txtdoc-format" extension will be documented in this
 file.
 
+## [0.5.0] - 2025-03-10
+
+### Added
+- File and folder path completion
+- Disabled default symbol completion to focus on emoticons and paths
+
+## [0.4.0] - 2025-03-10
+
+- Added text emoticon feature: type `:keyword` to search and insert emoticons
+
+## [0.3.0] - 2025-03-10
+
+- Arrow transformation feature: automatically transforms arrow notations to Unicode arrows
+  - Supports right (->), left (<-), up (^-), and down (v-) arrows
+
 ## [0.2.0] - 2025-03-10
 
 ### Added

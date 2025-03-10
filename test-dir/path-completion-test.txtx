@@ -1,0 +1,23 @@
+Path Completion Test
+------------------
+
+This file demonstrates the path completion feature.
+
+Type a path prefix to get completion suggestions:
+
+Files in the current directory:
+./
+
+Files in the parent directory:
+../
+
+Files from the workspace root:
+/
+
+You can also start typing a file or folder name to filter the suggestions:
+./p
+
+The completion provider will show matching files and folders
+with appropriate icons for each type.
+
+End of test file.

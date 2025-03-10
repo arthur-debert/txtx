@@ -1,0 +1,24 @@
+Emoticon Feature Test
+-------------------
+
+This file demonstrates the emoticon feature.
+
+Type a colon followed by a keyword to search for emoticons:
+
+:smile - Should show emoticon options for "smile"
+:laugh - Should show emoticon options for "laugh"
+:cry - Should show emoticon options for "cry"
+:angry - Should show emoticon options for "angry"
+:cool - Should show emoticon options for "cool"
+:shrug - Should show the shrug emoticon
+
+You can also search by description:
+:happy - Should show happy face emoticons
+:sad - Should show sad face emoticons
+:surprise - Should show surprised face emoticons
+
+After typing the colon and keyword, a quick pick menu should appear
+with matching emoticons. Select one to insert it at the cursor position.
+
+End of test file.
+

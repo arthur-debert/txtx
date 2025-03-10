@@ -2,7 +2,7 @@
   "name": "txtdoc-format",
   "displayName": "TxtDoc Format",
   "description": "Syntax highlighting for TxtDoc format",
-  "version": "0.2.0",
+  "version": "0.5.0",
   "engines": {
     "vscode": "^1.60.0"
   },

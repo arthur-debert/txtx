@@ -16,7 +16,7 @@
       "end": "^(?!\\s{4})$"
     }
   },
-  "wordPattern": "\\w+",
+  "wordPattern": ":[a-zA-Z0-9_]+|\\w+",
   "indentationRules": {
     "increaseIndentPattern": "^(\\s*-\\s+|\\s*\\d+\\.\\s+|\\s*[a-z]\\.\\s+|\\s*[ivx]+\\.\\s+)",
     "decreaseIndentPattern": "^\\s*$"

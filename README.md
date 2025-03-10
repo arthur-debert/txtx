@@ -62,6 +62,32 @@ files:
   _Note_
   ```
 
+- **Arrow Transformations**: Automatically transforms arrow notations to Unicode arrows
+
+  ```text
+  -> transforms to → (right arrow)
+  <- transforms to ← (left arrow)
+  ^- transforms to ↑ (up arrow)
+  v- transforms to ↓ (down arrow)
+  ```
+
+- **Text Emoticons**: Type `:keyword` to search and insert emoticons
+
+  ```text
+  :smile -> 🙂 (Smiley, happy face)
+  :laugh -> 😄 (Laughing, big grin)
+  :cry -> 😢 (Crying)
+  :shrug -> ¯\_(ツ)_/¯ (Shrugs)
+  ```
+
+- **Path Completion**: Automatic completion for file and folder paths
+
+  ```text
+  ./ -> Shows files and folders in the current directory
+  ../ -> Shows files and folders in the parent directory
+  / -> Shows files and folders from the workspace root
+  ```
+
 ## Document Outline
 
 The extension provides document outline support for TxtDoc files:
@@ -147,3 +173,22 @@ To test with only specific extensions enabled:
 - Added document outline support for sections and code blocks
 - Improved folding markers for better code organization
 - Enhanced syntax highlighting with meta scopes
+
+### 0.3.0
+
+- Added arrow transformation feature
+- Automatically converts arrow notations to Unicode arrows
+- Supports right (->), left (<-), up (^-), and down (v-) arrows
+
+### 0.4.0
+
+- Added text emoticon feature
+- Type `:keyword` to search for emoticons by name
+- Supports a wide range of emoticons and emoji
+
+### 0.5.0
+
+- Added file and folder path completion
+- Improved emoticon replacement functionality
+- Disabled default symbol completion to focus on emoticons and paths
+- Fixed issues with emoticon selection and replacement
