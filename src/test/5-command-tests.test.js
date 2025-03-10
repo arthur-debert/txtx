@@ -1,13 +1,24 @@
 const assert = require('assert');
 const vscode = require('vscode');
 const path = require('path');
-const { isVerbose, openDocument, getDocumentSections, createTestEnv } = require('./test-helpers');
+const { isVerbose, openDocument, getDocumentSections, createTestEnv, configureNotifications, enableTestNotification, resetNotificationConfig } = require('./test-helpers');
 const vscodeLib = require('../../vscode.lib');
 
 suite('TxtDoc Format Extension Tests', function() {
   
   // 5. Command Tests
   suite('5. Command Tests', function() {
+    
+    // Setup: Enable notifications for testing
+    setup(function() {
+      // Enable notifications needed for tests
+      configureNotifications({
+        FORMAT_SUCCESS: true,
+        TOC_SUCCESS: true,
+        FOOTNOTE_SUCCESS: true,
+        FULL_FORMAT_SUCCESS: true
+      });
+    });
     
     // 5.1 Format document command
     test('5.1 Format document command', async function() {
@@ -516,6 +527,11 @@ This document tests the check references command.
       } finally {
         testEnv.cleanup();
       }
+    });
+    
+    // Teardown: Reset notification configuration
+    teardown(function() {
+      resetNotificationConfig();
     });
     
   });

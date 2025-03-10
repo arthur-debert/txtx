@@ -1,6 +1,7 @@
 const vscode = require("vscode");
 const { SECTION_REGEX, NUMBERED_SECTION_REGEX, ALTERNATIVE_SECTION_REGEX } = require("./constants");
 const { numberFootnotes } = require("./footnoteCommands");
+const { sendNotification } = require("./notifications");
 const vscodeLib = require("../../vscode.lib");
 
 /**
@@ -11,13 +12,13 @@ const vscodeLib = require("../../vscode.lib");
 async function formatDocument(document) {
     // Only format RFC files
     if (document.languageId !== 'txtdoc' || !document.fileName.endsWith('.rfc')) {
-        vscode.window.showWarningMessage('Format Document command is only available for .rfc files');
+        sendNotification('FORMAT_RFC_ONLY');
         return false;
     }
 
     const editor = vscodeLib.getActiveEditor();
     if (!editor) {
-        vscode.window.showErrorMessage('No active editor found');
+        sendNotification('FORMAT_NO_EDITOR');
         return false;
     }
 
@@ -33,10 +34,10 @@ async function formatDocument(document) {
         const fullRange = vscodeLib.getDocumentRange(document);
         
         await vscodeLib.applyEdit(editor, fullRange, formattedLines.join('\n'));
-        vscodeLib.showInformationMessage('Document formatted successfully');
+        sendNotification('FORMAT_SUCCESS');
         return true;
     } catch (error) {
-        vscode.window.showErrorMessage(`Error formatting document: ${error.message}`);
+        sendNotification('FORMAT_ERROR', error);
         return false;
     }
 }
@@ -49,13 +50,13 @@ async function formatDocument(document) {
 async function generateTOC(document) {
     // Only generate TOC for RFC files
     if (document.languageId !== 'txtdoc' || !document.fileName.endsWith('.rfc')) {
-        vscode.window.showWarningMessage('Generate TOC command is only available for .rfc files');
+        sendNotification('TOC_RFC_ONLY');
         return false;
     }
 
     const editor = vscodeLib.getActiveEditor();
     if (!editor) {
-        vscode.window.showErrorMessage('No active editor found');
+        sendNotification('TOC_NO_EDITOR');
         return false;
     }
 
@@ -68,7 +69,7 @@ async function generateTOC(document) {
         const sections = vscodeLib.findSections(text, SECTION_REGEX, NUMBERED_SECTION_REGEX, ALTERNATIVE_SECTION_REGEX);
         
         if (sections.length === 0) {
-            vscode.window.showWarningMessage('No sections found in the document');
+            sendNotification('TOC_NO_SECTIONS');
             return false;
         }
         
@@ -100,10 +101,10 @@ async function generateTOC(document) {
             });
         }
         
-        vscode.window.showInformationMessage('Table of contents generated successfully');
+        sendNotification('TOC_SUCCESS');
         return true;
     } catch (error) {
-        vscode.window.showErrorMessage(`Error generating table of contents: ${error.message}`);
+        sendNotification('TOC_ERROR', error);
         return false;
     }
 }
@@ -116,13 +117,13 @@ async function generateTOC(document) {
 async function fullFormatting(document) {
     // Only format RFC files
     if (document.languageId !== 'txtdoc' || !document.fileName.endsWith('.rfc')) {
-        vscode.window.showWarningMessage('Full Formatting command is only available for .rfc files');
+        sendNotification('FULL_FORMAT_RFC_ONLY');
         return false;
     }
 
     const editor = vscodeLib.getActiveEditor();
     if (!editor) {
-        vscode.window.showErrorMessage('No active editor found');
+        sendNotification('FULL_FORMAT_NO_EDITOR');
         return false;
     }
 
@@ -140,10 +141,10 @@ async function fullFormatting(document) {
 
         const footnoteResult = await numberFootnotes(document);
         
-        vscodeLib.showInformationMessage('Full formatting applied successfully');
+        sendNotification('FULL_FORMAT_SUCCESS');
         return true;
     } catch (error) {
-        vscode.window.showErrorMessage(`Error applying full formatting: ${error.message}`);
+        sendNotification('FULL_FORMAT_ERROR', error);
         return false;
     }
 }

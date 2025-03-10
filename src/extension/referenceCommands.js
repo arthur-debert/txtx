@@ -2,6 +2,7 @@ const vscode = require("vscode");
 const path = require("path");
 const fs = require("fs");
 const { DOCUMENT_REFERENCE_REGEX, SECTION_REGEX, NUMBERED_SECTION_REGEX, ALTERNATIVE_SECTION_REGEX } = require("./constants");
+const { sendNotification } = require("./notifications");
 const vscodeLib = require("../../vscode.lib");
 
 /**
@@ -12,13 +13,13 @@ const vscodeLib = require("../../vscode.lib");
 async function checkReferences(document) {
     // Only process RFC files
     if (document.languageId !== 'txtdoc' || !document.fileName.endsWith('.rfc')) {
-        vscode.window.showWarningMessage('Check References command is only available for .rfc files');
+        sendNotification('REFERENCE_RFC_ONLY');
         return false;
     }
 
     const editor = vscodeLib.getActiveEditor();
     if (!editor) {
-        vscode.window.showErrorMessage('No active editor found');
+        sendNotification('REFERENCE_NO_EDITOR');
         return false;
     }
 
@@ -49,7 +50,7 @@ async function checkReferences(document) {
         }
         
         if (references.length === 0) {
-            vscodeLib.showInformationMessage('No document references found');
+            sendNotification('REFERENCE_NONE_FOUND');
             return true;
         }
         
@@ -99,18 +100,18 @@ async function checkReferences(document) {
         
         // Report the results
         if (diagnostics.length === 0) {
-            vscodeLib.showInformationMessage('All references are valid');
+            sendNotification('REFERENCE_ALL_VALID');
         } else {
             // Create a diagnostic collection for the document
             const diagnosticCollection = vscodeLib.createDiagnosticCollection('txtdoc-references');
             vscodeLib.setDiagnostics(diagnosticCollection, document.uri, diagnostics.map(d => vscodeLib.createDiagnostic(d.range, d.message, d.severity)));
             
-            vscode.window.showWarningMessage(`Found ${diagnostics.length} invalid references`);
+            sendNotification('REFERENCE_INVALID_FOUND', diagnostics.length);
         }
         
         return true;
     } catch (error) {
-        vscode.window.showErrorMessage(`Error checking references: ${error.message}`);
+        sendNotification('REFERENCE_ERROR', error);
         return false;
     }
 }

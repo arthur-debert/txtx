@@ -7,6 +7,7 @@
 
 const vscode = require('vscode');
 const path = require('path');
+const { sendNotification } = require('./src/extension/notifications');
 const fs = require('fs');
 
 /**
@@ -216,7 +217,7 @@ function registerCommand(context, command, callback, outputChannel) {
       outputChannel?.appendLine(`Executing ${command} command`);
       await callback(editor.document);
     } else {
-      vscode.window.showWarningMessage(`${command} command is only available for TxtDoc files`);
+      sendNotification('FOOTNOTE_TXTDOC_ONLY');
     }
   });
   
@@ -316,7 +317,7 @@ function createOutputChannel(name) {
  * @returns {Promise<string|undefined>} - The selected item
  */
 function showInformationMessage(message) {
-  return vscode.window.showInformationMessage(message);
+  return sendNotification('FORMAT_SUCCESS');
 }
 
 /**
@@ -325,7 +326,7 @@ function showInformationMessage(message) {
  * @returns {Promise<string|undefined>} - The selected item
  */
 function showWarningMessage(message) {
-  return vscode.window.showWarningMessage(message);
+  return sendNotification('TOC_NO_SECTIONS');
 }
 
 /**
@@ -334,7 +335,7 @@ function showWarningMessage(message) {
  * @returns {Promise<string|undefined>} - The selected item
  */
 function showErrorMessage(message) {
-  return vscode.window.showErrorMessage(message);
+  return sendNotification('FORMAT_ERROR', new Error(message));
 }
 
 /**

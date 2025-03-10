@@ -1,5 +1,6 @@
 const vscode = require("vscode");
 const { FOOTNOTE_REGEX, FOOTNOTE_REFERENCE_REGEX } = require("./constants");
+const { sendNotification } = require("./notifications");
 
 /**
  * Number footnotes sequentially and update references
@@ -9,13 +10,13 @@ const { FOOTNOTE_REGEX, FOOTNOTE_REFERENCE_REGEX } = require("./constants");
 async function numberFootnotes(document) {
     // Only process RFC files
     if (document.languageId !== 'txtdoc' || !document.fileName.endsWith('.rfc')) {
-        vscode.window.showWarningMessage('Number Footnotes command is only available for .rfc files');
+        sendNotification('FOOTNOTE_RFC_ONLY');
         return false;
     }
 
     const editor = vscode.window.activeTextEditor;
     if (!editor) {
-        vscode.window.showErrorMessage('No active editor found');
+        sendNotification('FOOTNOTE_NO_EDITOR');
         return false;
     }
 
@@ -93,10 +94,10 @@ async function numberFootnotes(document) {
             editBuilder.replace(fullRange, newText);
         });
         
-        vscode.window.showInformationMessage('Footnotes numbered successfully');
+        sendNotification('FOOTNOTE_SUCCESS');
         return true;
     } catch (error) {
-        vscode.window.showErrorMessage(`Error numbering footnotes: ${error.message}`);
+        sendNotification('FOOTNOTE_ERROR', error);
         return false;
     }
 }
@@ -114,7 +115,7 @@ function registerFootnoteCommands(context, outputChannel) {
             outputChannel.appendLine('Executing Number Footnotes command');
             await numberFootnotes(editor.document);
         } else {
-            vscode.window.showWarningMessage('Number Footnotes command is only available for TxtDoc files');
+            sendNotification('FOOTNOTE_TXTDOC_ONLY');
         }
     });
     
