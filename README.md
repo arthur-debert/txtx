@@ -69,6 +69,8 @@ files:
 - **TxtDoc Dark**: A dark theme optimized for TxtDoc syntax
 - **TxtDoc Light**: A light theme optimized for TxtDoc syntax
 
+For information on how to customize these themes or create your own, see the [VSCode Theme Customization Primer](docs/vscode-theme-primer.md).
+
 To activate a theme:
 
 1. Press `Ctrl+K Ctrl+T` or go to File > Preferences > Color Theme

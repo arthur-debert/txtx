@@ -3,23 +3,26 @@
   "type": "dark",
   "colors": {
     "editor.background": "#1E1E1E",
-    "editor.foreground": "#D4D4D4",
+    "editor.foreground": "#FFF",
     "editorLineNumber.foreground": "#858585",
     "editor.selectionBackground": "#264F78",
-    "editor.selectionHighlightBackground": "#2D2D30"
+    "editor.selectionHighlightBackground": "#2D2D30",
+    "textBlockQuote.border": "#569CD6",
+    "textBlockQuote.background": "#666",
+    "textCodeBlock.background": "#0D0D0D50"
   },
   "tokenColors": [
     {
       "scope": "markup.heading.txtdoc",
       "settings": {
-        "foreground": "#569CD6",
+        "foreground": "#AAA",
         "fontStyle": "bold"
       }
     },
     {
       "scope": "entity.name.section.txtdoc",
       "settings": {
-        "foreground": "#4EC9B0",
+        "foreground": "#999",
         "fontStyle": "bold"
       }
     },
@@ -31,7 +34,7 @@
         "markup.list.roman.txtdoc"
       ],
       "settings": {
-        "foreground": "#CE9178"
+        "foreground": "#333"
       }
     },
     {
@@ -41,7 +44,7 @@
         "markup.list.roman.txtdoc"
       ],
       "settings": {
-        "foreground": "#B5CEA8",
+        "foreground": "#666",
         "fontStyle": "bold"
       }
     },
@@ -54,8 +57,9 @@
     {
       "scope": "markup.raw.block.txtdoc",
       "settings": {
-        "foreground": "#DCDCAA",
+        "foreground": "#999",
         "background": "#1E1E1E"
+        
       }
     },
     {
@@ -64,21 +68,20 @@
         "markup.quote.nested.content.txtdoc"
       ],
       "settings": {
-        "foreground": "#608B4E",
+        "foreground": "#888",
         "fontStyle": "italic"
       }
     },
     {
       "scope": "markup.quote.nested.content.txtdoc",
       "settings": {
-        "foreground": "#6A9955",
+        "foreground": "#888",
         "fontStyle": "italic"
       }
     },
     {
       "scope": "markup.italic.txtdoc",
       "settings": {
-        "foreground": "#C586C0",
         "fontStyle": "italic"
       }
     }

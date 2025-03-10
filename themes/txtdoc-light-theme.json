@@ -6,7 +6,10 @@
     "editor.foreground": "#000000",
     "editorLineNumber.foreground": "#999999",
     "editor.selectionBackground": "#ADD6FF",
-    "editor.selectionHighlightBackground": "#E5EBF1"
+    "editor.selectionHighlightBackground": "#E5EBF1",
+    "textBlockQuote.border": "#FF0000",
+    "textBlockQuote.background": "#0078D420",
+    "textCodeBlock.background": "#00000010"
   },
   "tokenColors": [
     {

@@ -13,3 +13,4 @@ file.
 - Custom dark and light themes optimized for TxtDoc syntax
 - Support for both .txt and .txtx file extensions
 - Debug output channel for extension diagnostics
+- Theme customization documentation
