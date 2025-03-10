@@ -124,59 +124,59 @@ and progressing to more complex features.
        - Verify the key and value are properly highlighted
        - Check that the metadata is recognized with various spacing
 
-4. Feature Tests
+4. Feature Tests ✓
 
-   4.1 Arrow transformations - right arrow
+   4.1 Arrow transformations - right arrow ✓ (src/test/4-feature-tests.test.js)
        
        - Type "-> " in an .rfc file
        - Verify it's automatically transformed to "→ "
        
-   4.2 Arrow transformations - left arrow
+   4.2 Arrow transformations - left arrow ✓ (src/test/4-feature-tests.test.js)
        
        - Type "<- " in an .rfc file
        - Verify it's automatically transformed to "← "
        
-   4.3 Arrow transformations - up arrow
+   4.3 Arrow transformations - up arrow ✓ (src/test/4-feature-tests.test.js)
        
        - Type "^- " in an .rfc file
        - Verify it's automatically transformed to "↑ "
        
-   4.4 Arrow transformations - down arrow
+   4.4 Arrow transformations - down arrow ✓ (src/test/4-feature-tests.test.js)
        
        - Type "v- " in an .rfc file
        - Verify it's automatically transformed to "↓ "
        
-   4.5 Emoticon features - basic emoticons
+   4.5 Emoticon features - basic emoticons ✓ (src/test/4-feature-tests.test.js)
        
        - Type ":smile:" in an .rfc file
        - Verify the emoticon picker appears
        - Select an emoticon and check it's inserted correctly
        
-   4.6 Emoticon features - partial match
+   4.6 Emoticon features - partial match ✓ (src/test/4-feature-tests.test.js)
        
        - Type ":sm" in an .rfc file
        - Verify the emoticon picker shows matching emoticons
        - Select an emoticon and check it's inserted correctly
        
-   4.7 Path completion - relative paths
+   4.7 Path completion - relative paths ✓ (src/test/4-feature-tests.test.js)
        
        - Type "./" in an .rfc file
        - Verify the path completion shows available files/folders
        - Select a path and check it's inserted correctly
        
-   4.8 Path completion - workspace paths
+   4.8 Path completion - workspace paths ✓ (src/test/4-feature-tests.test.js)
        
        - Type "/" in an .rfc file
        - Verify the path completion shows available files/folders
        - Select a path and check it's inserted correctly
        
-   4.9 Footnotes - references
+   4.9 Footnotes - references ✓ (src/test/4-feature-tests.test.js)
        
        - Create a footnote reference [1] in the document
        - Create the corresponding footnote declaration [1] Text
        - Verify the reference is clickable and jumps to the declaration
        
-   4.10 Document references
+   4.10 Document references ✓ (src/test/4-feature-tests.test.js)
        
        - Create a document reference (see: file.rfc)
        - Verify the reference is clickable and opens the referenced file
@@ -273,5 +273,6 @@ TEST FILE ORGANIZATION
   - src/test/1-basic-extension.test.js: Basic extension functionality tests
   - src/test/2-document-structure.test.js: Document structure and outline tests
   - src/test/3-syntax-highlighting.test.js: Syntax highlighting tests
+|   - src/test/4-feature-tests.test.js: Feature tests
   - src/test/extension.test.js: Main entry point that imports all test files
   - src/test/test-helpers.js: Shared helper functions used across test files
