@@ -1,0 +1,53 @@
+name: Release Extension
+
+on:
+  workflow_dispatch:
+    inputs:
+      force_update:
+        description: 'Force update even if no changes detected'
+        required: false
+        default: false
+        type: boolean
+
+jobs:
+  setup:
+    uses: ./.github/workflows/base-setup.yml
+    with:
+      run_command: npm test
+
+  build-and-release:
+    needs: setup
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Determine version
+        id: determine_version
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          echo "release_version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Extension version: $VERSION"
+
+      - name: Compile extension
+        run: |
+          chmod +x ./bin/extension-compile
+          ./bin/extension-compile
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: .dist/*
+          tag_name: v${{ steps.determine_version.outputs.release_version }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          generate_release_notes: true
+          prerelease: false
+          name: "Release v${{ steps.determine_version.outputs.release_version }}"
