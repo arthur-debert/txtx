@@ -9,6 +9,7 @@ file.
 
 - File and folder path completion
 - Added support for .rfc file extension
+- Added support for *bold* text formatting using single asterisks
 - Disabled default symbol completion to focus on emoticons and paths
 
 ## [0.4.0] - 2025-03-10

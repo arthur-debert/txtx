@@ -84,6 +84,12 @@
       "settings": {
         "fontStyle": "italic"
       }
+    },
+    {
+      "scope": "markup.bold.txtdoc",
+      "settings": {
+        "fontStyle": "bold"
+      }
     }
   ]
 }

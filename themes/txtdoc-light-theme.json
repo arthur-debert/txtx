@@ -85,6 +85,13 @@
         "foreground": "#AF00DB",
         "fontStyle": "italic"
       }
+    },
+    {
+      "scope": "markup.bold.txtdoc",
+      "settings": {
+        "foreground": "#0000FF",
+        "fontStyle": "bold"
+      }
     }
   ]
 }

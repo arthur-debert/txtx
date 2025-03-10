@@ -18,6 +18,9 @@
       "include": "#quote"
     },
     {
+      "include": "#bold"
+    },
+    {
       "include": "#emphasis"
     }
   ],
@@ -116,6 +119,14 @@
           }
         }
       ]
+    },
+    "bold": {
+      "match": "\\*(.*?)\\*",
+      "captures": {
+        "1": {
+          "name": "markup.bold.txtdoc"
+        }
+      }
     },
     "emphasis": {
       "match": "_(.*?)_",

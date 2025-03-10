@@ -9,8 +9,8 @@ This extension provides syntax highlighting for the following elements in TxtDoc
 files:
 
 - **Document Outline**: Automatic outline view for sections and code blocks
-- **Arrow Transformations**: Automatically transforms arrow notations to
-    Unicode arrows
+- **Arrow Transformations**: Automatically transforms arrow notations to Unicode
+  arrows
 - **Theming**
 - **Path Completion**: Automatic completion for file and folder paths
 
@@ -99,11 +99,17 @@ To activate a theme:
   >> This is a nested quoted line.
   ```
 
-- **Emphasis**: Using "\_" around text
+- **Emphasis/Italics**: Using "\_" around text
 
-  ```text
-  _Note_
-  ```
+  ````text
+  _This text will be italic_
+  |   ```
+  |
+  | - **Bold**: Using "\*" around text
+  |
+  |   ```text
+  |   *This text will be bold*
+  ````
 
 - **Arrow Transformations**: Automatically transforms arrow notations to Unicode
   arrows
@@ -170,8 +176,8 @@ To activate a theme:
 
 ## Usage
 
-The extension automatically activates for all `.txt`, `.txtx`, and `.rfc` files. If you
-want to manually set a file to use TxtDoc highlighting:
+The extension automatically activates for all `.txt`, `.txtx`, and `.rfc` files.
+If you want to manually set a file to use TxtDoc highlighting:
 
 1. Open the file
 2. Click on the language mode indicator in the bottom-right corner of VS Code
@@ -186,7 +192,8 @@ To test the extension:
 3. Click the green play button or press F5 to launch a new window with the
    extension loaded
 4. The test-dir directory will open in the new window
-5. Open the sample.txt, sample.txtx, and sample.rfc files in the test-dir directory
+5. Open the sample.txt, sample.txtx, and sample.rfc files in the test-dir
+   directory
 6. Check the "txtos" output channel in the Output panel to see debug logs
 7. Verify that both files use the TxtDoc highlighting
 
