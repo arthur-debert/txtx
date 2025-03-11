@@ -9,14 +9,11 @@ on:
         default: false
         type: boolean
 
-jobs:
-  setup:
-    uses: ./.github/workflows/base-setup.yml
-    with:
-      run_command: npm test
+permissions:
+  contents: write
 
+jobs:
   build-and-release:
-    needs: setup
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -28,17 +25,30 @@ jobs:
           cache: "npm"
 
       - name: Install dependencies
-        run: npm ci
+        run: npm ci --include=dev
+        
+      - name: Install direnv
+        run: sudo apt-get install direnv
+
+      - name: Setup direnv
+        run: |
+          echo 'eval "$(direnv hook bash)"' >> ~/.bashrc
+          source ~/.bashrc
+          direnv allow .
 
       - name: Determine version
         id: determine_version
         run: |
+          # Ensure PATH includes node_modules/.bin
+          export PATH="$PWD/node_modules/.bin:$PATH"
           VERSION=$(node -p "require('./package.json').version")
           echo "release_version=$VERSION" >> $GITHUB_OUTPUT
           echo "Extension version: $VERSION"
 
       - name: Compile extension
         run: |
+          # Ensure PATH includes node_modules/.bin
+          export PATH="$PWD/node_modules/.bin:$PATH"
           chmod +x ./bin/extension-compile
           ./bin/extension-compile
 

@@ -2,11 +2,6 @@ name: Base Setup and Test
 
 on:
   workflow_call:
-    inputs:
-      run_command:
-        required: true
-        type: string
-        description: "The npm command to run"
 
 jobs:
   setup-and-test:
@@ -21,14 +16,4 @@ jobs:
           cache: "npm"
 
       - name: Install dependencies
-        run: npm ci
-
-      - name: Run command
-        run: ${{ inputs.run_command }}
-
-      - name: Upload test results
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: test-results
-          path: test-results/
+        run: npm ci --include=dev
