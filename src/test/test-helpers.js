@@ -1,6 +1,7 @@
 const vscodeLib = require('../extension/vscode.lib');
 const { setNotificationConfig, enableNotification, disableNotification, enableAllNotifications, disableAllNotifications, getNotificationConfig } = require('../extension/notifications');
 const fileOps = require('./file-operations');
+const path = require('path');
 
 // Get verbose flag from environment
 const isVerbose = process.env.VERBOSE === 'true';
@@ -13,7 +14,13 @@ const {
 
 // Create a test environment helper
 function createTestEnv(testDir) {
-  return fileOps.createTestEnvironment(testDir);
+  // Extract just the directory name if a full path is provided
+  let testDirName;
+  if (testDir) {
+    // Get the last part of the path as the directory name
+    testDirName = path.basename(testDir);
+  }
+  return fileOps.createTestEnvironment(testDirName);
 }
 
 /**
