@@ -6,6 +6,7 @@ const { registerInsertions } = require("./insertions");
 const { registerPathCompletionProvider } = require("./pathCompletionProvider");
 const { registerFormatCommands } = require("./formatCommands");
 const { registerFootnoteCommands } = require("./footnoteCommands");
+const { registerExportCommands } = require("./exportCommands");
 const { registerReferenceCommands } = require("./referenceCommands");
 const vscodeLib = require("./vscode.lib");
 
@@ -58,6 +59,9 @@ function activate(context) {
     
     // Register the reference commands
     registerReferenceCommands(context, outputChannel);
+    
+    // Register the export commands
+    registerExportCommands(context, outputChannel);
     
     console.log('RfcDoc Format extension activated');
 }

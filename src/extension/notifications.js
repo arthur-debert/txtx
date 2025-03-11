@@ -39,7 +39,14 @@ const notificationConfig = {
     REFERENCE_NONE_FOUND: false,
     REFERENCE_ALL_VALID: false,
     REFERENCE_INVALID_FOUND: false,
-    REFERENCE_ERROR: false
+    REFERENCE_ERROR: false,
+    
+    // Export Commands
+    EXPORT_RFC_ONLY: false,
+    EXPORT_NO_EDITOR: false,
+    EXPORT_SUCCESS: false,
+    EXPORT_ERROR: false
+    
 };
 
 /**
@@ -151,7 +158,26 @@ const notifications = {
     REFERENCE_ERROR: {
         type: "error",
         message: (error) => `Error checking references: ${error.message}`
+    },
+    
+    // Export Commands
+    EXPORT_RFC_ONLY: {
+        type: "warning",
+        message: "Export as HTML command is only available for .rfc files"
+    },
+    EXPORT_NO_EDITOR: {
+        type: "error",
+        message: "No active editor found"
+    },
+    EXPORT_SUCCESS: {
+        type: "info",
+        message: (fileName) => `Document exported successfully as ${fileName}`
+    },
+    EXPORT_ERROR: {
+        type: "error",
+        message: (error) => `Error exporting document: ${error.message}`
     }
+    
 };
 
 /**
