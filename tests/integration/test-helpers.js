@@ -78,7 +78,7 @@ function getFixturePath(fixtureName) {
  * @returns {string} - The absolute path to the fixture file
  */
 function getTestFixturePath(fixtureName) {
-  return path.join(__dirname, '..', '..', 'src', 'test', 'fixtures', fixtureName);
+  return path.join(__dirname, 'fixtures', fixtureName);
 }
 
 module.exports = {
