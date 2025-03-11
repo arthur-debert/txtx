@@ -35,7 +35,14 @@ Available Commands
    
    Use this command for a complete document refresh.
 
-5. Check References
+5. Fix Numbering
+   Command: `RfcDoc: Fix Numbering`
+   
+   Automatically fixes the numbering in ordered lists and section headers.
+   This ensures that all numbered items increment correctly, including
+   nested lists with alternating number and letter markers.
+
+6. Check References
    Command: `RfcDoc: Check References`
    
    Validates that all document references point to valid targets and reports

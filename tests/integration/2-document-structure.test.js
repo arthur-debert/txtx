@@ -1,7 +1,7 @@
 const assert = require('assert');
 const vscode = require('vscode');
 const path = require('path');
-const { isVerbose, openDocument } = require('./test-helpers');
+const { isVerbose, openDocument, getTestFixturePath } = require('./test-helpers');
 
 suite('RfcDoc Format Extension Tests', function() {
   
@@ -13,7 +13,7 @@ suite('RfcDoc Format Extension Tests', function() {
       this.timeout(10000); // Increase timeout for this test
       
       // Open the test document
-      const testFilePath = path.join(__dirname, 'fixtures', 'outline-test.rfc');
+      const testFilePath = getTestFixturePath('outline-test.rfc');
       const document = await openDocument(testFilePath);
       
       // Wait for the language mode to be set
@@ -46,7 +46,7 @@ suite('RfcDoc Format Extension Tests', function() {
       this.timeout(10000); // Increase timeout for this test
       
       // Open the test document
-      const testFilePath = path.join(__dirname, 'fixtures', 'outline-test.rfc');
+      const testFilePath = getTestFixturePath('outline-test.rfc');
       const document = await openDocument(testFilePath);
       
       // Wait for the language mode to be set
@@ -77,7 +77,7 @@ suite('RfcDoc Format Extension Tests', function() {
       this.timeout(10000); // Increase timeout for this test
       
       // Open the test document
-      const testFilePath = path.join(__dirname, 'fixtures', 'outline-test.rfc');
+      const testFilePath = getTestFixturePath('outline-test.rfc');
       const document = await openDocument(testFilePath);
       
       // Wait for the language mode to be set
@@ -116,7 +116,7 @@ suite('RfcDoc Format Extension Tests', function() {
       this.timeout(10000); // Increase timeout for this test
       
       // Open the test document
-      const testFilePath = path.join(__dirname, 'fixtures', 'outline-test.rfc');
+      const testFilePath = getTestFixturePath('outline-test.rfc');
       const document = await openDocument(testFilePath);
       
       // Wait for the language mode to be set
@@ -147,7 +147,7 @@ suite('RfcDoc Format Extension Tests', function() {
       this.timeout(10000); // Increase timeout for this test
       
       // Open the test document
-      const testFilePath = path.join(__dirname, 'fixtures', 'outline-test.rfc');
+      const testFilePath = getTestFixturePath('outline-test.rfc');
       const document = await openDocument(testFilePath);
       
       // Wait for the language mode to be set

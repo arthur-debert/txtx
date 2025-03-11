@@ -1,0 +1,2 @@
+always use the operating system's built-in functions for creating temporary files and directories.
+this varies per env, for example it's os.tmpdir() in node.js and mktemp() in python, but use those.

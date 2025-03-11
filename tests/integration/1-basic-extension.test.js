@@ -1,7 +1,7 @@
 const assert = require('assert');
 const vscode = require('vscode');
 const path = require('path');
-const { isVerbose, openDocument } = require('./test-helpers');
+const { isVerbose, openDocument, getFixturePath } = require('./test-helpers');
 
 suite('RfcDoc Format Extension Tests', function() {
   
@@ -20,7 +20,7 @@ suite('RfcDoc Format Extension Tests', function() {
       this.timeout(10000); // Increase timeout for this test
       
       // Open an .rfc file
-      const testFilePath = path.join(__dirname, '..', '..', 'fixtures', 'rfc-test.rfc');
+      const testFilePath = getFixturePath('rfc-test.rfc');
       const document = await openDocument(testFilePath);
       
       // Check that the language ID is set to rfcdoc
@@ -43,7 +43,7 @@ suite('RfcDoc Format Extension Tests', function() {
       // Instead, we'll verify that the extension provides the expected functionality.
       
       // Open an .rfc file
-      const testFilePath = path.join(__dirname, '..', '..', 'fixtures', 'rfc-test.rfc');
+      const testFilePath = getFixturePath('rfc-test.rfc');
       const document = await openDocument(testFilePath);
       
       // Check that the language ID is set to rfcdoc

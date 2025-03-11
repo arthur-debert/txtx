@@ -80,6 +80,11 @@
         "command": "rfcdoc.exportAsHtml",
         "title": "RfcDoc: Export as HTML",
         "category": "RfcDoc"
+      },
+      {
+        "command": "rfcdoc.fixNumbering",
+        "title": "RfcDoc: Fix Numbering",
+        "category": "RfcDoc"
       }
     ]
   },
@@ -88,9 +93,10 @@
   ],
   "main": "./extension.js",
   "scripts": {
-    "test": "node ./src/test/run-with-verbosity.js",
-    "test:manual": "node ./src/test/runTest.js",
-    "test:single": "node ./src/test/run-single-test.js"
+    "compile": "echo 'No compilation needed for JavaScript project'",
+    "test": "node ./tests/runTest.js",
+    "test:unit": "node ./tests/runTest.js unit",
+    "test:integration": "node ./tests/runTest.js integration"
   },
   "repository": {
     "type": "git",
@@ -107,6 +113,7 @@
     "@vscode/test-cli": "^0.0.10",
     "@vscode/test-electron": "^2.4.1",
     "@vscode/vsce": "^3.2.2",
+    "glob": "^10.3.10",
     "mocha": "^11.1.0",
     "vscode-test": "^1.5.0"
   },

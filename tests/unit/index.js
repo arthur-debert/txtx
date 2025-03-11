@@ -1,19 +1,33 @@
+/**
+ * Unit test setup and runner
+ */
 const path = require('path');
 const Mocha = require('mocha');
 const { glob } = require('glob');
 
-// Determine if we're in verbose mode
-const isVerbose = process.env.VERBOSE === 'true';
+// Explicitly load test helpers
+require('./testHelpers');
 
-function run() {
+/**
+ * Run unit tests
+ * @param {Object} options - Test options
+ * @returns {Promise<void>}
+ */
+function run(options = {}) {
+  // Determine if we're in verbose mode
+  const isVerbose = process.env.VERBOSE === 'true';
+  
+  // Get reporter from environment or options
+  const reporter = process.env.MOCHA_REPORTER || options.reporter || (isVerbose ? 'list' : 'min');
+  
   // Create the mocha test
   const mocha = new Mocha({
     ui: 'tdd',
     color: true,
-    // Use list reporter for verbose mode, min reporter for non-verbose mode
-    reporter: isVerbose ? 'list' : 'min',
+    reporter: reporter,
     timeout: 10000,
-    fullTrace: true
+    fullTrace: true,
+    ...options.mocha
   });
 
   const testsRoot = path.resolve(__dirname, '.');
@@ -24,11 +38,11 @@ function run() {
       .then(files => {        
         // Only show detailed logs in verbose mode
         if (isVerbose) {
-          console.log('\n======= RUNNING TEST FILES =======');
+          console.log('\n======= RUNNING UNIT TEST FILES =======');
           files.forEach(f => console.log(`- ${f}`));
         } else {
           // In non-verbose mode, just show a simple message
-          console.log(`Running ${files.length} test files...`);
+          console.log(`Running ${files.length} unit test files...`);
         }
         console.log('==================================\n');
         
@@ -38,9 +52,9 @@ function run() {
         try {
           // Run the mocha test
           const runner = mocha.run(failures => {
-            isVerbose && console.log(`\n======= TEST RESULTS: ${failures} failures =======\n`);
+            isVerbose && console.log(`\n======= UNIT TEST RESULTS: ${failures} failures =======\n`);
             if (failures > 0) {
-              reject(new Error(`${failures} tests failed.`));
+              reject(new Error(`${failures} unit tests failed.`));
             } else {
               resolve();
             }

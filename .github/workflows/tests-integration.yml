@@ -49,7 +49,7 @@ jobs:
         run: |
           # Ensure PATH includes node_modules/.bin
           export PATH="$PWD/node_modules/.bin:$PATH"
-          xvfb-run -a ./src/test/run-with-verbosity.js
+          xvfb-run -a npm run test:integration
 
       - name: Upload test results
         if: always()

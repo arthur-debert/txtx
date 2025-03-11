@@ -9,6 +9,6 @@ require('./3-syntax-highlighting.test');
 require('./4-feature-tests.test');
 require('./5-command-tests.test');
 
-// This file now serves as an entry point for all tests
-// The actual test implementations have been moved to separate files
+// This file serves as an entry point for all integration tests
+// The actual test implementations are in separate files
 // organized by phase as defined in the RFC document

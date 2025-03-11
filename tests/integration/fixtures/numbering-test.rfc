@@ -1,0 +1,50 @@
+RFC Numbering Test Document
+-------------------------
+
+Author        John Doe
+Date          March 10, 2025
+Version       1.0
+Status        Draft
+
+This document tests the fix numbering command.
+
+1. Introduction
+
+   This is the introduction section.
+
+1. Main Section
+
+   1.1 Subsection One
+   
+       This is subsection one with a list:
+       
+       1. First item
+       1. Second item
+       1. Third item
+       
+   1.2 Subsection Two
+   
+       This is subsection two with a nested list:
+       
+       1. Parent item one
+          a. Child item one
+          a. Child item two
+       1. Parent item two
+          a. Child item one
+          a. Child item two
+          a. Child item three
+
+1. Conclusion
+
+   This is the conclusion section with a mixed list:
+   
+   a. Item A
+   a. Item B
+   a. Item C
+   
+: Special Section
+
+   This is a special section with a list:
+   
+   1. Special item one
+   1. Special item two

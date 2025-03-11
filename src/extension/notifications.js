@@ -45,7 +45,14 @@ const notificationConfig = {
     EXPORT_RFC_ONLY: false,
     EXPORT_NO_EDITOR: false,
     EXPORT_SUCCESS: false,
-    EXPORT_ERROR: false
+    EXPORT_ERROR: false,
+    
+    // Numbering Commands
+    NUMBERING_RFC_ONLY: false,
+    NUMBERING_NO_EDITOR: false,
+    NUMBERING_SUCCESS: false,
+    NUMBERING_ERROR: false,
+    NUMBERING_RFCDOC_ONLY: false
     
 };
 
@@ -176,6 +183,28 @@ const notifications = {
     EXPORT_ERROR: {
         type: "error",
         message: (error) => `Error exporting document: ${error.message}`
+    },
+    
+    // Numbering Commands
+    NUMBERING_RFC_ONLY: {
+        type: "warning",
+        message: "Fix Numbering command is only available for .rfc files"
+    },
+    NUMBERING_NO_EDITOR: {
+        type: "error",
+        message: "No active editor found"
+    },
+    NUMBERING_SUCCESS: {
+        type: "info",
+        message: "Document numbering fixed successfully"
+    },
+    NUMBERING_ERROR: {
+        type: "error",
+        message: (error) => `Error fixing numbering: ${error.message}`
+    },
+    NUMBERING_RFCDOC_ONLY: {
+        type: "warning",
+        message: "Fix Numbering command is only available for RfcDoc files"
     }
     
 };
