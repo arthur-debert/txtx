@@ -1,0 +1,31 @@
+Implementation Plan for RfcDoc Format v2 (.rfc) - Test File
+----------------------------------------------------------
+
+This document tests the new RFC format features.
+
+1. Numbered Section
+   
+   This is a numbered section with proper formatting.
+   
+   1.1 Nested Numbered Section
+   
+       This is a code block inside a nested numbered section.
+       It should be properly indented and highlighted.
+
+: Alternative Section
+   
+   This is an alternative section format.
+
+UPPERCASE SECTION
+   
+   This is the original section format.
+
+*Bold Text* and _Italic Text_
+
+References: see: docs/format.rfc.txt#section-1
+
+Footnotes: This is a footnote reference [1]
+
+[1] This is the footnote text.
+
+Metadata Header  This is a metadata value

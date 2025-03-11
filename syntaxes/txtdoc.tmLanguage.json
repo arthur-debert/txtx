@@ -1,12 +1,18 @@
 {
-  "name": "TxtDoc",
-  "scopeName": "text.txtdoc",
+  "name": "RfcDoc",
+  "scopeName": "text.rfcdoc",
   "patterns": [
     {
       "include": "#title"
     },
     {
       "include": "#section"
+    },
+    {
+      "include": "#numbered_section"
+    },
+    {
+      "include": "#alternative_section"
     },
     {
       "include": "#list"
@@ -21,72 +27,99 @@
       "include": "#bold"
     },
     {
+      "include": "#footnote_reference"
+    },
+    {
+      "include": "#reference"
+    },
+    {
       "include": "#emphasis"
     }
   ],
   "repository": {
     "title": {
       "match": "^([^\\n]+)\\n-+$",
-      "name": "meta.title.txtdoc",
+      "name": "meta.title.rfcdoc",
       "captures": {
         "1": {
-          "name": "markup.heading.txtdoc"
+          "name": "markup.heading.rfcdoc"
         }
       }
     },
     "section": {
       "match": "^([A-Z][^\\n]*)$",
-      "name": "meta.section.txtdoc",
+      "name": "meta.section.rfcdoc",
       "captures": {
         "1": {
-          "name": "entity.name.section.txtdoc"
+          "name": "entity.name.section.rfcdoc"
+        }
+      }
+    },
+    "numbered_section": {
+      "match": "^([0-9]+(?:\\.[0-9]+)*)\\.\\s+([^\\n]*)$",
+      "name": "meta.section.numbered.rfcdoc",
+      "captures": {
+        "1": {
+          "name": "entity.name.section.number.rfcdoc"
+        },
+        "2": {
+          "name": "entity.name.section.title.rfcdoc"
+        }
+      }
+    },
+    "alternative_section": {
+      "match": "^:\\s+([^\\n]*)$",
+      "name": "meta.section.alternative.rfcdoc",
+      "captures": {
+        "1": {
+          "name": "entity.name.section.rfcdoc"
         }
       }
     },
     "list": {
       "patterns": [
         {
-          "name": "markup.list.unnumbered.txtdoc",
+          "name": "markup.list.unnumbered.rfcdoc",
           "match": "^\\s*-\\s+(.+)$",
           "captures": {
             "1": {
-              "name": "markup.list.item.txtdoc"
+              "name": "markup.list.item.rfcdoc"
             }
           }
         },
         {
-          "name": "markup.list.numbered.txtdoc",
+          "name": "markup.list.numbered.rfcdoc",
           "match": "^\\s*(\\d+)\\. (.+)$",
           "captures": {
             "1": {
-              "name": "markup.list.number.txtdoc"
+              "name": "markup.list.number.rfcdoc"
             },
             "2": {
-              "name": "markup.list.item.txtdoc"
+              "name": "markup.list.item.rfcdoc"
             }
           }
         },
         {
-          "name": "markup.list.lettered.txtdoc",
+          "name": "markup.list.lettered.rfcdoc",
           "match": "^\\s*([a-z])\\. (.+)$",
           "captures": {
             "1": {
-              "name": "markup.list.letter.txtdoc"
+              "name": "markup.list.letter.rfcdoc"
             },
             "2": {
-              "name": "markup.list.item.txtdoc"
+              "name": "markup.list.item.rfcdoc"
             }
           }
         },
         {
-          "name": "markup.list.roman.txtdoc",
+          "name": "markup.list.roman.rfcdoc",
           "match": "^\\s*(i|ii|iii|iv|v|vi|vii|viii|ix|x)\\. (.+)$",
           "captures": {
             "1": {
-              "name": "markup.list.roman.txtdoc"
+              "name": "markup.list.roman.rfcdoc"
             },
             "2": {
-              "name": "markup.list.item.txtdoc"
+              "name": "markup.list.item.rfcdoc"
             }
           }
         }
@@ -95,26 +128,71 @@
     "code_block": {
       "begin": "^\\s{4}",
       "end": "^(?!\\s{4})",
-      "name": "markup.raw.block.txtdoc",
-      "contentName": "meta.embedded.block.txtdoc"
+      "name": "markup.raw.block.rfcdoc",
+      "contentName": "meta.embedded.block.rfcdoc"
+    },
+    "footnote_reference": {
+      "match": "\\[(\\d+)\\]",
+      "name": "meta.footnote.reference.rfcdoc",
+      "captures": {
+        "1": {
+          "name": "constant.numeric.footnote.rfcdoc"
+        }
+      }
+    },
+    "footnote_declaration": {
+      "match": "^\\[(\\d+)\\]\\s+(.+)$",
+      "name": "meta.footnote.declaration.rfcdoc",
+      "captures": {
+        "1": {
+          "name": "constant.numeric.footnote.rfcdoc"
+        },
+        "2": {
+          "name": "markup.quote.footnote.rfcdoc"
+        }
+      }
+    },
+    "reference": {
+      "match": "see:\\s+([^#\\s]+)(?:#([\\w-]+))?",
+      "name": "meta.reference.rfcdoc",
+      "captures": {
+        "1": {
+          "name": "string.unquoted.reference.path.rfcdoc"
+        },
+        "2": {
+          "name": "string.unquoted.reference.anchor.rfcdoc"
+        }
+      }
+    },
+    "metadata": {
+      "match": "^([A-Za-z0-9 ]+)\\s{2,}(.+)$",
+      "name": "meta.metadata.rfcdoc",
+      "captures": {
+        "1": {
+          "name": "variable.parameter.metadata.key.rfcdoc"
+        },
+        "2": {
+          "name": "string.unquoted.metadata.value.rfcdoc"
+        }
+      }
     },
     "quote": {
       "patterns": [
         {
-          "name": "meta.quote.txtdoc markup.quote.txtdoc",
+          "name": "meta.quote.rfcdoc markup.quote.rfcdoc",
           "match": "^>\\s+(.+)$",
           "captures": {
             "1": {
-              "name": "markup.quote.content.txtdoc"
+              "name": "markup.quote.content.rfcdoc"
             }
           }
         },
         {
-          "name": "meta.quote.nested.txtdoc markup.quote.nested.txtdoc",
+          "name": "meta.quote.nested.rfcdoc markup.quote.nested.rfcdoc",
           "match": "^>>\\s+(.+)$",
           "captures": {
             "1": {
-              "name": "markup.quote.nested.content.txtdoc"
+              "name": "markup.quote.nested.content.rfcdoc"
             }
           }
         }
@@ -124,7 +202,7 @@
       "match": "\\*(.*?)\\*",
       "captures": {
         "1": {
-          "name": "markup.bold.txtdoc"
+          "name": "markup.bold.rfcdoc"
         }
       }
     },
@@ -132,7 +210,7 @@
       "match": "_(.*?)_",
       "captures": {
         "1": {
-          "name": "markup.italic.txtdoc"
+          "name": "markup.italic.rfcdoc"
         }
       }
     }

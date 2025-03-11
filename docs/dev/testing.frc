@@ -1,0 +1,115 @@
+Testing Reference for rfcdoc
+------------------------
+
+Author        rfcdoc Team
+Date          March 10, 2025
+Status        Reference
+
+This document provides a reference for testing in the rfcdoc project.
+
+1. Test Framework
+
+   The rfcdoc project uses Mocha with TDD UI for testing. Tests are run using
+   the @vscode/test-electron package which provides VSCode integration testing
+   capabilities.
+
+   1.1 Test Files Structure
+
+       Tests are located in the src/test directory and follow the naming pattern
+       *.test.js. They are organized in numbered files for logical grouping:
+       
+       - 1-basic-extension.test.js
+       - 2-document-structure.test.js
+       - 3-syntax-highlighting.test.js
+       - etc.
+
+   1.2 Test Organization
+
+       Tests use Mocha's TDD style with suite() and test() functions:
+       
+       suite('Test Category', function() {
+           test('Test Description', function() {
+               // Test code here
+           });
+       });
+
+2. Test Runner
+
+   2.1 Main Runner
+
+       The main test runner is implemented in src/test/index.js. It:
+       - Configures Mocha with TDD UI
+       - Discovers test files using glob pattern
+       - Executes tests and reports results
+
+   2.2 VSCode Integration
+
+       The src/test/runTest.js file integrates with VSCode:
+       - Sets up the extension development path
+       - Configures the test environment
+       - Runs tests in a VSCode instance
+
+   2.3 Verbosity Control
+
+       The src/test/run-with-verbosity.js script provides verbosity control:
+       - Run with -v flag for detailed output
+       - Without -v flag, only test results are shown
+       - Controls VSCode log level and reporter configuration
+
+3. VSCode Library
+
+   The src/extension/vscode.lib.js provides utilities for testing:
+
+   3.1 Document Operations
+
+       - openDocument: Opens a document in the editor
+       - getActiveEditor: Gets the active text editor
+       - applyEdit: Applies an edit to a document
+
+   3.2 Section Operations
+
+       - getDocumentSections: Gets document sections using symbol provider
+       - findSections: Finds sections in document text
+
+   3.3 Test Utilities
+
+       - createTestEnvironment: Creates a test environment with file utilities
+       - waitForCondition: Waits for a condition to be true
+
+4. Test Helpers
+
+   The src/test/test-helpers.js provides additional test utilities:
+
+   4.1 Environment Helpers
+
+       - isVerbose: Flag indicating if tests are running in verbose mode
+       - createTestEnv: Creates a test environment
+
+   4.2 Notification Helpers
+
+       - configureNotifications: Configures notifications for testing
+       - enableTestNotification: Enables a specific notification
+       - disableTestNotification: Disables a specific notification
+
+5. Running Tests
+
+   5.1 Command Line
+
+       Run tests from the command line:
+       
+       npm test              # Run all tests
+       npm run test:verbose  # Run with verbose output
+
+   5.2 Test Results
+
+       Test results are displayed in the terminal:
+       - In verbose mode: detailed output with test descriptions
+       - In non-verbose mode: minimal output showing only pass/fail status
+       - Test failures include stack traces and assertion details
+
+   5.3 Debugging Tests
+
+       Tests can be debugged using VSCode's debugging features:
+       - Set breakpoints in test files
+       - Use the "Extension Tests" launch configuration
+       - View variables, call stack, and step through code

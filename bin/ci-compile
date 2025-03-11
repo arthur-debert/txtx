@@ -1,0 +1,78 @@
+#!/bin/bash
+# Script to trigger the release workflow and monitor its progress
+# This script compiles the extension and creates a GitHub release
+
+set -e
+
+# Ensure we're in the project root
+cd "$(dirname "$0")/.."
+
+# Define workflow file
+WORKFLOW_FILE=".github/workflows/release.yml"
+
+# Check if gh CLI is installed
+if ! command -v gh &>/dev/null; then
+  echo "Error: GitHub CLI (gh) is not installed."
+  echo "Please install it from https://cli.github.com/"
+  exit 1
+fi
+
+# Check if user is authenticated with GitHub
+if ! gh auth status &>/dev/null; then
+  echo "Error: You are not authenticated with GitHub CLI."
+  echo "Please run 'gh auth login' first."
+  exit 1
+fi
+
+# Get the current version from package.json
+VERSION=$(node -p "require('./package.json').version")
+if [[ -z ${VERSION} ]]; then
+  echo "Error: Could not determine current version from package.json."
+  exit 1
+fi
+
+echo "Current version: ${VERSION}"
+echo "This will trigger a release for rfcdoc-format version ${VERSION}."
+read -r -p "Continue? (y/n): " CONFIRM
+
+if [[ ${CONFIRM} != "y" && ${CONFIRM} != "Y" ]]; then
+  echo "Release cancelled."
+  exit 0
+fi
+
+# Trigger the workflow
+echo "Triggering release workflow..."
+
+# Attempt to run the workflow
+echo "Attempting to run the release workflow..."
+if gh workflow run "${WORKFLOW_FILE}" --field force_update=false 2>/dev/null; then
+  echo "Workflow triggered successfully!"
+else
+  echo "Error: Could not trigger the workflow."
+  echo "This could be because:"
+  echo "1. The workflow file hasn't been committed and pushed to GitHub yet."
+  echo "2. The workflow file has been committed but GitHub hasn't registered it yet."
+  exit 1
+fi
+
+echo ""
+# Wait a moment for the workflow to be registered
+echo "Waiting for workflow to start..."
+sleep 2
+
+# Get the run ID of the latest workflow
+RUN_ID=$(gh run list --workflow="${WORKFLOW_FILE}" --limit 1 --json databaseId --jq '.[0].databaseId')
+
+# Display the status of the workflow run
+echo "Latest workflow run status:"
+echo ""
+gh run list --workflow="${WORKFLOW_FILE}" --limit 1
+
+if [[ -n ${RUN_ID} ]]; then
+  echo ""
+  echo "You can check the detailed status with:"
+  echo "gh run view ${RUN_ID}"
+  echo ""
+  echo "Watching workflow progress in real-time..."
+  gh run watch "${RUN_ID}"
+fi

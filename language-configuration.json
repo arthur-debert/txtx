@@ -5,14 +5,15 @@
   "brackets": [
     // No specific bracket pairs
   ],
-  "autoClosingPairs": [["_", "_"]],
+  "autoClosingPairs": [["_", "_"], ["*", "*"]],
   "surroundingPairs": [
     ["_", "_"],
+    ["*", "*"],
     [">", ""]
   ],
   "folding": {
     "markers": {
-      "start": "^([A-Za-z0-9].*$\\n^-+$|^[A-Z][^\\n]*$|^\\s{4})",
+      "start": "^([A-Za-z0-9].*$\\n^-+$|^[0-9]+\\.[0-9]* [^\\n]*$|^: [^\\n]*$|^[A-Z][^\\n]*$|^\\s{4})",
       "end": "^(?!\\s{4})$"
     }
   },

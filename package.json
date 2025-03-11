@@ -1,9 +1,9 @@
 {
-  "name": "txtdoc-format",
-  "displayName": "TxtDoc Format",
-  "description": "Syntax highlighting for TxtDoc format",
+  "name": "rfcdoc-format",
+  "displayName": "RfcDoc Format",
+  "description": "Syntax highlighting for RfcDoc format",
   "version": "0.5.0",
-  "publisher": "txtdoc",
+  "publisher": "rfcdoc",
   "engines": {
     "vscode": "^1.60.0"
   },
@@ -11,7 +11,7 @@
     "Programming Languages"
   ],
   "keywords": [
-    "txtdoc",
+    "rfcdoc",
     "documentation",
     "plain text",
     "syntax highlighting"
@@ -19,10 +19,10 @@
   "contributes": {
     "languages": [
       {
-        "id": "txtdoc",
+        "id": "rfcdoc",
         "aliases": [
-          "TxtDoc",
-          "txtdoc"
+          "RfcDoc",
+          "rfcdoc"
         ],
         "extensions": [
           ".txtx",
@@ -33,39 +33,78 @@
     ],
     "grammars": [
       {
-        "language": "txtdoc",
-        "scopeName": "text.txtdoc",
-        "path": "./syntaxes/txtdoc.tmLanguage.json"
+        "language": "rfcdoc",
+        "scopeName": "text.rfcdoc",
+        "path": "./syntaxes/rfcdoc.tmLanguage.json"
       }
     ],
     "themes": [
       {
-        "label": "TxtDoc Dark",
+        "label": "RfcDoc Dark",
         "uiTheme": "vs-dark",
-        "path": "./themes/txtdoc-dark-theme.json"
+        "path": "./themes/rfcdoc-dark-theme.json"
       },
       {
-        "label": "TxtDoc Light",
+        "label": "RfcDoc Light",
         "uiTheme": "vs",
-        "path": "./themes/txtdoc-light-theme.json"
+        "path": "./themes/rfcdoc-light-theme.json"
+      }
+    ],
+    "commands": [
+      {
+        "command": "rfcdoc.formatDocument",
+        "title": "RfcDoc: Format Document",
+        "category": "RfcDoc"
+      },
+      {
+        "command": "rfcdoc.generateTOC",
+        "title": "RfcDoc: Generate Table of Contents",
+        "category": "RfcDoc"
+      },
+      {
+        "command": "rfcdoc.numberFootnotes",
+        "title": "RfcDoc: Number Footnotes",
+        "category": "RfcDoc"
+      },
+      {
+        "command": "rfcdoc.fullFormatting",
+        "title": "RfcDoc: Full Formatting",
+        "category": "RfcDoc"
+      },
+      {
+        "command": "rfcdoc.checkReferences",
+        "title": "RfcDoc: Check References",
+        "category": "RfcDoc"
       }
     ]
   },
   "activationEvents": [
-    "onLanguage:txtdoc"
+    "onLanguage:rfcdoc"
   ],
   "main": "./extension.js",
+  "scripts": {
+    "test": "node ./src/test/run-with-verbosity.js",
+    "test:manual": "node ./src/test/runTest.js",
+    "test:single": "node ./src/test/run-single-test.js"
+  },
   "repository": {
     "type": "git",
-    "url": "https://github.com/txtdoc/txtdoc-format.git"
+    "url": "https://github.com/rfcdoc/rfcdoc-format.git"
   },
-  "homepage": "https://github.com/txtdoc/txtdoc-format",
+  "homepage": "https://github.com/rfcdoc/rfcdoc-format",
   "bugs": {
-    "url": "https://github.com/txtdoc/txtdoc-format/issues"
+    "url": "https://github.com/rfcdoc/rfcdoc-format/issues"
   },
-  "author": "TxtDoc Team",
+  "author": "RfcDoc Team",
   "license": "MIT",
   "devDependencies": {
-    "@vscode/vsce": "^3.2.2"
+    "@types/mocha": "^10.0.10",
+    "@vscode/test-cli": "^0.0.10",
+    "@vscode/test-electron": "^2.4.1",
+    "@vscode/vsce": "^3.2.2",
+    "mocha": "^11.1.0"
+  },
+  "dependencies": {
+    "js-yaml": "^4.1.0"
   }
 }

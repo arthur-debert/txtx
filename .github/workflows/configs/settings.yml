@@ -1,0 +1,17 @@
+repository:
+  # See https://docs.github.com/rest/actions/permissions#set-github-actions-permissions-for-a-repository
+  actions_permissions:
+    enabled: true
+    allowed_actions: "all"
+  workflow_permissions:
+    actions: write
+    checks: write
+    contents: read
+    deployments: write
+    id-token: write
+    issues: write
+    packages: write
+    pull-requests: write
+    repository-projects: write
+    security-events: write
+    statuses: write

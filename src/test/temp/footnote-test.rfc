@@ -1,0 +1,31 @@
+RFC Footnote Test Document
+-------------------------
+
+Author        John Doe
+Date          March 10, 2025
+Version       1.0
+Status        Draft
+
+This document tests the number footnotes command.
+
+1. Introduction
+
+   This is the introduction section with a footnote reference[3].
+   Here's another footnote reference[1].
+
+2. Main Section
+
+   This section has a footnote reference[5] in the middle of the text.
+   And another reference at the end of this line[2].
+
+3. Conclusion
+
+   This is the conclusion section with a final footnote reference[4].
+
+FOOTNOTES
+
+[3] This is the third footnote, but should be renumbered to [1].
+[1] This is the first footnote, but should be renumbered to [2].
+[5] This is the fifth footnote, but should be renumbered to [3].
+[2] This is the second footnote, but should be renumbered to [4].
+[4] This is the fourth footnote, but should be renumbered to [5].

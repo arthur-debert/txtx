@@ -1,0 +1,49 @@
+RfcDoc Extension Commands
+========================
+
+This document describes the commands available in the RfcDoc extension for working with .rfc files.
+
+Available Commands
+-----------------
+
+1. Format Document
+   Command: `RfcDoc: Format Document`
+   
+   Applies consistent formatting to your document according to the RfcDoc specification.
+   This includes proper line wrapping at 80 characters, consistent indentation, and
+   correct session formatting.
+
+2. Generate Table of Contents
+   Command: `RfcDoc: Generate Table of Contents`
+   
+   Creates or updates a table of contents based on the document's sessions.
+   The TOC will reflect the current structure of your document.
+
+3. Number Footnotes
+   Command: `RfcDoc: Number Footnotes`
+   
+   Automatically numbers all footnotes in sequential order and updates all
+   references to match the new numbering.
+
+4. Full Formatting
+   Command: `RfcDoc: Full Formatting`
+   
+   Applies all formatting commands in sequence:
+   - Format Document
+   - Generate Table of Contents
+   - Number Footnotes
+   
+   Use this command for a complete document refresh.
+
+5. Check References
+   Command: `RfcDoc: Check References`
+   
+   Validates that all document references point to valid targets and reports
+   any invalid references found.
+
+Usage
+-----
+
+All commands can be accessed through:
+- The Command Palette (Ctrl+Shift+P / Cmd+Shift+P)
+- Right-click context menu when editing .rfc files

@@ -9,7 +9,7 @@
         "args": [
           "--extensionDevelopmentPath=${workspaceFolder}",
           "--disable-extensions",
-          "${workspaceFolder}/test-dir"
+          "${workspaceFolder}/fixtures"
         ],
         "outFiles": [
           "${workspaceFolder}/out/**/*.js"
@@ -26,9 +26,9 @@
         "args": [
           "--extensionDevelopmentPath=${workspaceFolder}",
           "--disable-extensions",
-          "${workspaceFolder}/test-dir",
-          "--enable-proposed-api=txtdoc.txtdoc-format",
-          "--enable-extension=txtdoc.txtdoc-format",
+          "${workspaceFolder}/fixtures",
+          "--enable-proposed-api=rfcdoc.rfcdoc-format",
+          "--enable-extension=rfcdoc.rfcdoc-format",
           "--enable-extension=vscode.markdown",
           "--enable-extension=esbenp.prettier-vscode"
         ],
@@ -47,7 +47,7 @@
         "request": "launch",
         "args": [
           "--extensionDevelopmentPath=${workspaceFolder}",
-          "${workspaceFolder}/test-dir"
+          "${workspaceFolder}/fixtures"
         ],
         "outFiles": [
           "${workspaceFolder}/out/**/*.js"
@@ -60,10 +60,10 @@
         "request": "launch",
         "args": [
           "--extensionDevelopmentPath=${workspaceFolder}",
-          "--extensionTestsPath=${workspaceFolder}/out/test/suite/index"
+          "--extensionTestsPath=${workspaceFolder}/src/test/index"
         ],
         "outFiles": [
-          "${workspaceFolder}/out/test/**/*.js"
+          "${workspaceFolder}/src/test/**/*.js"
         ],
         // "preLaunchTask": "${defaultBuildTask}"
        },
@@ -73,7 +73,7 @@
          "request": "launch",
          "args": [
            "--extensionDevelopmentPath=${workspaceFolder}",
-           "${workspaceFolder}/test-dir"
+           "${workspaceFolder}/fixtures"
          ],
          "outFiles": [
            "${workspaceFolder}/out/**/*.js"

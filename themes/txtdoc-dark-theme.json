@@ -1,5 +1,5 @@
 {
-  "name": "TxtDoc Dark",
+  "name": "RfcDoc Dark",
   "type": "dark",
   "colors": {
     "editor.background": "#1E1E1E",
@@ -13,14 +13,14 @@
   },
   "tokenColors": [
     {
-      "scope": "markup.heading.txtdoc",
+      "scope": "markup.heading.rfcdoc",
       "settings": {
         "foreground": "#AAA",
         "fontStyle": "bold"
       }
     },
     {
-      "scope": "entity.name.section.txtdoc",
+      "scope": "entity.name.section.rfcdoc",
       "settings": {
         "foreground": "#999",
         "fontStyle": "bold"
@@ -28,10 +28,10 @@
     },
     {
       "scope": [
-        "markup.list.unnumbered.txtdoc",
-        "markup.list.numbered.txtdoc",
-        "markup.list.lettered.txtdoc",
-        "markup.list.roman.txtdoc"
+        "markup.list.unnumbered.rfcdoc",
+        "markup.list.numbered.rfcdoc",
+        "markup.list.lettered.rfcdoc",
+        "markup.list.roman.rfcdoc"
       ],
       "settings": {
         "foreground": "#333"
@@ -39,9 +39,9 @@
     },
     {
       "scope": [
-        "markup.list.number.txtdoc",
-        "markup.list.letter.txtdoc",
-        "markup.list.roman.txtdoc"
+        "markup.list.number.rfcdoc",
+        "markup.list.letter.rfcdoc",
+        "markup.list.roman.rfcdoc"
       ],
       "settings": {
         "foreground": "#666",
@@ -49,13 +49,13 @@
       }
     },
     {
-      "scope": "markup.list.item.txtdoc",
+      "scope": "markup.list.item.rfcdoc",
       "settings": {
         "foreground": "#D4D4D4"
       }
     },
     {
-      "scope": "markup.raw.block.txtdoc",
+      "scope": "markup.raw.block.rfcdoc",
       "settings": {
         "foreground": "#999",
         "background": "#1E1E1E"
@@ -64,8 +64,8 @@
     },
     {
       "scope": [
-        "markup.quote.content.txtdoc",
-        "markup.quote.nested.content.txtdoc"
+        "markup.quote.content.rfcdoc",
+        "markup.quote.nested.content.rfcdoc"
       ],
       "settings": {
         "foreground": "#888",
@@ -73,20 +73,20 @@
       }
     },
     {
-      "scope": "markup.quote.nested.content.txtdoc",
+      "scope": "markup.quote.nested.content.rfcdoc",
       "settings": {
         "foreground": "#888",
         "fontStyle": "italic"
       }
     },
     {
-      "scope": "markup.italic.txtdoc",
+      "scope": "markup.italic.rfcdoc",
       "settings": {
         "fontStyle": "italic"
       }
     },
     {
-      "scope": "markup.bold.txtdoc",
+      "scope": "markup.bold.rfcdoc",
       "settings": {
         "fontStyle": "bold"
       }

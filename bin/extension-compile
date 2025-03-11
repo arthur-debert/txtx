@@ -1,0 +1,64 @@
+#!/bin/bash
+
+# Script to compile the rfcdoc extension to .dist/ directory
+# Usage: ./bin/extension-compile
+
+set -e
+
+# Get the root directory of the project
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+DIST_DIR="${ROOT_DIR}/.dist"
+
+# Create .dist directory if it doesn't exist
+mkdir -p "${DIST_DIR}"
+
+echo "Compiling rfcdoc extension to ${DIST_DIR}..."
+
+# Clean the dist directory
+rm -rf "${DIST_DIR:?}"/*
+
+# Copy necessary files to .dist directory
+echo "Copying extension files..."
+
+# Main extension files
+cp "${ROOT_DIR}/extension.js" "${DIST_DIR}/"
+cp "${ROOT_DIR}/package.json" "${DIST_DIR}/"
+cp "${ROOT_DIR}/package-lock.json" "${DIST_DIR}/" 2>/dev/null || :
+cp "${ROOT_DIR}/README.md" "${DIST_DIR}/" 2>/dev/null || :
+cp "${ROOT_DIR}/CHANGELOG.md" "${DIST_DIR}/" 2>/dev/null || :
+cp "${ROOT_DIR}/LICENSE" "${DIST_DIR}/" 2>/dev/null || :
+cp "${ROOT_DIR}/.vscodeignore" "${DIST_DIR}/" 2>/dev/null || :
+cp "${ROOT_DIR}/language-configuration.json" "${DIST_DIR}/" 2>/dev/null || :
+
+# Copy directories
+echo "Copying source directories..."
+mkdir -p "${DIST_DIR}/src"
+cp -R "${ROOT_DIR}/src/extension" "${DIST_DIR}/src/"
+
+# Copy syntaxes
+if [ -d "${ROOT_DIR}/syntaxes" ]; then
+  echo "Copying syntaxes..."
+  mkdir -p "${DIST_DIR}/syntaxes"
+  cp -R "${ROOT_DIR}/syntaxes"/* "${DIST_DIR}/syntaxes/"
+fi
+
+# Copy themes
+if [ -d "${ROOT_DIR}/themes" ]; then
+  echo "Copying themes..."
+  mkdir -p "${DIST_DIR}/themes"
+  cp -R "${ROOT_DIR}/themes"/* "${DIST_DIR}/themes/"
+fi
+
+# Copy docs
+if [ -d "${ROOT_DIR}/docs" ]; then
+  echo "Copying documentation..."
+  mkdir -p "${DIST_DIR}/docs"
+  cp -R "${ROOT_DIR}/docs"/* "${DIST_DIR}/docs/"
+fi
+
+# Install production dependencies in the dist directory
+echo "Installing production dependencies..."
+cd "${DIST_DIR}"
+npm install --production --no-package-lock
+
+echo "Compilation complete! Extension is ready in ${DIST_DIR}"

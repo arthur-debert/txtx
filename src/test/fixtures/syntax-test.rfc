@@ -1,0 +1,73 @@
+Syntax Highlighting Test Document
+-------------------------------
+
+This document is used to test syntax highlighting features of the RfcDoc Format extension.
+
+1. Text Formatting
+
+   This section contains examples of *bold* and _italic_ text formatting.
+   
+   *This entire sentence is bold.*
+   
+   _This entire sentence is italic._
+   
+   *Bold text can contain _italic_ text inside it.*
+   
+   _Italic text can contain *bold* text inside it._
+
+2. Section Types
+
+   2.1 Numbered Section
+   
+   : Alternative Section
+   
+   UPPERCASE SECTION
+
+3. Lists
+
+   - Bullet point 1
+   - Bullet point 2
+     - Nested bullet point
+     - Another nested bullet point
+   - Bullet point 3
+   
+   1. Numbered item 1
+   2. Numbered item 2
+      1. Nested numbered item
+      2. Another nested numbered item
+   3. Numbered item 3
+   
+   a. Lettered item a
+   b. Lettered item b
+      a. Nested lettered item
+      b. Another nested lettered item
+   c. Lettered item c
+   
+   i. Roman numeral item i
+   ii. Roman numeral item ii
+      i. Nested roman numeral item
+      ii. Another nested roman numeral item
+   iii. Roman numeral item iii
+
+4. Code Blocks
+
+    This is a code block
+    It is indented with 4 spaces
+    function example() {
+        console.log("Hello, world!");
+    }
+
+5. Quotes and Blockquotes
+
+   > This is a quote
+   > It spans multiple lines
+   
+   >> This is a nested quote
+   >> It also spans multiple lines
+
+6. Metadata
+
+   Author        RfcDoc Team
+   Date          March 10, 2025
+   Version       1.0
+   Status        Draft
