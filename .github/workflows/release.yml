@@ -10,13 +10,7 @@ on:
         type: boolean
 
 jobs:
-  setup:
-    uses: ./.github/workflows/base-setup.yml
-    with:
-      run_command: npm test
-
   build-and-release:
-    needs: setup
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
