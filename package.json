@@ -75,6 +75,11 @@
         "command": "rfcdoc.checkReferences",
         "title": "RfcDoc: Check References",
         "category": "RfcDoc"
+      },
+      {
+        "command": "rfcdoc.exportAsHtml",
+        "title": "RfcDoc: Export as HTML",
+        "category": "RfcDoc"
       }
     ]
   },

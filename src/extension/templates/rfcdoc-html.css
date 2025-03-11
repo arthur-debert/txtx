@@ -1,0 +1,349 @@
+:root {
+    /* Color variables - shades of gray */
+    --black-0: rgb(0, 0, 0);
+    --black-20: rgb(20, 20, 20);
+    --black-40: rgb(40, 40, 40);
+    --black-60: rgb(60, 60, 60);
+    --black-80: rgb(80, 80, 80);
+    --black-100: rgb(100, 100, 100);
+    --black-120: rgb(120, 120, 120);
+    --black-140: rgb(140, 140, 140);
+    --black-160: rgb(160, 160, 160);
+    --black-180: rgb(180, 180, 180);
+    --black-200: rgb(200, 200, 200);
+    --black-220: rgb(220, 220, 220);
+    --black-240: rgb(240, 240, 240);
+    --black-250: rgb(250, 250, 250);
+    --white: rgb(255, 255, 255);
+    
+    /* Link colors */
+    --link-color: rgb(0, 102, 204);
+    
+    /* Base font size - 16px is browser default */
+    font-size: 16px;
+}
+
+/* Base styles */
+body {
+    font-family: monospace;
+    font-size: 1rem;
+    color: var(--black-40);
+    background-color: var(--white);
+    line-height: 1.5;
+    max-width: 50rem;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+/* Document structure */
+.document-title {
+    font-size: 1.5rem;
+    font-family: monospace;
+    font-weight: bold;
+    color: var(--black-0);
+    background-color: transparent;
+    margin-bottom: 0.5rem;
+    padding: 0;
+}
+
+.title-underline {
+    border-bottom: 1px solid var(--black-0);
+    background-color: transparent;
+    margin-bottom: 1.5rem;
+    padding: 0;
+    color: inherit;
+}
+
+.metadata {
+    margin-bottom: 2rem;
+    color: var(--black-80);
+    background-color: transparent;
+    padding: 0;
+}
+
+.metadata-key {
+    font-weight: bold;
+    font-family: monospace;
+    font-size: 1rem;
+    color: var(--black-40);
+    background-color: transparent;
+    display: inline-block;
+    min-width: 6.25rem;
+    margin: 0;
+    padding: 0;
+}
+
+.metadata-value {
+    display: inline-block;
+    font-family: monospace;
+    font-size: 1rem;
+    color: var(--black-80);
+    background-color: transparent;
+    margin: 0;
+    padding: 0;
+    text-align: left;
+}
+
+/* Sections */
+.section {
+    margin-top: 1.5rem;
+    margin-right: 0;
+    margin-left: 0;
+    margin-bottom: 0.5rem;
+    padding: 0;
+    font-weight: bold;
+    font-family: monospace;
+    font-size: 1.25rem;
+    color: var(--black-0);
+    background-color: transparent;
+}
+
+.numbered-section {
+    font-weight: bold;
+    font-family: monospace;
+    font-size: 1.25rem;
+    color: var(--black-0);
+    background-color: transparent;
+    margin: 1.5rem 0 0.5rem 0;
+    padding: 0;
+}
+
+.uppercase-section {
+    font-weight: bold;
+    font-family: monospace;
+    font-size: 1.25rem;
+    color: var(--black-0);
+    background-color: transparent;
+    text-transform: uppercase;
+    margin: 1.5rem 0 0.5rem 0;
+    padding: 0;
+}
+
+.alternative-section {
+    font-weight: bold;
+    font-family: monospace;
+    font-size: 1.25rem;
+    color: var(--black-0);
+    background-color: transparent;
+    font-style: italic;
+    margin: 1.5rem 0 0.5rem 0;
+    padding: 0;
+}
+
+/* Content blocks */
+.paragraph {
+    font-family: monospace;
+    font-size: 1rem;
+    color: var(--black-40);
+    background-color: transparent;
+    margin: 0.5rem 0;
+    padding: 0;
+    text-align: justify;
+}
+
+.list {
+    font-family: monospace;
+    font-size: 1rem;
+    color: var(--black-40);
+    background-color: transparent;
+    margin-left: 2rem;
+    margin-right: 0;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    padding: 0;
+}
+
+.bullet-list {
+    font-family: monospace;
+    font-size: 1rem;
+    color: var(--black-40);
+    background-color: transparent;
+    list-style-type: disc;
+    margin: 0.5rem 0 0.5rem 2rem;
+    padding: 0;
+}
+
+.numbered-list {
+    font-family: monospace;
+    font-size: 1rem;
+    color: var(--black-40);
+    background-color: transparent;
+    list-style-type: decimal;
+    margin: 0.5rem 0 0.5rem 2rem;
+    padding: 0;
+}
+
+.lettered-list {
+    font-family: monospace;
+    font-size: 1rem;
+    color: var(--black-40);
+    background-color: transparent;
+    list-style-type: lower-alpha;
+    margin: 0.5rem 0 0.5rem 2rem;
+    padding: 0;
+}
+
+.roman-list {
+    font-family: monospace;
+    font-size: 1rem;
+    color: var(--black-40);
+    background-color: transparent;
+    list-style-type: lower-roman;
+    margin: 0.5rem 0 0.5rem 2rem;
+    padding: 0;
+}
+
+.code-block {
+    background-color: var(--black-240);
+    color: var(--black-40);
+    font-family: monospace;
+    font-size: 1rem;
+    padding: 1rem;
+    white-space: pre;
+    display: block;
+    margin: 1rem 0;
+    border: 1px solid var(--black-200);
+    overflow-x: auto;
+}
+
+.blank-line {
+    height: 1rem;
+    margin: 0;
+    padding: 0;
+    background-color: transparent;
+}
+
+/* Table of Contents */
+.toc {
+    background-color: var(--black-240);
+    color: var(--black-40);
+    font-family: monospace;
+    font-size: 1rem;
+    padding: 1rem;
+    margin: 1.5rem 0;
+    border: 1px solid var(--black-200);
+}
+
+.toc-title {
+    font-family: monospace;
+    color: var(--black-0);
+    background-color: transparent;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    margin-top: 0;
+    margin-left: 0;
+    margin-right: 0;
+    padding: 0;
+    font-size: 1.1rem;
+}
+
+.toc-entry {
+    font-family: monospace;
+    font-size: 1rem;
+    color: var(--black-40);
+    background-color: transparent;
+    margin-left: 1.5rem;
+    margin-right: 0;
+    margin-top: 0.2rem;
+    margin-bottom: 0.2rem;
+    padding: 0;
+    line-height: 1.6;
+}
+
+/* Footnotes */
+.footnotes-section {
+    font-family: monospace;
+    font-size: 1rem;
+    color: var(--black-40);
+    background-color: transparent;
+    margin-top: 2rem;
+    margin-bottom: 0;
+    margin-left: 0;
+    margin-right: 0;
+    border-top: 1px solid var(--black-200);
+    padding-top: 1rem;
+    padding-bottom: 0;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.footnote-reference {
+    font-family: monospace;
+    color: var(--black-40);
+    background-color: transparent;
+    vertical-align: super;
+    font-size: 0.8rem;
+    margin: 0;
+    padding: 0;
+}
+
+.footnote-item {
+    font-family: monospace;
+    font-size: 1rem;
+    color: var(--black-40);
+    background-color: transparent;
+    margin: 0.5rem 0;
+    padding: 0;
+}
+
+/* Text formatting */
+.italic {
+    font-family: monospace;
+    font-size: 1rem;
+    color: inherit;
+    background-color: transparent;
+    font-style: italic;
+    margin: 0;
+    padding: 0;
+}
+
+.bold {
+    font-family: monospace;
+    font-size: 1rem;
+    color: inherit;
+    background-color: transparent;
+    font-weight: bold;
+    margin: 0;
+    padding: 0;
+}
+
+/* Quotes */
+.quote {
+    font-family: monospace;
+    font-size: 1rem;
+    background-color: transparent;
+    border-left: 4px solid var(--black-200);
+    padding-left: 1rem;
+    padding-right: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    color: var(--black-80);
+    margin: 0.5rem 0;
+}
+
+.nested-quote {
+    font-family: monospace;
+    font-size: 1rem;
+    background-color: transparent;
+    border-left: 4px solid var(--black-160);
+    margin-left: 1rem;
+    margin-right: 0;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    padding-left: 1rem;
+    padding-right: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    color: var(--black-60);
+}
+
+/* References */
+.document-reference {
+    font-family: monospace;
+    font-size: 1rem;
+    background-color: transparent;
+    color: var(--link-color);
+    text-decoration: underline;
+    margin: 0;
+    padding: 0;
+}

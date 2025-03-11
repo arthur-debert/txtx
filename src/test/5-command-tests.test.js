@@ -1,6 +1,7 @@
 const assert = require('assert');
 const vscode = require('vscode');
 const path = require('path');
+const fs = require('fs');
 const { isVerbose, openDocument, getDocumentSections, createTestEnv, configureNotifications, enableTestNotification, resetNotificationConfig } = require('./test-helpers');
 const vscodeLib = require('../extension/vscode.lib');
 
@@ -16,7 +17,8 @@ suite('RfcDoc Format Extension Tests', function() {
         FORMAT_SUCCESS: true,
         TOC_SUCCESS: true,
         FOOTNOTE_SUCCESS: true,
-        FULL_FORMAT_SUCCESS: true
+        FULL_FORMAT_SUCCESS: true,
+        EXPORT_SUCCESS: true
       });
     });
     
@@ -525,6 +527,94 @@ This document tests the check references command.
         // Clean up - close the editor
         await vscodeLib.closeActiveEditor();
       } finally {
+        testEnv.cleanup();
+      }
+    });
+    
+    // 5.6 Export as HTML command
+    test('5.6 Export as HTML command', async function() {
+      this.timeout(10000); // Increase timeout for this test
+      
+      // Create a test environment and temporary file
+      const testEnv = createTestEnv(path.join(__dirname, 'temp'));
+      const rfcContent =
+`RFC HTML Export Test Document
+---------------------------
+
+Author        John Doe
+Date          March 10, 2025
+Version       1.0
+Status        Draft
+
+This document tests the export as HTML command.
+
+TABLE OF CONTENTS
+-----------------
+
+1. Introduction
+2. Formatting Examples
+    2.1 Text Formatting
+    2.2 Code Blocks
+3. Conclusion
+
+1. Introduction
+
+   This is the introduction section with a footnote reference[1].
+
+2. Formatting Examples
+
+   2.1 Text Formatting
+   
+       This section demonstrates *bold text* and _italic text_.
+       
+       - This is a bullet point
+       - This is another bullet point
+   
+   2.2 Code Blocks
+   
+       function testCode() {
+           console.log("This is a code example");
+           return true;
+       }
+
+3. Conclusion
+
+   This is the conclusion section.
+   
+   > This is a quote
+   >> This is a nested quote
+
+FOOTNOTES
+
+[1] This is a footnote.`;
+      
+      const testFilePath = testEnv.createFile('export-test.rfc', rfcContent);
+      
+      try {
+        // Open the test document
+        const document = await openDocument(testFilePath);
+        
+        // Wait for the language mode to be set
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        
+        // Get the editor
+        const editor = vscodeLib.getActiveEditor();
+        assert.ok(editor, 'Editor should be active');
+        
+        // Execute the export as HTML command
+        await vscodeLib.executeCommand('rfcdoc.exportAsHtml');
+        
+        // Wait for the export to complete
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        
+        // Check if the HTML file was created
+        const htmlFilePath = testFilePath.replace(/\.rfc$/, '.html');
+        assert.ok(fs.existsSync(htmlFilePath), 'HTML file should be created');
+        
+        // Clean up - close the editor
+        await vscodeLib.closeActiveEditor();
+      } finally {
+        // Clean up - delete the temporary file
         testEnv.cleanup();
       }
     });
