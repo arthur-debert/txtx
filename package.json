@@ -80,6 +80,11 @@
         "command": "rfcdoc.exportAsHtml",
         "title": "RfcDoc: Export as HTML",
         "category": "RfcDoc"
+      },
+      {
+        "command": "rfcdoc.fixNumbering",
+        "title": "RfcDoc: Fix Numbering",
+        "category": "RfcDoc"
       }
     ]
   },

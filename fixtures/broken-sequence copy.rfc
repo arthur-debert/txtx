@@ -1,0 +1,85 @@
+Broken Sequence Test Document
+---------------------------
+
+Author        John Doe
+Date          March 11, 2025
+Version       1.0
+Status        Draft
+
+This document contains broken sequences to test the fix numbering command.
+
+1. First Section
+
+   This section has a broken list:
+   
+   1. First item
+   2. Second item
+   3. Third item
+   4. Fourth item
+   5. Fifth item
+
+2. Second Section
+
+   2.1 First Subsection
+   
+       This subsection has a broken nested list:
+       
+       a. Parent item one
+          1. Child item one
+          2. Child item two
+          3. Child item three
+       a. Parent item two
+          1. Child item one
+          2. Child item two
+       a. Parent item three
+   
+   2.2 Second Subsection
+   
+       This subsection has a broken lettered list:
+       
+       b. Item A
+       c. Item B
+       d. Item C
+       e. Item D
+
+3. Third Section (broken numbering)
+
+   This section should be number 3, not 1.
+
+4. Fourth Section (broken numbering)
+
+   This section should be number 4, not 1.
+   
+   1.1 First Subsection (broken numbering)
+   
+       This subsection should be 4.1, not 1.1.
+   
+   1.2 Second Subsection (broken numbering)
+   
+       This subsection should be 4.2, not 1.2.
+
+: Special Section
+
+   This special section has a broken list:
+   
+   1. First special item
+   2. Second special item
+   3. Third special item
+   
+MIXED LIST TYPES
+
+   This section tests mixed list types:
+   
+   1. Numbered item
+   2. Numbered item
+      a. Lettered sub-item
+      b. Lettered sub-item
+         1. Numbered sub-sub-item
+         2. Numbered sub-sub-item
+      a. Lettered sub-item
+   1. Numbered item
+      a. Lettered sub-item
+         1. Numbered sub-sub-item
+         2. Numbered sub-sub-item
+            a. Lettered sub-sub-sub-item
+            b. Lettered sub-sub-sub-item

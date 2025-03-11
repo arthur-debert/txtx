@@ -18,6 +18,7 @@ suite('RfcDoc Format Extension Tests', function() {
         TOC_SUCCESS: true,
         FOOTNOTE_SUCCESS: true,
         FULL_FORMAT_SUCCESS: true,
+        NUMBERING_SUCCESS: true,
         EXPORT_SUCCESS: true
       });
     });
@@ -610,6 +611,108 @@ FOOTNOTES
         // Check if the HTML file was created
         const htmlFilePath = testFilePath.replace(/\.rfc$/, '.html');
         assert.ok(fs.existsSync(htmlFilePath), 'HTML file should be created');
+        
+        // Clean up - close the editor
+        await vscodeLib.closeActiveEditor();
+      } finally {
+        // Clean up - delete the temporary file
+        testEnv.cleanup();
+      }
+    });
+    
+    // 5.7 Fix Numbering command
+    test('5.7 Fix Numbering command', async function() {
+      this.timeout(10000); // Increase timeout for this test
+      
+      // Create a test environment and temporary file
+      const testEnv = createTestEnv(path.join(__dirname, 'temp'));
+      
+      // Read the test fixture
+      const fixturePath = path.join(__dirname, 'fixtures', 'numbering-test.rfc');
+      const fixtureContent = fs.readFileSync(fixturePath, 'utf8');
+      
+      const testFilePath = testEnv.createFile('numbering-test.rfc', fixtureContent);
+      
+      try {
+        // Open the test document
+        const document = await openDocument(testFilePath);
+        
+        // Wait for the language mode to be set
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        
+        // Get the editor
+        const editor = vscodeLib.getActiveEditor();
+        assert.ok(editor, 'Editor should be active');
+        
+        // Execute the fix numbering command
+        await vscodeLib.executeCommand('rfcdoc.fixNumbering');
+        
+        // Wait for the numbering fix to complete
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        
+        // Get the updated document text
+        const fixedText = editor.document.getText();
+        
+        isVerbose && console.log('Fixed text:', fixedText);
+        
+        // Verify the numbering fixes
+        const lines = fixedText.split('\n');
+        
+        // Check section numbering
+        const introLine = lines.findIndex(line => line.includes('Introduction'));
+        assert.ok(introLine > -1, 'Introduction section should exist');
+        assert.ok(lines[introLine].startsWith('1. Introduction'), 'Introduction should be numbered as 1');
+        
+        const mainSectionLine = lines.findIndex(line => line.includes('Main Section'));
+        assert.ok(mainSectionLine > -1, 'Main Section should exist');
+        assert.ok(lines[mainSectionLine].startsWith('2. Main Section'), 'Main Section should be numbered as 2');
+        
+        const subsection1Line = lines.findIndex(line => line.includes('Subsection One'));
+        assert.ok(subsection1Line > -1, 'Subsection One should exist');
+        assert.ok(lines[subsection1Line].startsWith('   2.1 Subsection One'), 'Subsection One should be numbered as 2.1');
+        
+        const subsection2Line = lines.findIndex(line => line.includes('Subsection Two'));
+        assert.ok(subsection2Line > -1, 'Subsection Two should exist');
+        assert.ok(lines[subsection2Line].startsWith('   2.2 Subsection Two'), 'Subsection Two should be numbered as 2.2');
+        
+        const conclusionLine = lines.findIndex(line => line.includes('Conclusion'));
+        assert.ok(conclusionLine > -1, 'Conclusion section should exist');
+        assert.ok(lines[conclusionLine].startsWith('3. Conclusion'), 'Conclusion should be numbered as 3');
+        
+        // Check list numbering in subsection one
+        const firstItemLine = lines.findIndex(line => line.includes('First item'));
+        assert.ok(firstItemLine > -1, 'First item should exist');
+        assert.ok(lines[firstItemLine].includes('1. First item'), 'First item should be numbered as 1');
+        
+        const secondItemLine = lines.findIndex(line => line.includes('Second item'));
+        assert.ok(secondItemLine > -1, 'Second item should exist');
+        assert.ok(lines[secondItemLine].includes('2. Second item'), 'Second item should be numbered as 2');
+        
+        const thirdItemLine = lines.findIndex(line => line.includes('Third item'));
+        assert.ok(thirdItemLine > -1, 'Third item should exist');
+        assert.ok(lines[thirdItemLine].includes('3. Third item'), 'Third item should be numbered as 3');
+        
+        // Check nested list numbering in subsection two
+        const parentItem1Line = lines.findIndex(line => line.includes('Parent item one'));
+        assert.ok(parentItem1Line > -1, 'Parent item one should exist');
+        assert.ok(lines[parentItem1Line].includes('1. Parent item one'), 'Parent item one should be numbered as 1');
+        
+        const childItem1Line = lines.findIndex(line => line.includes('Child item one'));
+        assert.ok(childItem1Line > -1, 'Child item one should exist');
+        assert.ok(lines[childItem1Line].includes('a. Child item one'), 'First child item should be lettered as a');
+        
+        const childItem2Line = lines.findIndex(line => line.includes('Child item two'));
+        assert.ok(childItem2Line > -1, 'Child item two should exist');
+        assert.ok(lines[childItem2Line].includes('b. Child item two'), 'Second child item should be lettered as b');
+        
+        const parentItem2Line = lines.findIndex(line => line.includes('Parent item two'));
+        assert.ok(parentItem2Line > -1, 'Parent item two should exist');
+        assert.ok(lines[parentItem2Line].includes('2. Parent item two'), 'Parent item two should be numbered as 2');
+        
+        // Check lettered list in conclusion section
+        const itemALine = lines.findIndex(line => line.includes('Item A'));
+        assert.ok(itemALine > -1, 'Item A should exist');
+        assert.ok(lines[itemALine].includes('a. Item A'), 'Item A should be lettered as a');
         
         // Clean up - close the editor
         await vscodeLib.closeActiveEditor();
