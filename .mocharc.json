@@ -1,0 +1,9 @@
+{
+  "ui": "tdd",
+  "color": true,
+  "timeout": 10000,
+  "file": "./tests/unit/testHelpers.js",
+  "recursive": true,
+  "exit": true,
+  "cwd": "."
+}
