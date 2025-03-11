@@ -40,23 +40,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: "20"
-          cache: "npm"
-
-      - name: Install dependencies
-        run: npm ci --include=dev
-        
-      - name: Install system dependencies and direnv
-        run: sudo apt-get install tree xvfb direnv
-
-      - name: Setup direnv
-        run: |
-          echo 'eval "$(direnv hook bash)"' >> ~/.bashrc
-          source ~/.bashrc
-          direnv allow .
 
       - name: Run tests
         run: |
