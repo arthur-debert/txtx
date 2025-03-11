@@ -9,6 +9,7 @@ const fs = require('fs');
 const path = require('path');
 const os = require('os');
 const crypto = require('crypto');
+const { execSync } = require('child_process');
 
 /**
  * Create a temporary directory
@@ -16,18 +17,41 @@ const crypto = require('crypto');
  * @returns {string} - The path to the created directory
  */
 function createTempDirectory(dirName) {
-  // Generate a unique directory path in the system temp directory
+  return createTempDirectoryInLocation(os.tmpdir(), dirName);
+}
+
+/**
+ * Create a temporary directory in a specific location
+ * @param {string} baseDir - The base directory to create the temporary directory in
+ * @param {string} [dirName] - Optional name for the directory
+ * @returns {string} - The path to the created directory
+ */
+function createTempDirectoryInLocation(baseDir, dirName) {
+  // Generate a unique directory path
   const uniqueId = crypto.randomBytes(8).toString('hex');
   const dirPath = path.join(
-    os.tmpdir(),
-    'rfcdoc-tests',
+    baseDir,
+    'rfcdoc-tests-' + uniqueId,
     dirName ? `${dirName}-${uniqueId}` : uniqueId
   );
+
+  // Ensure the directory exists
   
   if (!fs.existsSync(dirPath)) {
     fs.mkdirSync(dirPath, { recursive: true });
   }
   return dirPath;
+}
+
+/**
+ * Create a temporary directory in the project
+ * @param {string} [dirName] - Optional name for the directory
+ * @returns {string} - The path to the created directory
+ */
+function createTempDirectoryInProject(dirName) {
+  // Create a temporary directory in the project root
+  const projectRoot = path.resolve(__dirname, '../..');
+  return createTempDirectoryInLocation(projectRoot, dirName);
 }
 
 /**
@@ -100,6 +124,8 @@ function createTestEnvironment(testDirName) {
 module.exports = {
   createTempDirectory,
   createTempFile,
+  createTempDirectoryInLocation,
+  createTempDirectoryInProject,
   deleteFileIfExists,
   deleteDirIfExists,
   createTestEnvironment

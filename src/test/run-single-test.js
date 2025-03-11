@@ -4,7 +4,6 @@ const path = require('path');
 const Mocha = require('mocha');
 const { spawn } = require('child_process');
 const fs = require('fs');
-const fileOps = require('./file-operations');
 
 // Parse command line arguments
 const args = process.argv.slice(2);
@@ -36,9 +35,9 @@ if (!isVerbose) {
 const configPath = path.resolve(__dirname, './vscode-test.js');
 const originalConfig = fs.readFileSync(configPath, 'utf8');
 
-// Create a temporary directory and config file
-const tempDir = fileOps.createTempDirectory('vscode-test');
-const tempConfigPath = path.join(tempDir, 'vscode-test.temp.js');
+// Create a temporary config file with a unique name in the project root
+const uniqueId = Date.now().toString();
+const tempConfigPath = path.resolve(__dirname, `../../.vscode-test.${uniqueId}.js`);
 
 // Modify the config based on verbosity
 let modifiedConfig;
@@ -86,8 +85,7 @@ const child = spawn(vscodeTest, ['--config', tempConfigPath], {
 child.on('close', (code) => {
   // Clean up the temporary config file
   try {
-    fileOps.deleteFileIfExists(tempConfigPath);
-    fileOps.deleteDirIfExists(tempDir);
+    fs.unlinkSync(tempConfigPath);
   } catch (err) {
     // Ignore errors during cleanup
   }
