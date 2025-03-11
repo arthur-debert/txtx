@@ -11,21 +11,34 @@ permissions:
   pull-requests: read
 
 jobs:
-  test:
-    uses: ./.github/workflows/base-setup.yml
-
   run-tests:
-    needs: test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci --include=dev
         
-      - name: install tree
-        run: sudo apt-get install tree xvfb
+      - name: Install system dependencies and direnv
+        run: sudo apt-get install tree xvfb direnv
+
+      - name: Setup direnv
+        run: |
+          echo 'eval "$(direnv hook bash)"' >> ~/.bashrc
+          source ~/.bashrc
+          direnv allow .
 
       - name: Run tests
-        run: ls node_modules && ls node_modules/.bin/  &&  xvfb-run -a  ./src/test/run-with-verbosity.js
+        run: |
+          # Ensure PATH includes node_modules/.bin
+          export PATH="$PWD/node_modules/.bin:$PATH"
+          xvfb-run -a ./src/test/run-with-verbosity.js
 
       - name: Upload test results
         if: always()
