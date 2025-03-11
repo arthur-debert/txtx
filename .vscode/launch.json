@@ -60,10 +60,10 @@
         "request": "launch",
         "args": [
           "--extensionDevelopmentPath=${workspaceFolder}",
-          "--extensionTestsPath=${workspaceFolder}/src/test/index"
+          "--extensionTestsPath=${workspaceFolder}/tests/integration/index"
         ],
         "outFiles": [
-          "${workspaceFolder}/src/test/**/*.js"
+          "${workspaceFolder}/tests/**/*.js"
         ],
         // "preLaunchTask": "${defaultBuildTask}"
        },
