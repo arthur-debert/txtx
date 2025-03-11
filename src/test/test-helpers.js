@@ -1,5 +1,6 @@
 const vscodeLib = require('../extension/vscode.lib');
 const { setNotificationConfig, enableNotification, disableNotification, enableAllNotifications, disableAllNotifications, getNotificationConfig } = require('../extension/notifications');
+const fileOps = require('./file-operations');
 
 // Get verbose flag from environment
 const isVerbose = process.env.VERBOSE === 'true';
@@ -12,7 +13,7 @@ const {
 
 // Create a test environment helper
 function createTestEnv(testDir) {
-  return vscodeLib.createTestEnvironment(testDir);
+  return fileOps.createTestEnvironment(testDir);
 }
 
 /**

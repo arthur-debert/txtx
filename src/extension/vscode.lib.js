@@ -8,7 +8,6 @@
 const vscode = require('vscode');
 const path = require('path');
 const { sendNotification } = require('./notifications');
-const fs = require('fs');
 
 /**
  * Document Operations
@@ -262,43 +261,6 @@ function setDiagnostics(collection, uri, diagnostics) {
 }
 
 /**
- * File Operations
- */
-
-/**
- * Create a temporary directory
- * @param {string} dirPath - The path to create
- * @returns {string} - The path to the created directory
- */
-function createTempDirectory(dirPath) {
-  if (!fs.existsSync(dirPath)) {
-    fs.mkdirSync(dirPath, { recursive: true });
-  }
-  return dirPath;
-}
-
-/**
- * Create a temporary file
- * @param {string} filePath - The path to the file
- * @param {string} content - The content to write to the file
- * @returns {string} - The path to the created file
- */
-function createTempFile(filePath, content) {
-  fs.writeFileSync(filePath, content);
-  return filePath;
-}
-
-/**
- * Delete a file if it exists
- * @param {string} filePath - The path to the file
- */
-function deleteFileIfExists(filePath) {
-  if (fs.existsSync(filePath)) {
-    fs.unlinkSync(filePath);
-  }
-}
-
-/**
  * UI Operations
  */
 
@@ -336,44 +298,6 @@ function showWarningMessage(message) {
  */
 function showErrorMessage(message) {
   return sendNotification('FORMAT_ERROR', new Error(message));
-}
-
-/**
- * Test Utilities
- */
-
-/**
- * Create a test environment
- * @param {string} testDir - The directory to create temporary files in
- * @returns {Object} - The test environment
- */
-function createTestEnvironment(testDir) {
-  const tempDir = createTempDirectory(testDir);
-  const createdFiles = [];
-  
-  return {
-    /**
-     * Create a temporary file for testing
-     * @param {string} fileName - The name of the file
-     * @param {string} content - The content of the file
-     * @returns {string} - The path to the file
-     */
-    createFile: (fileName, content) => {
-      const filePath = path.join(tempDir, fileName);
-      createTempFile(filePath, content);
-      createdFiles.push(filePath);
-      return filePath;
-    },
-    
-    /**
-     * Clean up all created files
-     */
-    cleanup: () => {
-      for (const file of createdFiles) {
-        deleteFileIfExists(file);
-      }
-    }
-  };
 }
 
 /**
@@ -419,18 +343,11 @@ module.exports = {
   createDiagnostic,
   setDiagnostics,
   
-  // File Operations
-  createTempDirectory,
-  createTempFile,
-  deleteFileIfExists,
-  
   // UI Operations
   createOutputChannel,
   showInformationMessage,
   showWarningMessage,
   showErrorMessage,
-  
-  // Test Utilities
-  createTestEnvironment,
+
   waitForCondition
 };
