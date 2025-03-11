@@ -7,13 +7,23 @@
 
 const fs = require('fs');
 const path = require('path');
+const os = require('os');
+const crypto = require('crypto');
 
 /**
  * Create a temporary directory
- * @param {string} dirPath - The path to create
+ * @param {string} [dirName] - Optional name for the directory within the system temp directory
  * @returns {string} - The path to the created directory
  */
-function createTempDirectory(dirPath) {
+function createTempDirectory(dirName) {
+  // Generate a unique directory path in the system temp directory
+  const uniqueId = crypto.randomBytes(8).toString('hex');
+  const dirPath = path.join(
+    os.tmpdir(),
+    'rfcdoc-tests',
+    dirName ? `${dirName}-${uniqueId}` : uniqueId
+  );
+  
   if (!fs.existsSync(dirPath)) {
     fs.mkdirSync(dirPath, { recursive: true });
   }
@@ -42,12 +52,22 @@ function deleteFileIfExists(filePath) {
 }
 
 /**
+ * Delete a directory if it exists
+ * @param {string} dirPath - The path to the directory
+ */
+function deleteDirIfExists(dirPath) {
+  if (fs.existsSync(dirPath)) {
+    fs.rmdirSync(dirPath, { recursive: true });
+  }
+}
+
+/**
  * Create a test environment
- * @param {string} testDir - The directory to create temporary files in
+ * @param {string} [testDirName] - Optional name for the test directory
  * @returns {Object} - The test environment
  */
-function createTestEnvironment(testDir) {
-  const tempDir = createTempDirectory(testDir);
+function createTestEnvironment(testDirName) {
+  const tempDir = createTempDirectory(testDirName);
   const createdFiles = [];
   
   return {
@@ -71,6 +91,8 @@ function createTestEnvironment(testDir) {
       for (const file of createdFiles) {
         deleteFileIfExists(file);
       }
+      // Also remove the temporary directory
+      deleteDirIfExists(tempDir);
     }
   };
 }
@@ -79,5 +101,6 @@ module.exports = {
   createTempDirectory,
   createTempFile,
   deleteFileIfExists,
+  deleteDirIfExists,
   createTestEnvironment
 };
