@@ -24,11 +24,22 @@ jobs:
           node-version: "20"
           cache: "npm"
 
+      - name: Cache dependencies
+        uses: actions/cache@v3
+        id: npm-cache
+        with:
+          path: |
+            node_modules
+          key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-npm-
+
       - name: Install dependencies
+        if: steps.npm-cache.outputs.cache-hit != 'true'
         run: npm ci --include=dev
         
-      - name: Install direnv
-        run: sudo apt-get install direnv
+      - name: Install system dependencies and direnv
+        run: sudo apt-get install tree xvfb direnv
 
       - name: Setup direnv
         run: |

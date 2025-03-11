@@ -11,20 +11,31 @@ permissions:
   pull-requests: read
 
 jobs:
-  setup-environment:
+  run-tests:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: "20"
           cache: "npm"
 
+      - name: Cache dependencies
+        uses: actions/cache@v3
+        id: npm-cache
+        with:
+          path: |
+            node_modules
+          key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-npm-
+
       - name: Install dependencies
+        if: steps.npm-cache.outputs.cache-hit != 'true'
         run: npm ci --include=dev
-        
+
       - name: Install system dependencies and direnv
         run: sudo apt-get install tree xvfb direnv
 
@@ -33,13 +44,6 @@ jobs:
           echo 'eval "$(direnv hook bash)"' >> ~/.bashrc
           source ~/.bashrc
           direnv allow .
-
-  run-tests:
-    needs: setup-environment
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      
 
       - name: Run tests
         run: |
