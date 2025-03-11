@@ -19,11 +19,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      
+        
       - name: install tree
         run: sudo apt-get install tree xvfb
 
       - name: Run tests
-        run: ls node_modules/.bin/  &&  xvfb-run -a  ./src/test/run-with-verbosity.js
+        run: ls node_modules && ls node_modules/.bin/  &&  xvfb-run -a  ./src/test/run-with-verbosity.js
 
       - name: Upload test results
         if: always()
