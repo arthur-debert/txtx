@@ -20,8 +20,8 @@ class BackendManagerClass {
   initialize(): void {
     // We'll dynamically import the backends to avoid circular dependencies
     // and to ensure they're only loaded when needed
-    this.registerBackend('vscode-live', require('./backends/vscode-live').VSCodeLiveBackend);
-    this.registerBackend('headless', require('./backends/headless').HeadlessBackend);
+    this.registerBackend('vscode-live', require('./backends/vscode-live/index').VSCodeLiveBackend);
+    this.registerBackend('headless', require('./backends/headless/index').HeadlessBackend);
   }
   
   /**

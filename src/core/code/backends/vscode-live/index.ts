@@ -9,7 +9,7 @@ import {
   Disposable, WorkspaceEdit, TextEditorDecorationType, DiagnosticCollection,
   DocumentSymbolProvider, DocumentLinkProvider, FoldingRangeProvider, 
   CompletionItemProvider, OutputChannel, WorkspaceFolder, Diagnostic
-} from '../types';
+} from '../../types';
 
 /**
  * VSCode Live Backend class
