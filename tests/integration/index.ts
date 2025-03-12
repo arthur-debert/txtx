@@ -1,12 +1,10 @@
 /**
  * Integration test setup and runner
  */
-import * as path from 'path';
-import Mocha from 'mocha';
-import { glob } from 'glob';
-
-// Import the module resolver to redirect imports from src to dist
-import '../module-resolver';
+import type { MochaOptions } from 'mocha';
+const path = require('path') as typeof import('path');
+const Mocha = require('mocha');
+const { glob } = require('glob');
 
 /**
  * Options for running tests
@@ -14,7 +12,7 @@ import '../module-resolver';
 interface RunOptions {
   specificTests?: string[];
   reporter?: string;
-  mocha?: Mocha.MochaOptions;
+  mocha?: MochaOptions;
 }
 
 /**
@@ -39,17 +37,17 @@ function run(options: RunOptions = {}): Promise<void> {
     ...options.mocha
   });
 
-  // Use the original tests directory, not the compiled one
-  const testsRoot = path.resolve(__dirname, '../../../tests/integration');
+  // Use the compiled tests directory
+  const testsRoot = path.resolve(__dirname);
 
   return new Promise<void>((resolve, reject) => {
     // Find all test files
-    glob('**/*.test.ts', { cwd: testsRoot })
-      .then(files => {        
+    (glob('**/*.test.js', { cwd: testsRoot }) as Promise<string[]>)
+      .then((files) => {        
         // Only show detailed logs in verbose mode
         if (isVerbose) {
           console.log('\n======= RUNNING INTEGRATION TEST FILES =======');
-          files.forEach(f => console.log(`- ${f}`));
+          files.forEach((f: string) => console.log(`- ${f}`));
         } else {
           // In non-verbose mode, just show a simple message
           console.log(`Running ${files.length} integration test files...`);
@@ -57,7 +55,7 @@ function run(options: RunOptions = {}): Promise<void> {
         console.log('==================================\n');
         
         // Add files to the test suite
-        files.forEach(f => mocha.addFile(path.resolve(testsRoot, f)));
+        files.forEach((f: string) => mocha.addFile(path.resolve(testsRoot, f)));
 
         try {
           // Run the mocha test
@@ -74,10 +72,10 @@ function run(options: RunOptions = {}): Promise<void> {
           reject(err);
         }
       })
-      .catch(err => {
+      .catch((err: Error) => {
         reject(err);
       });
   });
 }
 
-export { run };
+module.exports = { run };

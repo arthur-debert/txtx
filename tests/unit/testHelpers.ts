@@ -2,10 +2,12 @@
  * Unit test helpers
  * This file is loaded before unit tests via .mocharc.json
  */
-import * as path from 'path';
-import * as testSetup from '../testSetup';
 
-// Declare global for TypeScript
+// Make this a module to allow global augmentation
+export {};
+
+const testSetup = require('../testSetup');
+
 declare global {
   var testHelpers: {
     isVerbose: boolean;
@@ -46,15 +48,15 @@ function getTestDir(): string {
   return testEnv.getTempDir();
 }
 
-// Export helper functions
-export {
+// Also make helpers available globally for convenience in tests
+global.testHelpers = {
   isVerbose,
   createTestFile,
   getTestDir
 };
 
-// Also make helpers available globally for convenience in tests
-global.testHelpers = {
+// Export helper functions
+module.exports = {
   isVerbose,
   createTestFile,
   getTestDir

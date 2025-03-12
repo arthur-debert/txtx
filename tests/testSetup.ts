@@ -1,10 +1,13 @@
 /**
  * Common test setup for both unit and integration tests
  */
-import * as path from 'path';
-import * as fs from 'fs';
-import * as os from 'os';
-import * as crypto from 'crypto';
+// Make this a module
+export {};
+
+const path = require('path') as typeof import('path');
+const fs = require('fs') as typeof import('fs');
+const os = require('os') as typeof import('os');
+const crypto = require('crypto') as typeof import('crypto');
 
 /**
  * Create a temporary directory
@@ -13,7 +16,7 @@ import * as crypto from 'crypto';
  */
 function createTempDirectory(dirName?: string): string {
   // Generate a unique directory path
-  const uniqueId = crypto.randomBytes(8).toString('hex');
+  const uniqueId = (crypto as any).randomBytes(8).toString('hex');
   const dirPath = path.join(
     os.tmpdir(),
     'rfcdoc-tests-' + uniqueId,
@@ -109,11 +112,10 @@ function createTestEnvironment(testDirName?: string): TestEnvironment {
   };
 }
 
-export {
+module.exports = {
   createTempDirectory,
   createTempFile,
   deleteFileIfExists,
   deleteDirIfExists,
-  createTestEnvironment,
-  TestEnvironment
+  createTestEnvironment
 };

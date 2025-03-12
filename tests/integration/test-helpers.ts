@@ -1,31 +1,24 @@
 /**
  * Integration test helpers
  */
-import * as path from 'path';
-import * as vscode from 'vscode';
-import * as testSetup from '../testSetup';
+const path = require('path') as typeof import('path');
+const vscode = require('vscode') as typeof import('vscode');
+const testSetup = require('../testSetup');
 
 // Get verbose flag from environment
 const isVerbose = process.env.VERBOSE === 'true';
 
 // Import extension modules
-import * as vscodeLib from '../../src/extension/vscode.lib';
-import { 
-  setNotificationConfig, 
-  enableNotification, 
-  disableNotification, 
-  enableAllNotifications, 
-  disableAllNotifications 
-} from '../../src/extension/notifications';
+const vscodeLib = require('../../dist/src/extension/vscode.lib');
+const { 
+  setNotificationConfig,
+  enableNotification,
+  disableNotification,
+  disableAllNotifications
+} = require('../../dist/src/extension/notifications');
 
 // Re-export functions from vscode.lib
-const {
-  openDocument,
-  getDocumentSections,
-  executeCommand,
-  getActiveEditor,
-  closeActiveEditor
-} = vscodeLib;
+const { openDocument, getDocumentSections, executeCommand, getActiveEditor, closeActiveEditor } = vscodeLib;
 
 /**
  * Create a test environment helper
@@ -85,7 +78,8 @@ function getTestFixturePath(fixtureName: string): string {
   return path.join(__dirname, 'fixtures', fixtureName);
 }
 
-export {
+// Export everything needed by test files
+const helpers = {
   isVerbose,
   openDocument,
   getDocumentSections,
@@ -100,3 +94,10 @@ export {
   getFixturePath,
   getTestFixturePath
 };
+
+// Support both CommonJS and ES modules
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = helpers;
+}
+
+export = helpers;

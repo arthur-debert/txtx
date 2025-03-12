@@ -1,15 +1,13 @@
 /**
  * Unit test setup and runner
  */
-import * as path from 'path';
-import Mocha from 'mocha';
-import { glob } from 'glob';
-
-// Import the module resolver to redirect imports from src to dist
-import '../module-resolver';
+import type { MochaOptions } from 'mocha';
+const path = require('path') as typeof import('path');
+const Mocha = require('mocha');
+const { glob } = require('glob');
 
 // Explicitly load test helpers
-import './testHelpers';
+require('./testHelpers');
 
 /**
  * Options for running tests
@@ -17,7 +15,7 @@ import './testHelpers';
 interface RunOptions {
   specificTests?: string[];
   reporter?: string;
-  mocha?: Mocha.MochaOptions;
+  mocha?: MochaOptions;
 }
 
 /**
@@ -42,14 +40,14 @@ function run(options: RunOptions = {}): Promise<void> {
     ...options.mocha
   });
 
-  // Use the original tests directory, not the compiled one
-  const testsRoot = path.resolve(__dirname, '../../../tests/unit');
+  // Use the compiled tests directory
+  const testsRoot = path.resolve(__dirname);
 
   return new Promise<void>((resolve, reject) => {
     // Find all test files or use specific tests if provided
     const findTests = options.specificTests && options.specificTests.length > 0
       ? Promise.resolve(options.specificTests)
-      : glob('**/*.test.ts', { cwd: testsRoot });
+      : (glob('**/*.test.js', { cwd: testsRoot }) as Promise<string[]>);
     
     findTests
       .then(files => {        
@@ -94,4 +92,4 @@ function run(options: RunOptions = {}): Promise<void> {
   });
 }
 
-export { run };
+module.exports = { run };

@@ -1,14 +1,17 @@
 #!/usr/bin/env node
 
-import * as path from 'path';
-import { runTests } from '@vscode/test-electron';
-import * as fs from 'fs';
+// Make this a module
+export {};
+
+const path = require('path') as typeof import('path');
+const { runTests } = require('@vscode/test-electron');
+const fs = require('fs');
 
 /**
  * Main test runner script
  * Runs unit tests, integration tests, or both based on command-line arguments
  */
-async function main(): Promise<void> {
+async function main() {
   try {
     // Parse command line arguments
     const args = process.argv.slice(2);
@@ -50,7 +53,7 @@ async function main(): Promise<void> {
  * Run unit tests
  * @param specificTests - Optional array of specific test files to run
  */
-async function runUnitTests(specificTests: string[] = []): Promise<void> {
+async function runUnitTests(specificTests: string[] = []) {
   try {
     // For unit tests, we don't need to launch VS Code
     // We can run them directly with Mocha
@@ -71,7 +74,7 @@ async function runUnitTests(specificTests: string[] = []): Promise<void> {
 /**
  * Run integration tests
  */
-async function runIntegrationTests(): Promise<void> {
+async function runIntegrationTests() {
   try {
     const extensionDevelopmentPath = path.resolve(__dirname, '../');
     const extensionTestsPath = path.resolve(__dirname, './integration/index');
@@ -94,4 +97,4 @@ async function runIntegrationTests(): Promise<void> {
 }
 
 // Run the main function
-main();
+main().catch(console.error);
