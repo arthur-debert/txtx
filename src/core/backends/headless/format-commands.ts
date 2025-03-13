@@ -18,6 +18,7 @@ function formatLines(lines: string[]): string[] {
   let inCodeBlock = false;
   let inQuote = false;
   let inMetadata = false;
+  let inNumberedList = false;
   let skipNextLine = false;
   
   for (let i = 0; i < lines.length; i++) {
@@ -36,6 +37,7 @@ function formatLines(lines: string[]): string[] {
     if (isSection(line)) {
       inSection = true;
       inList = false;
+      inNumberedList = false;
       inCodeBlock = false;
       inQuote = false;
       inMetadata = false;
@@ -63,6 +65,7 @@ function formatLines(lines: string[]): string[] {
     if (isMetadata(line)) {
       inMetadata = true;
       inSection = false;
+      inNumberedList = false;
       inList = false;
       inCodeBlock = false;
       inQuote = false;
@@ -70,6 +73,7 @@ function formatLines(lines: string[]): string[] {
       // Format metadata with consistent spacing
       const [key, value] = splitMetadata(line);
       if (key && value) {
+        // Always format metadata with consistent spacing
         formattedLines.push(`${key.padEnd(14)}${value}`);
       } else {
         formattedLines.push(line);
@@ -78,11 +82,16 @@ function formatLines(lines: string[]): string[] {
     }
     
     // Check for lists
-    if (isList(line)) {
-      inList = true;
+    const listType = getListType(line);
+    if (listType !== 'none') {
+      // Set the appropriate list state
+      inList = true;      
+      inNumberedList = (listType === 'numbered');
       inCodeBlock = false;
+      inSection = false;
       inQuote = false;
       
+      // For numbered lists, don't add blank lines between items
       formattedLines.push(line);
       continue;
     }
@@ -90,6 +99,7 @@ function formatLines(lines: string[]): string[] {
     // Check for code blocks (indented with 4 spaces)
     if (line.startsWith('    ') && !line.startsWith('     ')) {
       inCodeBlock = true;
+      inNumberedList = false;
       inList = false;
       inQuote = false;
       
@@ -100,6 +110,7 @@ function formatLines(lines: string[]): string[] {
     // Check for quotes
     if (line.startsWith('>')) {
       inQuote = true;
+      inNumberedList = false;
       inList = false;
       inCodeBlock = false;
       
@@ -110,6 +121,7 @@ function formatLines(lines: string[]): string[] {
     // Handle blank lines
     if (line.trim() === '') {
       inList = false;
+      inNumberedList = false;
       inCodeBlock = false;
       inQuote = false;
       
@@ -151,10 +163,11 @@ function isSection(line: string): boolean {
 /**
  * Split a metadata line into key and value
  * @param line - The metadata line
- * @returns - The key and value
+ * @returns - The key and value, or null if not a valid metadata line
  */
 function splitMetadata(line: string): [string | null, string | null] {
-  const match = line.match(/^([A-Za-z][A-Za-z\s]+?)\s{2,}(.+)$/);
+  // Match any line that starts with a word followed by any amount of whitespace
+  const match = line.match(/^([A-Za-z][A-Za-z\s]+?)(?:\s+)(.+)$/);
   if (match) {
     return [match[1].trim(), match[2].trim()];
   }
@@ -164,30 +177,39 @@ function splitMetadata(line: string): [string | null, string | null] {
 /**
  * Check if a line is a list item
  * @param line - The line to check
- * @returns - Whether the line is a list item
+ * @returns - The type of list item ('none', 'bullet', 'numbered', 'lettered', 'roman')
  */
-function isList(line: string): boolean {
+function getListType(line: string): 'none' | 'bullet' | 'numbered' | 'lettered' | 'roman' {
   // Check for bullet lists (e.g., "- Item")
   if (/^\s*-\s+\S/.test(line)) {
-    return true;
+    return 'bullet';
   }
   
   // Check for numbered lists (e.g., "1. Item")
   if (/^\s*\d+\.\s+\S/.test(line)) {
-    return true;
+    return 'numbered';
   }
   
   // Check for lettered lists (e.g., "a. Item")
   if (/^\s*[a-z]\.\s+\S/.test(line)) {
-    return true;
+    return 'lettered';
   }
   
   // Check for roman numeral lists (e.g., "i. Item")
   if (/^\s*[ivxlcdm]+\.\s+\S/.test(line)) {
-    return true;
+    return 'roman';
   }
   
-  return false;
+  return 'none';
+}
+
+/**
+ * Check if a line is a list item
+ * @param line - The line to check
+ * @returns - Whether the line is a list item
+ */
+function isList(line: string): boolean {
+  return getListType(line) !== 'none';
 }
 
 /**
@@ -198,10 +220,10 @@ function isList(line: string): boolean {
 function formatDocument(text: string): string {
   // Get the document text as lines
   const lines = text.split('\n');
-  
+
   // Apply formatting rules
   const formattedLines = formatLines(lines);
-  
+
   // Return the formatted text
   return formattedLines.join('\n');
 }

@@ -1,8 +1,8 @@
 # Input file for basic formatting test
 
 Title
-Author        John Doe
-Date          2025-03-13
+Author     John Doe
+Date    2025-03-13
 
 1. INTRODUCTION
 
