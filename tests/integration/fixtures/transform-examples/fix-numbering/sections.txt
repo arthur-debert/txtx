@@ -1,0 +1,13 @@
+1. Introduction
+
+This is the introduction section.
+
+2. Main Section
+
+This is the main section.
+
+3. Conclusion
+
+This is the conclusion section.
+
+# This tests basic section numbering
