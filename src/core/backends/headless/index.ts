@@ -59,6 +59,9 @@ import {
 // Export format commands
 export { formatCommands } from './format-commands';
 
+// Export footnote commands
+export { numberFootnotes } from './footnote-commands';
+
 // Export reference commands
 export { checkDocumentReferences } from './reference-commands';
 
