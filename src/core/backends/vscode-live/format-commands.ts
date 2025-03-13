@@ -4,7 +4,14 @@
  */
 
 import * as vscode from 'vscode';
-import { formatCommands as headlessFormatCommands } from '../headless/format-commands';
+import {
+  formatDocumentCommand,
+  numberFootnotes,
+  generateTOCCommand,
+  fullFormattingCommand,
+  formatDocument,
+  fullFormatting
+} from '../headless';
 
 /**
  * Command implementations for formatting operations in VSCode
@@ -33,7 +40,19 @@ export const formatCommands = {
       const text = document.getText();
       
       // Use the headless implementation to format the document
-      const formattedText = headlessFormatCommands.formatDocument(text);
+      const result = await formatDocumentCommand(text, document.fileName);
+      
+      if (!result.success) {
+        vscode.window.showErrorMessage(result.error as string);
+        return false;
+      }
+      
+      const formattedText = result.result as string;
+      
+      // If the text didn't change, there's nothing to do
+      if (formattedText === text) {
+        return true;
+      }
       
       // Apply the changes to the document
       const fullRange = new vscode.Range(
@@ -76,7 +95,19 @@ export const formatCommands = {
       const text = document.getText();
       
       // Use the headless implementation to generate the TOC
-      const newText = headlessFormatCommands.generateTOC(text);
+      const result = await generateTOCCommand(text, document.fileName);
+      
+      if (!result.success) {
+        // If the error is just that no sections were found, show an information message
+        if (result.error === 'No sections found to generate TOC') {
+          vscode.window.showInformationMessage('No sections found to generate TOC.');
+        } else {
+          vscode.window.showErrorMessage(result.error as string);
+        }
+        return false;
+      }
+      
+      const newText = result.result as string;
       
       // If the text didn't change, there were no sections
       if (newText === text) {
@@ -125,12 +156,18 @@ export const formatCommands = {
       const text = document.getText();
       
       // Use the headless implementation to number footnotes
-      const newText = headlessFormatCommands.numberFootnotes(text);
+      const result = await numberFootnotes(text, document.fileName);
+      
+      if (!result.success) {
+        vscode.window.showErrorMessage(result.error as string);
+        return false;
+      }
+      
+      const newText = result.result as string;
       
       // If the text didn't change, there were no footnotes
       if (newText === text) {
-        vscode.window.showInformationMessage('No footnotes found to number.');
-        return false;
+        return true;
       }
       
       // Apply the changes to the document
@@ -174,7 +211,19 @@ export const formatCommands = {
       const text = document.getText();
       
       // Use the headless implementation to apply full formatting
-      const formattedText = headlessFormatCommands.fullFormatting(text);
+      const result = await fullFormattingCommand(text, document.fileName);
+      
+      if (!result.success) {
+        vscode.window.showErrorMessage(result.error as string);
+        return false;
+      }
+      
+      const formattedText = result.result as string;
+      
+      // If the text didn't change, there's nothing to do
+      if (formattedText === text) {
+        return true;
+      }
       
       // Apply the changes to the document
       const fullRange = new vscode.Range(
