@@ -12,17 +12,26 @@ import {
   CompletionItemProvider, OutputChannel, WorkspaceFolder, Diagnostic
 } from '../../types';
 
-// Export format commands
+// Export format commands object
 export { formatCommands } from './format-commands';
+
+// Export individual format commands for direct access
+export { 
+  formatDocument, 
+  generateTOC as generateTOCCommand,
+  fullFormatting as fullFormattingCommand
+} from './format-commands';
 
 // Export footnote commands
 export { numberFootnotes } from './footnote-commands';
 
 // Export numbering commands
-export { fixNumbering } from './numbering-commands';
+export { fixNumbering as fixDocumentNumbering } from './numbering-commands';
 
 // Export reference commands
-export { checkReferences } from './reference-commands';
+export { checkReferences as checkDocumentReferences } from './reference-commands';
+
+// Note: formatDocument and fullFormatting are also exported for backward compatibility
 
 /**
  * VSCode Live Backend class

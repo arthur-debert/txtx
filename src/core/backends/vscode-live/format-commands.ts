@@ -9,10 +9,23 @@ import {
   numberFootnotes,
   generateTOCCommand,
   fullFormattingCommand,
-  formatDocument,
-  fullFormatting
+  formatDocument as headlessFormatDocument,
+  fullFormatting as headlessFullFormatting
 } from '../headless';
 import { isCommandResult, getErrorMessage } from '../../error-utils';
+
+// Export individual functions for direct access
+export async function formatDocument(document: vscode.TextDocument): Promise<boolean> {
+  return formatCommands.formatDocument(document);
+}
+
+export async function generateTOC(document: vscode.TextDocument): Promise<boolean> {
+  return formatCommands.generateTOC(document);
+}
+
+export async function fullFormatting(document: vscode.TextDocument): Promise<boolean> {
+  return formatCommands.fullFormatting(document);
+}
 
 /**
  * Command implementations for formatting operations in VSCode

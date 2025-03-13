@@ -32,18 +32,22 @@ export function activate(context: vscode.ExtensionContext): void {
     const documentSymbolProvider = new RfcDocDocumentSymbolProvider();
     const selector = { language: 'rfcdoc', scheme: 'file' };
     
-    context.subscriptions.push(
-        vscode.languages.registerDocumentSymbolProvider(selector, documentSymbolProvider)
+    // Use vscodeLib instead of direct vscode API
+    vscodeLib.registerDocumentSymbolProvider(
+        context,
+        selector,
+        documentSymbolProvider,
+        outputChannel
     );
 
     // Register document link provider for footnotes and references
     const documentLinkProvider = new RfcDocDocumentLinkProvider();
-    context.subscriptions.push(
-        vscode.languages.registerDocumentLinkProvider(selector, documentLinkProvider)
+    vscodeLib.registerDocumentLinkProvider(
+        context,
+        selector,
+        documentLinkProvider,
+        outputChannel
     );
-    
-    outputChannel.appendLine('Document symbol provider registered for outline support');
-    outputChannel.appendLine('Document link provider registered for footnotes and references');
     
     // Register the transformations feature
     registerTransformations(context, outputChannel);
