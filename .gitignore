@@ -3,4 +3,7 @@ node_modules
 *.vsix
 coverage/
 .dist/
+dist/
+*.js.map
+*.d.ts
 .DS_Store

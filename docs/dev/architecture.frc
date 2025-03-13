@@ -1,0 +1,27 @@
+
+    DESIGN SIMPLE
+
+this code base is designed in order to minimize and isolate the vscode enviromnet specifics from the core logic. 
+
+this makes testing much easier, but also reuse (for things line a command line formatter for rfcdoc). 
+
+    1. BACKENDS
+
+hence apis have backends, that is a piece of code that can execute ops in a particular environment.  there are two main enviroments: 
+
+    1.1. HEADLESS
+
+    Doesn't need vscode or any ui, can run as a process. this is the core backend and all business logic should be captured by it. 
+
+    1.2 VSCODE
+    
+    Requires the vscode enviromnt (where users install the exenstion) but also for integration testing. the goal is to have this be a thin layer, so that integration tests are few and simple.
+
+    2. LAYOUT
+
+        /src/core/code/backends/<backend-name>/index.ts -> entry point for backend
+        /src/core/code/backends/<backend-name>/<feature>.ts -> features in ts files
+
+    in similar fashion unit tests layout should be: 
+        
+        /tests/unit/code/backends/<backend-name>/

@@ -51,9 +51,9 @@ Fell free to add base code to ./src/extension/vscode.lib.js that will improve th
 
 | File | Test | Description | Dependency |
 |------|------|-------------|------------|
-| 1-basic-extension.test.js | 1.1 Extension loads | Verifies the extension is loaded | Minimal - Only checks if extension is loaded |
-| 1-basic-extension.test.js | 1.2 Extension is active in .rfc files | Verifies the extension is active for .rfc files | Minimal - Opens a document and checks language ID |
-| 1-basic-extension.test.js | 1.3 Extension exports | Verifies the extension provides expected functionality | Minimal - Opens a document and checks language ID |
+| 1-basic-extension.test.js | 1.1 Extension loads | Verifies the extension is loaded |  - Pointeless: Only checks if extension is loaded |
+| 1-basic-extension.test.js | 1.2 Extension is active in .rfc files | Verifies the extension is active for .rfc files | Pointeless: Minimal - Opens a document and checks language ID |
+| 1-basic-extension.test.js | 1.3 Extension exports | Verifies the extension provides expected functionality | Pointeless: Minimal - Opens a document and checks language ID |
 | 2-document-structure.test.js | 2.1 Document outline/symbol provider | Tests the document symbol provider | Heavy - Uses VSCode document symbol provider API |
 | 2-document-structure.test.js | 2.2 Section detection - uppercase sections | Tests detection of uppercase sections | Heavy - Uses VSCode document symbol provider API |
 | 2-document-structure.test.js | 2.3 Section detection - numbered sections | Tests detection of numbered sections | Heavy - Uses VSCode document symbol provider API |
@@ -73,3 +73,5 @@ Fell free to add base code to ./src/extension/vscode.lib.js that will improve th
 | simple.test.js | VSCode version should be defined | Verifies VSCode version is defined | Minimal - Just checks if VSCode version is defined |
 | simple.test.js | Extension should be activated | Verifies extension can be activated | Minimal - Gets extension and activates it |
 | simple.test.js | Commands should be registered | Verifies commands are registered | Minimal - Checks if commands exist |
+
+#### To Mock
