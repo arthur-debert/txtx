@@ -7,15 +7,7 @@
 
 import { processTOC } from '../../../features/toc';
 import { findSections } from '../../../features/toc';
-/**
- * Command result interface
- * This interface defines the shape of the result returned by command functions
- */
-interface CommandResult<T> {
-  success: boolean;
-  result?: T;
-  error?: any;
-}
+import { CommandResult, ErrorCode, createSuccess, createFailure } from '../../error-utils';
 
 /**
  * Generate a table of contents for a document
@@ -29,10 +21,10 @@ export async function generateTOCCommand(
 ): Promise<CommandResult<string>> {
   // Only process RFC files
   if (!filePath.endsWith('.rfc')) {
-    return {
-      success: false,
-      error: 'Generate TOC command is only available for .rfc files'
-    };
+    return createFailure(
+      ErrorCode.FILE_TYPE_UNSUPPORTED,
+      'Generate TOC command is only available for .rfc files'
+    );
   }
 
   try {
@@ -42,25 +34,22 @@ export async function generateTOCCommand(
     // Check if the document has any numbered sections (e.g., "1. INTRODUCTION")
     const numberedSections = sections.filter(section => section.prefix && section.prefix.match(/^\d+(\.\d+)*\.$/));
     if (numberedSections.length === 0) {
-      return {
-        success: false,
-        error: 'No sections found to generate TOC'
-      };
+      return createFailure(
+        ErrorCode.NO_SECTIONS_FOUND,
+        'No sections found to generate TOC'
+      );
     }
     
     // Generate the TOC
     const newText = processTOC(text);
     
-    return {
-      success: true,
-      result: newText
-    };
+    return createSuccess(newText);
   } catch (error) {
     // Handle any errors
     const errorMessage = error instanceof Error ? error.message : String(error);
-    return {
-      success: false,
-      error: `Error generating TOC: ${errorMessage}`
-    };
+    return createFailure(
+      ErrorCode.PROCESSING_ERROR,
+      `Error generating TOC: ${errorMessage}`
+    );
   }
 }

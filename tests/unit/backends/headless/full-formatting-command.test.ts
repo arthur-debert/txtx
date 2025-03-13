@@ -4,6 +4,7 @@
 
 import * as assert from 'assert';
 import { fullFormattingCommand } from '../../../../src/core/backends/headless/full-formatting-command';
+import { getErrorMessage } from '../../../../src/core/error-utils';
 
 suite('Full Formatting Command - Headless Backend', () => {
   // Sample document with various formatting issues, sections, and footnotes
@@ -63,7 +64,7 @@ Concluding remarks.
     // Verify the result
     assert.strictEqual(result.success, false, 'Should return failure for non-RFC files');
     assert.ok(result.error, 'Should return error message');
-    assert.ok((result.error as string).includes('only available for .rfc files'), 'Error should mention RFC files');
+    assert.ok(getErrorMessage(result.error).includes('only available for .rfc files'), 'Error should mention RFC files');
   });
 
   test('should handle errors gracefully', async () => {

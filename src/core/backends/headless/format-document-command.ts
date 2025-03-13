@@ -5,15 +5,7 @@
  * in the headless backend environment.
  */
 
-/**
- * Command result interface
- * This interface defines the shape of the result returned by command functions
- */
-interface CommandResult<T> {
-  success: boolean;
-  result?: T;
-  error?: any;
-}
+import { CommandResult, ErrorCode, createSuccess, createFailure } from '../../error-utils';
 
 /**
  * Format lines according to the RFC specification
@@ -249,27 +241,24 @@ export async function formatDocumentCommand(
 ): Promise<CommandResult<string>> {
   // Only process RFC files
   if (!filePath.endsWith('.rfc')) {
-    return {
-      success: false,
-      error: 'Format Document command is only available for .rfc files'
-    };
+    return createFailure(
+      ErrorCode.FILE_TYPE_UNSUPPORTED,
+      'Format Document command is only available for .rfc files'
+    );
   }
 
   try {
     // Format the document
     const formattedText = formatDocument(text);
     
-    return {
-      success: true,
-      result: formattedText
-    };
+    return createSuccess(formattedText);
   } catch (error) {
     // Handle any errors
     const errorMessage = error instanceof Error ? error.message : String(error);
-    return {
-      success: false,
-      error: `Error formatting document: ${errorMessage}`
-    };
+    return createFailure(
+      ErrorCode.PROCESSING_ERROR,
+      `Error formatting document: ${errorMessage}`
+    );
   }
 }
 

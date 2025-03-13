@@ -5,6 +5,7 @@
 import * as assert from 'assert';
 import * as path from 'path';
 import { numberFootnotes } from '../../../../src/core/backends/headless/footnote-commands';
+import { getErrorMessage } from '../../../../src/core/error-utils';
 
 suite('Footnote Commands - Headless Backend', () => {
   // Test the numberFootnotes function
@@ -79,7 +80,7 @@ This is a test document with no footnotes.`;
       // Verify the result
       assert.strictEqual(result.success, false, 'Should return failure for non-RFC files');
       assert.ok(result.error, 'Should return error message');
-      assert.ok((result.error as string).includes('only available for .rfc files'), 'Error should mention RFC files');
+      assert.ok(getErrorMessage(result.error).includes('only available for .rfc files'), 'Error should mention RFC files');
     });
 
     test('should handle malformed footnotes gracefully', async () => {

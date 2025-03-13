@@ -6,6 +6,7 @@
 
 import * as vscode from 'vscode';
 import { numberFootnotes as headlessNumberFootnotes } from '../headless/footnote-commands';
+import { isCommandResult, getErrorMessage } from '../../error-utils';
 
 /**
  * Number footnotes sequentially and update references
@@ -32,8 +33,14 @@ export async function numberFootnotes(document: vscode.TextDocument): Promise<bo
     // Process footnotes using the headless backend
     const result = await headlessNumberFootnotes(text, document.fileName);
     
+    // Validate result using type guard
+    if (!isCommandResult(result)) {
+      vscode.window.showErrorMessage('Invalid result from footnote numbering');
+      return false;
+    }
+    
     if (!result.success) {
-      vscode.window.showErrorMessage(`Error numbering footnotes: ${result.error}`);
+      vscode.window.showErrorMessage(`Error numbering footnotes: ${getErrorMessage(result.error)}`);
       return false;
     }
     
@@ -44,7 +51,12 @@ export async function numberFootnotes(document: vscode.TextDocument): Promise<bo
     );
     
     await editor.edit((editBuilder) => {
-      editBuilder.replace(fullRange, result.result as string);
+      // Type guard to ensure result.result is a string
+      if (typeof result.result !== 'string') {
+        throw new Error('Invalid result type from footnote numbering');
+      }
+      
+      editBuilder.replace(fullRange, result.result);
     });
     
     vscode.window.showInformationMessage('Footnotes numbered successfully');

@@ -4,6 +4,7 @@
 
 import * as assert from 'assert';
 import { generateTOCCommand } from '../../../../src/core/backends/headless/generate-toc-command';
+import { getErrorMessage, ErrorCode } from '../../../../src/core/error-utils';
 
 suite('Generate TOC Command - Headless Backend', () => {
   // Sample document with sections
@@ -57,7 +58,10 @@ This is a document without any sections.`;
     
     // Verify the result
     assert.strictEqual(result.success, false, 'Should return failure for document without sections');
-    assert.strictEqual(result.error, 'No sections found to generate TOC', 'Should return specific error message');
+    assert.ok(result.error, 'Should have an error object');
+    assert.strictEqual(result.error?.code, ErrorCode.NO_SECTIONS_FOUND, 'Should have the correct error code');
+    assert.strictEqual(result.error?.message, 'No sections found to generate TOC', 
+      'Should have the correct error message');
   });
 
   test('should fail for non-RFC files', async () => {
@@ -67,7 +71,7 @@ This is a document without any sections.`;
     // Verify the result
     assert.strictEqual(result.success, false, 'Should return failure for non-RFC files');
     assert.ok(result.error, 'Should return error message');
-    assert.ok((result.error as string).includes('only available for .rfc files'), 'Error should mention RFC files');
+    assert.ok(getErrorMessage(result.error).includes('only available for .rfc files'), 'Error should mention RFC files');
   });
 
   test('should handle errors gracefully', async () => {

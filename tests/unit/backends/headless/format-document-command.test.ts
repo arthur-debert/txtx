@@ -4,6 +4,7 @@
 
 import * as assert from 'assert';
 import { formatDocumentCommand } from '../../../../src/core/backends/headless/format-document-command';
+import { getErrorMessage } from '../../../../src/core/error-utils';
 
 suite('Format Document Command - Headless Backend', () => {
   // Sample document with various formatting issues
@@ -72,7 +73,7 @@ More details here.`;
     // Verify the result
     assert.strictEqual(result.success, false, 'Should return failure for non-RFC files');
     assert.ok(result.error, 'Should return error message');
-    assert.ok((result.error as string).includes('only available for .rfc files'), 'Error should mention RFC files');
+    assert.ok(getErrorMessage(result.error).includes('only available for .rfc files'), 'Error should mention RFC files');
   });
 
   test('should handle errors gracefully', async () => {

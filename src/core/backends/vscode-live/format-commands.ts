@@ -12,6 +12,7 @@ import {
   formatDocument,
   fullFormatting
 } from '../headless';
+import { isCommandResult, getErrorMessage } from '../../error-utils';
 
 /**
  * Command implementations for formatting operations in VSCode
@@ -42,12 +43,24 @@ export const formatCommands = {
       // Use the headless implementation to format the document
       const result = await formatDocumentCommand(text, document.fileName);
       
-      if (!result.success) {
-        vscode.window.showErrorMessage(result.error as string);
+      // Validate result using type guard
+      if (!isCommandResult(result)) {
+        vscode.window.showErrorMessage('Invalid result from format document command');
         return false;
       }
       
-      const formattedText = result.result as string;
+      if (!result.success) {
+        vscode.window.showErrorMessage(getErrorMessage(result.error, 'Error formatting document'));
+        return false;
+      }
+      
+      // Type guard to ensure result.result is a string
+      if (typeof result.result !== 'string') {
+        vscode.window.showErrorMessage('Invalid result type from format document command');
+        return false;
+      }
+      
+      const formattedText = result.result;
       
       // If the text didn't change, there's nothing to do
       if (formattedText === text) {
@@ -97,17 +110,29 @@ export const formatCommands = {
       // Use the headless implementation to generate the TOC
       const result = await generateTOCCommand(text, document.fileName);
       
+      // Validate result using type guard
+      if (!isCommandResult(result)) {
+        vscode.window.showErrorMessage('Invalid result from generate TOC command');
+        return false;
+      }
+      
       if (!result.success) {
         // If the error is just that no sections were found, show an information message
-        if (result.error === 'No sections found to generate TOC') {
+        if (result.error?.message === 'No sections found to generate TOC') {
           vscode.window.showInformationMessage('No sections found to generate TOC.');
         } else {
-          vscode.window.showErrorMessage(result.error as string);
+          vscode.window.showErrorMessage(getErrorMessage(result.error, 'Error generating TOC'));
         }
         return false;
       }
       
-      const newText = result.result as string;
+      // Type guard to ensure result.result is a string
+      if (typeof result.result !== 'string') {
+        vscode.window.showErrorMessage('Invalid result type from generate TOC command');
+        return false;
+      }
+      
+      const newText = result.result;
       
       // If the text didn't change, there were no sections
       if (newText === text) {
@@ -158,12 +183,24 @@ export const formatCommands = {
       // Use the headless implementation to number footnotes
       const result = await numberFootnotes(text, document.fileName);
       
-      if (!result.success) {
-        vscode.window.showErrorMessage(result.error as string);
+      // Validate result using type guard
+      if (!isCommandResult(result)) {
+        vscode.window.showErrorMessage('Invalid result from number footnotes command');
         return false;
       }
       
-      const newText = result.result as string;
+      if (!result.success) {
+        vscode.window.showErrorMessage(getErrorMessage(result.error, 'Error numbering footnotes'));
+        return false;
+      }
+      
+      // Type guard to ensure result.result is a string
+      if (typeof result.result !== 'string') {
+        vscode.window.showErrorMessage('Invalid result type from number footnotes command');
+        return false;
+      }
+      
+      const newText = result.result;
       
       // If the text didn't change, there were no footnotes
       if (newText === text) {
@@ -213,12 +250,24 @@ export const formatCommands = {
       // Use the headless implementation to apply full formatting
       const result = await fullFormattingCommand(text, document.fileName);
       
-      if (!result.success) {
-        vscode.window.showErrorMessage(result.error as string);
+      // Validate result using type guard
+      if (!isCommandResult(result)) {
+        vscode.window.showErrorMessage('Invalid result from full formatting command');
         return false;
       }
       
-      const formattedText = result.result as string;
+      if (!result.success) {
+        vscode.window.showErrorMessage(getErrorMessage(result.error, 'Error applying full formatting'));
+        return false;
+      }
+      
+      // Type guard to ensure result.result is a string
+      if (typeof result.result !== 'string') {
+        vscode.window.showErrorMessage('Invalid result type from full formatting command');
+        return false;
+      }
+      
+      const formattedText = result.result;
       
       // If the text didn't change, there's nothing to do
       if (formattedText === text) {

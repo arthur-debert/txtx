@@ -8,16 +8,7 @@
 import { processTOC } from '../../../features/toc';
 import processFootnotes from '../../../features/footnotes';
 import { formatDocument } from './format-document-command';
-
-/**
- * Command result interface
- * This interface defines the shape of the result returned by command functions
- */
-interface CommandResult<T> {
-  success: boolean;
-  result?: T;
-  error?: any;
-}
+import { CommandResult, ErrorCode, createSuccess, createFailure } from '../../error-utils';
 
 /**
  * Apply full formatting to the document
@@ -45,26 +36,23 @@ export async function fullFormattingCommand(
 ): Promise<CommandResult<string>> {
   // Only process RFC files
   if (!filePath.endsWith('.rfc')) {
-    return {
-      success: false,
-      error: 'Full Formatting command is only available for .rfc files'
-    };
+    return createFailure(
+      ErrorCode.FILE_TYPE_UNSUPPORTED,
+      'Full Formatting command is only available for .rfc files'
+    );
   }
 
   try {
     // Apply full formatting
     const formattedText = fullFormatting(text);
     
-    return {
-      success: true,
-      result: formattedText
-    };
+    return createSuccess(formattedText);
   } catch (error) {
     // Handle any errors
     const errorMessage = error instanceof Error ? error.message : String(error);
-    return {
-      success: false,
-      error: `Error applying full formatting: ${errorMessage}`
-    };
+    return createFailure(
+      ErrorCode.PROCESSING_ERROR,
+      `Error applying full formatting: ${errorMessage}`
+    );
   }
 }

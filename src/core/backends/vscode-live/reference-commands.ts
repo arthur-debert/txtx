@@ -6,6 +6,7 @@
 
 import * as vscode from 'vscode';
 import { checkDocumentReferences as headlessCheckReferences } from '../headless/reference-commands';
+import { ReferenceCheckResult } from '../../../features/references/types';
 
 /**
  * Check references in a document
@@ -33,7 +34,8 @@ export async function checkReferences(document: vscode.TextDocument): Promise<bo
     const result = await headlessCheckReferences(text, document.fileName);
     
     if (!result.success) {
-      vscode.window.showErrorMessage(`Error checking references: ${result.diagnostics[0]?.message || 'Unknown error'}`);
+      const errorMessage = result.diagnostics[0]?.message || 'Unknown error checking references';
+      vscode.window.showErrorMessage(errorMessage);
       return false;
     }
     

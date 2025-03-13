@@ -6,16 +6,7 @@
  */
 
 import processFootnotes, { FootnoteProcessResult } from '../../../features/footnotes';
-
-/**
- * Command result interface
- * This interface defines the shape of the result returned by command functions
- */
-interface CommandResult<T> {
-  success: boolean;
-  result?: T;
-  error?: any;
-}
+import { CommandResult, ErrorCode, createSuccess, createFailure } from '../../error-utils';
 
 /**
  * Number footnotes sequentially and update references
@@ -29,10 +20,10 @@ export async function numberFootnotes(
 ): Promise<CommandResult<string>> {
   // Only process RFC files
   if (!filePath.endsWith('.rfc')) {
-    return {
-      success: false,
-      error: 'Number Footnotes command is only available for .rfc files'
-    };
+    return createFailure(
+      ErrorCode.FILE_TYPE_UNSUPPORTED,
+      'Number Footnotes command is only available for .rfc files'
+    );
   }
 
   try {
@@ -40,22 +31,19 @@ export async function numberFootnotes(
     const result = processFootnotes(text);
     
     if (!result.success) {
-      return {
-        success: false,
-        error: result.error
-      };
+      return createFailure(
+        ErrorCode.PROCESSING_ERROR,
+        result.error || 'Error processing footnotes'
+      );
     }
     
-    return {
-      success: true,
-      result: result.newText || text
-    };
+    return createSuccess(result.newText || text);
   } catch (error) {
     // Handle any errors
     const errorMessage = error instanceof Error ? error.message : String(error);
-    return {
-      success: false,
-      error: `Error numbering footnotes: ${errorMessage}`
-    };
+    return createFailure(
+      ErrorCode.PROCESSING_ERROR,
+      `Error numbering footnotes: ${errorMessage}`
+    );
   }
 }

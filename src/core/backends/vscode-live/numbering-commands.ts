@@ -6,6 +6,7 @@
 
 import * as vscode from 'vscode';
 import { fixDocumentNumbering as headlessFixNumbering } from '../headless/numbering-commands';
+import { NumberingFixResult } from '../../../features/numbering/types';
 
 /**
  * Fix numbering in ordered lists and section headers
@@ -33,7 +34,8 @@ export async function fixNumbering(document: vscode.TextDocument): Promise<boole
     const result = await headlessFixNumbering(text, document.fileName);
     
     if (!result.success || !result.fixedText) {
-      vscode.window.showErrorMessage(`Error fixing numbering: ${result.error}`);
+      const errorMessage = result.error || 'Unknown error fixing numbering';
+      vscode.window.showErrorMessage(`Error fixing numbering: ${errorMessage}`);
       return false;
     }
     

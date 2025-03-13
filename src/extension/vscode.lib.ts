@@ -8,6 +8,7 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
 import { sendNotification } from './notifications';
+import { getErrorMessage } from '../core/error-utils';
 import * as coreApi from '../core/api';
 import { NumberingFixResult } from '../features/numbering/types';
 
@@ -389,9 +390,10 @@ export async function fixNumbering(document: vscode.TextDocument): Promise<boole
     // Use the VSCode Live backend directly via command
     // This avoids type compatibility issues between VSCode and our API types
     const result = await vscode.commands.executeCommand<NumberingFixResult>('rfcdoc.fixNumbering.internal', text, document.fileName);
-    
-    if (!result || typeof result !== 'object' || !('success' in result) || !result.success || !('fixedText' in result) || !result.fixedText) {
-      sendNotification('NUMBERING_ERROR', result && 'error' in result ? result.error : 'Unknown error');
+
+    // Validate the result
+    if (!result || !result.success || !result.fixedText) {
+      sendNotification('NUMBERING_ERROR', result?.error || 'Unknown error');
       return false;
     }
     
@@ -432,7 +434,7 @@ export async function checkReferences(document: vscode.TextDocument): Promise<bo
     // Use the VSCode Live backend directly via command
     // This avoids type compatibility issues between VSCode and our API types
     const result = await vscode.commands.executeCommand('rfcdoc.checkReferences.internal', text, document.fileName);
-    
+
     // The result is handled by the command itself (showing diagnostics, etc.)
     return result === true;
   } catch (error) {
