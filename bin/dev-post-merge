@@ -1,0 +1,75 @@
+#!/bin/bash
+
+# dev-por-merge: Development branch management utility
+# 
+# This script automates common git branch management tasks:
+# - Remembers current branch
+# - Updates main branch
+# - Deletes the previous branch if it's fully merged
+# - Prunes remote branches
+# - Creates a new branch if requested
+#
+# Usage: bin/dev-por-merge [new-branch-name]
+
+set -e  # Exit immediately if a command exits with a non-zero status
+set -u  # Treat unset variables as an error
+
+# Function to display error messages and exit
+error_exit() {
+    echo "ERROR: $1" >&2
+    exit 1
+}
+
+# Ensure we're in a git repository
+if ! git rev-parse --is-inside-work-tree > /dev/null 2>&1; then
+    error_exit "Not in a git repository"
+fi
+
+# Store the current branch name
+current_branch=$(git symbolic-ref --short HEAD 2>/dev/null) || error_exit "Failed to get current branch name"
+echo "Current branch: $current_branch"
+
+# Don't proceed if we're not on a branch (detached HEAD state)
+if [ -z "$current_branch" ]; then
+    error_exit "Not currently on a branch (detached HEAD state)"
+fi
+
+# Don't delete the branch if it's main
+if [ "$current_branch" = "main" ]; then
+    echo "Already on main branch"
+else
+    # Try to checkout main and pull the latest changes
+    echo "Checking out main branch..."
+    git checkout main || error_exit "Failed to checkout main branch"
+    
+    echo "Pulling latest changes..."
+    git pull || error_exit "Failed to pull latest changes from main"
+    
+    # Check if there are differences between main and the previous branch
+    echo "Checking for differences between main and $current_branch..."
+    if git diff --quiet main..$current_branch; then
+        echo "No differences found between main and $current_branch"
+        echo "Deleting branch $current_branch..."
+        git branch -D "$current_branch" || echo "Warning: Failed to delete branch $current_branch"
+    else
+        echo "Differences found between main and $current_branch, keeping the branch"
+    fi
+fi
+
+# Prune remote branches
+echo "Pruning remote branches..."
+git remote prune origin || echo "Warning: Failed to prune remote branches"
+
+# Create and checkout a new branch if a parameter is provided
+if [ $# -gt 0 ]; then
+    new_branch="$1"
+    echo "Creating and checking out new branch: $new_branch"
+    git checkout -b "$new_branch" || error_exit "Failed to create and checkout branch $new_branch"
+    echo "Now on branch: $new_branch"
+else
+    echo "No new branch name provided, staying on main"
+fi
+
+echo "Done!"
+exit 0
+
