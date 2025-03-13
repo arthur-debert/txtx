@@ -8,6 +8,30 @@ const { runTests } = require('@vscode/test-electron');
 const fs = require('fs');
 
 /**
+ * Copy directory recursively
+ */
+function copyDir(src: string, dest: string) {
+  if (!fs.existsSync(src)) return;
+  
+  if (!fs.existsSync(dest)) {
+    fs.mkdirSync(dest, { recursive: true });
+  }
+
+  const entries = fs.readdirSync(src, { withFileTypes: true });
+
+  for (const entry of entries) {
+    const srcPath = path.join(src, entry.name);
+    const destPath = path.join(dest, entry.name);
+
+    if (entry.isDirectory()) {
+      copyDir(srcPath, destPath);
+    } else {
+      fs.copyFileSync(srcPath, destPath);
+    }
+  }
+}
+
+/**
  * Main test runner script
  * Runs unit tests, integration tests, or both based on command-line arguments
  */
@@ -79,13 +103,60 @@ async function runIntegrationTests() {
     const extensionDevelopmentPath = path.resolve(__dirname, '../');
     const extensionTestsPath = path.resolve(__dirname, './integration/index');
     
+    // Set up test workspace
+    const testWorkspacePath = path.join(extensionDevelopmentPath, '.vscode-test', 'test-workspace');
+    if (!fs.existsSync(testWorkspacePath)) {
+      fs.mkdirSync(testWorkspacePath, { recursive: true });
+    }
+
+    // Copy fixtures to test workspace
+    const fixturesPath = path.join(extensionDevelopmentPath, 'fixtures');
+    const testFixturesPath = path.join(testWorkspacePath, 'fixtures');
+    copyDir(fixturesPath, testFixturesPath);
+
+    // Copy integration test fixtures
+    const integrationFixturesPath = path.join(extensionDevelopmentPath, 'tests', 'integration', 'fixtures');
+    const testIntegrationFixturesPath = path.join(testWorkspacePath, 'tests', 'integration', 'fixtures');
+    copyDir(integrationFixturesPath, testIntegrationFixturesPath);
+
+    // Create settings.json to ensure .rfc files are associated with our extension
+    const settingsPath = path.join(testWorkspacePath, '.vscode');
+    if (!fs.existsSync(settingsPath)) {
+      fs.mkdirSync(settingsPath, { recursive: true });
+    }
+    fs.writeFileSync(
+      path.join(settingsPath, 'settings.json'),
+      JSON.stringify({
+        'files.associations': {
+          '*.rfc': 'rfcdoc'
+        }
+      }, null, 2)
+    );
+
+    // Create a symlink to our extension in the extensions directory
+    const extensionsDir = path.join(extensionDevelopmentPath, '.vscode-test', 'extensions');
+    if (!fs.existsSync(extensionsDir)) {
+      fs.mkdirSync(extensionsDir, { recursive: true });
+    }
+    const extensionLink = path.join(extensionsDir, 'rfcdoc.rfcdoc-format');
+    if (fs.existsSync(extensionLink)) {
+      fs.unlinkSync(extensionLink);
+    }
+    fs.symlinkSync(extensionDevelopmentPath, extensionLink, 'junction');
+
     // Download VS Code, unzip it and run the integration test
     await runTests({
       extensionDevelopmentPath,
       extensionTestsPath,
       launchArgs: [
-        '--disable-extensions',
-        path.resolve(extensionDevelopmentPath, 'fixtures')
+        // Open our test workspace
+        testWorkspacePath,
+        // Add extension search path
+        `--extensions-dir=${extensionsDir}`,
+        // Use our test settings
+        `--user-data-dir=${path.join(extensionDevelopmentPath, '.vscode-test', 'user-data')}`,
+        // Ensure our extension is activated
+        '--enable-proposed-api=rfcdoc.rfcdoc-format'
       ]
     });
     

@@ -30,15 +30,15 @@ suite('RfcDoc Format Extension Tests', function() {
       assert.ok(symbols.length > 0, 'Document should have at least one symbol');
       
       // Get section names from symbols
-      const sectionNames = symbols.map((symbol: vscode.DocumentSymbol) => symbol.name);
+      const sectionNames = symbols.map(symbol => symbol.name);
       
       isVerbose && console.log('Document symbols:', JSON.stringify(symbols, null, 2));
       isVerbose && console.log('Section names:', sectionNames);
       isVerbose && console.log('Note: Nested sections are not included in the symbols');
       
       // Verify that the document has the expected sections
-      assert.ok(sectionNames.some((name: string) => name.includes('Test Document')), 'Document should have a title section');
-      assert.ok(sectionNames.some((name: string) => name.includes('Numbered Section')), 'Document should have a numbered section');
+      assert.ok(sectionNames.some(name => name.includes('Test Document')), 'Document should have a title section');
+      assert.ok(sectionNames.some(name => name.includes('Numbered Section')), 'Document should have a numbered section');
     });
     
     // 2.2 Section detection - uppercase sections

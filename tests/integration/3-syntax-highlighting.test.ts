@@ -138,7 +138,7 @@ suite('RfcDoc Format Extension Tests', function() {
       const document = await openDocument(testFilePath);
       
       // Wait for the language mode to be set
-      await new Promise<void>(resolve => setTimeout(resolve, 1000));
+      await new Promise(resolve => setTimeout(resolve, 1000));
       
       // Get the document text
       const text = document.getText();

@@ -17,7 +17,7 @@ suite('RfcDoc Format Extension Tests', function() {
       const document = await openDocument(testFilePath);
       
       // Wait for the language mode to be set
-      await new Promise<void>(resolve => setTimeout(resolve, 1000));
+      await new Promise(resolve => setTimeout(resolve, 1000));
       
       // Get the editor
       const editor = vscode.window.activeTextEditor;
@@ -34,7 +34,7 @@ suite('RfcDoc Format Extension Tests', function() {
       });
       
       // Wait for the transformation to occur
-      await new Promise<void>(resolve => setTimeout(resolve, 2000));
+      await new Promise(resolve => setTimeout(resolve, 2000));
       
       // Get the updated document text
       const lastLineText = editor.document.lineAt(lastLine).text;
@@ -59,7 +59,7 @@ suite('RfcDoc Format Extension Tests', function() {
       const document = await openDocument(testFilePath);
       
       // Wait for the language mode to be set
-      await new Promise<void>(resolve => setTimeout(resolve, 1000));
+      await new Promise(resolve => setTimeout(resolve, 1000));
       
       // Get the editor
       const editor = vscode.window.activeTextEditor;
@@ -76,7 +76,7 @@ suite('RfcDoc Format Extension Tests', function() {
       });
       
       // Wait for the transformation to occur
-      await new Promise<void>(resolve => setTimeout(resolve, 2000));
+      await new Promise(resolve => setTimeout(resolve, 2000));
       
       // Get the updated document text
       const lastLineText = editor.document.lineAt(lastLine).text;
@@ -104,7 +104,7 @@ suite('RfcDoc Format Extension Tests', function() {
       const document = await openDocument(testFilePath);
       
       // Wait for the language mode to be set
-      await new Promise<void>(resolve => setTimeout(resolve, 1000));
+      await new Promise(resolve => setTimeout(resolve, 1000));
       
       // Get the editor
       const editor = vscode.window.activeTextEditor;
@@ -121,7 +121,7 @@ suite('RfcDoc Format Extension Tests', function() {
       });
       
       // Wait for the emoticon picker to appear and potentially auto-complete
-      await new Promise<void>(resolve => setTimeout(resolve, 1000));
+      await new Promise(resolve => setTimeout(resolve, 1000));
       
       // Get the updated document text
       const lastLineText = editor.document.lineAt(lastLine).text;
@@ -146,7 +146,7 @@ suite('RfcDoc Format Extension Tests', function() {
       const document = await openDocument(testFilePath);
       
       // Wait for the language mode to be set
-      await new Promise<void>(resolve => setTimeout(resolve, 1000));
+      await new Promise(resolve => setTimeout(resolve, 1000));
       
       // Get the document text
       const text = document.getText();

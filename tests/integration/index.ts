@@ -1,18 +1,13 @@
 /**
  * Integration test setup and runner
  */
-import type { MochaOptions } from 'mocha';
-const path = require('path') as typeof import('path');
-const Mocha = require('mocha');
-const { glob } = require('glob');
+import * as path from 'path';
+import Mocha = require('mocha');
+import { glob } from 'glob';
 
-/**
- * Options for running tests
- */
-interface RunOptions {
-  specificTests?: string[];
+interface TestOptions {
   reporter?: string;
-  mocha?: MochaOptions;
+  mocha?: Partial<Mocha.MochaOptions>;
 }
 
 /**
@@ -20,7 +15,7 @@ interface RunOptions {
  * @param options - Test options
  * @returns Promise that resolves when tests complete
  */
-function run(options: RunOptions = {}): Promise<void> {
+export async function run(options: TestOptions = {}): Promise<void> {
   // Determine if we're in verbose mode
   const isVerbose = process.env.VERBOSE === 'true';
   
@@ -37,45 +32,44 @@ function run(options: RunOptions = {}): Promise<void> {
     ...options.mocha
   });
 
-  // Use the compiled tests directory
+  // Use the dist directory for running compiled tests
   const testsRoot = path.resolve(__dirname);
 
-  return new Promise<void>((resolve, reject) => {
-    // Find all test files
-    (glob('**/*.test.js', { cwd: testsRoot }) as Promise<string[]>)
-      .then((files) => {        
-        // Only show detailed logs in verbose mode
-        if (isVerbose) {
-          console.log('\n======= RUNNING INTEGRATION TEST FILES =======');
-          files.forEach((f: string) => console.log(`- ${f}`));
-        } else {
-          // In non-verbose mode, just show a simple message
-          console.log(`Running ${files.length} integration test files...`);
-        }
-        console.log('==================================\n');
-        
-        // Add files to the test suite
-        files.forEach((f: string) => mocha.addFile(path.resolve(testsRoot, f)));
+  try {
+    // Find all test files (compiled .js files)
+    const files = await glob('**/*.test.js', { cwd: testsRoot });
+    
+    // Only show detailed logs in verbose mode
+    if (isVerbose) {
+      console.log('\n======= RUNNING INTEGRATION TEST FILES =======');
+      files.forEach(f => console.log(`- ${f}`));
+    } else {
+      // In non-verbose mode, just show a simple message
+      console.log(`Running ${files.length} integration test files...`);
+    }
+    console.log('==================================\n');
+    
+    // Add files to the test suite
+    files.forEach(f => mocha.addFile(path.resolve(testsRoot, f)));
 
-        try {
-          // Run the mocha test
-          const runner = mocha.run((failures: number) => {
-            isVerbose && console.log(`\n======= INTEGRATION TEST RESULTS: ${failures} failures =======\n`);
-            if (failures > 0) {
-              reject(new Error(`${failures} integration tests failed.`));
-            } else {
-              resolve();
-            }
-          });
-        } catch (err) {
-          console.error(err);
-          reject(err);
-        }
-      })
-      .catch((err: Error) => {
+    // Run the mocha test
+    return new Promise<void>((resolve, reject) => {
+      try {
+        const runner = mocha.run((failures: number) => {
+          isVerbose && console.log(`\n======= INTEGRATION TEST RESULTS: ${failures} failures =======\n`);
+          if (failures > 0) {
+            reject(new Error(`${failures} integration tests failed.`));
+          } else {
+            resolve();
+          }
+        });
+      } catch (err) {
+        console.error(err);
         reject(err);
-      });
-  });
+      }
+    });
+  } catch (err) {
+    console.error(err);
+    throw err;
+  }
 }
-
-module.exports = { run };

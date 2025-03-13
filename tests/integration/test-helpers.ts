@@ -1,31 +1,51 @@
 /**
  * Integration test helpers
  */
-const path = require('path') as typeof import('path');
-const vscode = require('vscode') as typeof import('vscode');
-const testSetup = require('../testSetup');
+import * as path from 'path';
+import * as vscode from 'vscode';
+import * as fs from 'fs';
+
+interface TestEnvironment {
+  createFile: (fileName: string, content: string) => string;
+  cleanup: () => void;
+  getTempDir: () => string;
+}
+
+interface TestSetup {
+  createTestEnvironment: (testDirName?: string) => TestEnvironment;
+  createTempDirectory: (dirName?: string) => string;
+  createTempFile: (filePath: string, content: string) => string;
+  deleteFileIfExists: (filePath: string) => void;
+  deleteDirIfExists: (dirPath: string) => void;
+}
+
+// Import testSetup with type assertion
+const testSetup = require('../testSetup') as TestSetup;
 
 // Get verbose flag from environment
-const isVerbose = process.env.VERBOSE === 'true';
+export const isVerbose = process.env.VERBOSE === 'true';
 
 // Import extension modules
-const vscodeLib = require('../../dist/src/extension/vscode.lib');
-const { 
-  setNotificationConfig,
-  enableNotification,
-  disableNotification,
-  disableAllNotifications
-} = require('../../dist/src/extension/notifications');
+import * as vscodeLib from '../../src/extension/vscode.lib';
+import { 
+  setNotificationConfig, 
+  enableNotification, 
+  disableNotification, 
+  enableAllNotifications, 
+  disableAllNotifications 
+} from '../../src/extension/notifications';
 
 // Re-export functions from vscode.lib
-const { openDocument, getDocumentSections, executeCommand, getActiveEditor, closeActiveEditor } = vscodeLib;
+export const {
+  openDocument,
+  getDocumentSections,
+  executeCommand,
+  getActiveEditor,
+  closeActiveEditor
+} = vscodeLib;
 
-/**
- * Create a test environment helper
- * @param testDirName - Optional name for the test directory
- * @returns The test environment
- */
-function createTestEnv(testDirName?: string) {
+// Create a test environment helper
+export function createTestEnv(testDirName?: string): TestEnvironment {
   return testSetup.createTestEnvironment(testDirName || 'integration-tests');
 }
 
@@ -33,7 +53,7 @@ function createTestEnv(testDirName?: string) {
  * Configure notifications for testing
  * @param config - Configuration object with notification IDs as keys
  */
-function configureNotifications(config: Record<string, boolean>): void {
+export function configureNotifications(config: Record<string, boolean>) {
   setNotificationConfig(config);
 }
 
@@ -41,7 +61,7 @@ function configureNotifications(config: Record<string, boolean>): void {
  * Enable a specific notification for testing
  * @param id - The notification ID to enable
  */
-function enableTestNotification(id: string): void {
+export function enableTestNotification(id: string) {
   enableNotification(id);
 }
 
@@ -49,14 +69,14 @@ function enableTestNotification(id: string): void {
  * Disable a specific notification for testing
  * @param id - The notification ID to disable
  */
-function disableTestNotification(id: string): void {
+export function disableTestNotification(id: string) {
   disableNotification(id);
 }
 
 /**
  * Reset notification configuration to default (all disabled)
  */
-function resetNotificationConfig(): void {
+export function resetNotificationConfig() {
   disableAllNotifications();
 }
 
@@ -65,8 +85,10 @@ function resetNotificationConfig(): void {
  * @param fixtureName - The name of the fixture file
  * @returns The absolute path to the fixture file
  */
-function getFixturePath(fixtureName: string): string {
-  return path.join(path.resolve(__dirname, '..', '..'), 'fixtures', fixtureName);
+export function getFixturePath(fixtureName: string): string {
+  // Use the original fixtures directory
+  const projectRoot = path.resolve(__dirname, '..', '..');
+  return path.join(projectRoot, 'fixtures', fixtureName);
 }
 
 /**
@@ -74,30 +96,8 @@ function getFixturePath(fixtureName: string): string {
  * @param fixtureName - The name of the fixture file
  * @returns The absolute path to the fixture file
  */
-function getTestFixturePath(fixtureName: string): string {
-  return path.join(__dirname, 'fixtures', fixtureName);
+export function getTestFixturePath(fixtureName: string): string {
+  // Use the original fixtures directory
+  const integrationTestsRoot = path.resolve(__dirname, '..', '..', 'tests', 'integration');
+  return path.join(integrationTestsRoot, 'fixtures', fixtureName);
 }
-
-// Export everything needed by test files
-const helpers = {
-  isVerbose,
-  openDocument,
-  getDocumentSections,
-  executeCommand,
-  getActiveEditor,
-  closeActiveEditor,
-  createTestEnv,
-  configureNotifications,
-  enableTestNotification,
-  disableTestNotification,
-  resetNotificationConfig,
-  getFixturePath,
-  getTestFixturePath
-};
-
-// Support both CommonJS and ES modules
-if (typeof module !== 'undefined' && module.exports) {
-  module.exports = helpers;
-}
-
-export = helpers;
