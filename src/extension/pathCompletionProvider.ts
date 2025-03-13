@@ -1,6 +1,7 @@
 import * as vscode from "vscode";
 import * as path from "path";
 import { PATH_COMPLETION_TRIGGERS } from "./constants";
+import * as vscodeLib from "./vscode.lib";
 
 /**
  * Register the path completion provider
@@ -8,8 +9,9 @@ import { PATH_COMPLETION_TRIGGERS } from "./constants";
  * @param outputChannel - The output channel
  */
 function registerPathCompletionProvider(context: vscode.ExtensionContext, outputChannel: vscode.OutputChannel): void {
-    // Register completion provider for file/folder paths
-    const completionProvider = vscode.languages.registerCompletionItemProvider(
+    // Register completion provider for file/folder paths using vscodeLib
+    vscodeLib.registerCompletionItemProvider(
+        context,
         { language: 'rfcdoc', scheme: 'file' },
         {
             async provideCompletionItems(
@@ -31,11 +33,9 @@ function registerPathCompletionProvider(context: vscode.ExtensionContext, output
                 return await getPathCompletionItems(document.uri, pathPrefix, outputChannel);
             }
         },
-        ...PATH_COMPLETION_TRIGGERS
+        PATH_COMPLETION_TRIGGERS,
+        outputChannel
     );
-    
-    context.subscriptions.push(completionProvider);
-    outputChannel.appendLine('Path completion provider registered');
 }
 
 /**

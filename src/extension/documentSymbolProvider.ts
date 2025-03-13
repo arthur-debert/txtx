@@ -4,6 +4,7 @@ import {
     NUMBERED_SECTION_REGEX, 
     ALTERNATIVE_SECTION_REGEX 
 } from "./constants";
+import * as vscodeLib from "./vscode.lib";
 
 /**
  * Document Symbol Provider for RfcDoc files

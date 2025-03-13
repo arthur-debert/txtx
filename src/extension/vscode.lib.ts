@@ -3,14 +3,17 @@
  * 
  * This library provides reusable functions for common operations in VSCode extensions
  * and their tests, reducing code duplication and improving maintainability.
+ * 
+ * IMPORTANT: This is the only file that should directly import from vscode.
+ * All other extension files should use this library.
  */
 
 import * as vscode from 'vscode';
 import * as path from 'path';
 import { sendNotification } from './notifications';
 import { getErrorMessage } from '../core/error-utils';
-import * as coreApi from '../core/api';
 import { NumberingFixResult } from '../features/numbering/types';
+import * as coreApi from '../core/api';
 
 /**
  * Interface for section information
@@ -257,6 +260,72 @@ export function registerCommand(
   outputChannel?.appendLine(`${command} command registered`);
   
   return commandRegistration;
+}
+
+/**
+ * Register a document symbol provider
+ * @param context - The extension context
+ * @param selector - The document selector
+ * @param provider - The provider to register
+ * @param outputChannel - The output channel to log to
+ * @returns - The provider registration
+ */
+export function registerDocumentSymbolProvider(
+  context: vscode.ExtensionContext,
+  selector: vscode.DocumentSelector,
+  provider: vscode.DocumentSymbolProvider,
+  outputChannel?: vscode.OutputChannel
+): vscode.Disposable {
+  const registration = vscode.languages.registerDocumentSymbolProvider(selector, provider);
+  context.subscriptions.push(registration);
+  outputChannel?.appendLine('Document symbol provider registered');
+  return registration;
+}
+
+/**
+ * Register a document link provider
+ * @param context - The extension context
+ * @param selector - The document selector
+ * @param provider - The provider to register
+ * @param outputChannel - The output channel to log to
+ * @returns - The provider registration
+ */
+export function registerDocumentLinkProvider(
+  context: vscode.ExtensionContext,
+  selector: vscode.DocumentSelector,
+  provider: vscode.DocumentLinkProvider,
+  outputChannel?: vscode.OutputChannel
+): vscode.Disposable {
+  const registration = vscode.languages.registerDocumentLinkProvider(selector, provider);
+  context.subscriptions.push(registration);
+  outputChannel?.appendLine('Document link provider registered');
+  return registration;
+}
+
+/**
+ * Register a completion item provider
+ * @param context - The extension context
+ * @param selector - The document selector
+ * @param provider - The provider to register
+ * @param triggerCharacters - The trigger characters
+ * @param outputChannel - The output channel to log to
+ * @returns - The provider registration
+ */
+export function registerCompletionItemProvider(
+  context: vscode.ExtensionContext,
+  selector: vscode.DocumentSelector,
+  provider: vscode.CompletionItemProvider,
+  triggerCharacters: string[],
+  outputChannel?: vscode.OutputChannel
+): vscode.Disposable {
+  const registration = vscode.languages.registerCompletionItemProvider(
+    selector, 
+    provider, 
+    ...triggerCharacters
+  );
+  context.subscriptions.push(registration);
+  outputChannel?.appendLine('Completion item provider registered');
+  return registration;
 }
 
 /**

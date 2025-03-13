@@ -5,6 +5,7 @@ import {
     FOOTNOTE_REFERENCE_REGEX, 
     DOCUMENT_REFERENCE_REGEX 
 } from "./constants";
+import * as vscodeLib from "./vscode.lib";
 
 /**
  * Document Link Provider for RfcDoc files
