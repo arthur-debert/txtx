@@ -3,7 +3,7 @@
  * This file contains implementations for format-related commands
  */
 
-import { processTOC } from './toc-generator';
+import { processTOC } from '../../../features/toc';
 
 /**
  * Command implementations for formatting operations

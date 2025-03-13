@@ -1,10 +1,8 @@
 import * as vscode from "vscode";
-import { SECTION_REGEX, NUMBERED_SECTION_REGEX, ALTERNATIVE_SECTION_REGEX } from "./constants";
 import { numberFootnotes } from "./footnoteCommands";
 import { sendNotification } from "./notifications";
 import * as vscodeLib from "./vscode.lib";
-import { formatCommands } from "../core/backends/headless";
-import { isMetadata } from "../core/backends/headless/toc-generator";
+import { processTOC, isMetadata } from "../features/toc";
 
 /**
  * Format a document according to the RFC specification
@@ -67,7 +65,7 @@ async function generateTOC(document: vscode.TextDocument): Promise<boolean> {
         const text = document.getText();
 
         // Use the headless implementation to generate the TOC
-        const newText = formatCommands.generateTOC(text);
+        const newText = processTOC(text);
         
         // If the text didn't change, there were no sections
         if (newText === text) {

@@ -1,18 +1,18 @@
 /**
- * Unit tests for the TOC generator
+ * Unit tests for the TOC feature
  */
 
 import * as assert from 'assert';
 import { 
-  generateTOC, 
+  generateTOC,
   findSections,
   generateTOCLines,
-  getCurrentTOC, 
-  replaceTOC, 
-  processTOC 
-} from '../../../../src/core/backends/headless/toc-generator';
+  findExistingTOC,
+  replaceTOC,
+  processTOC
+} from '../../../../src/features/toc';
 
-suite('TOC Generator', () => {
+suite('TOC Feature', () => {
   // Sample document with sections
   const sampleDocument = `RFC Test Document
 -----------------
@@ -100,10 +100,11 @@ This is a test document with no sections.`;
     assert.ok(result, 'Should return a result for document without sections');
   });
   
-  // Test the getCurrentTOC function
-  test('getCurrentTOC should find existing TOC in document', () => {
+  // Test the findExistingTOC function
+  test('findExistingTOC should find existing TOC in document', () => {
     // Find existing TOC
-    const currentTOC = getCurrentTOC(documentWithTOC);
+    const lines = documentWithTOC.split('\n');
+    const currentTOC = findExistingTOC(lines, 0);
     
     // Verify TOC was found
     assert.ok(currentTOC, 'Should find existing TOC');
@@ -111,9 +112,10 @@ This is a test document with no sections.`;
     assert.ok(currentTOC?.endLine >= 7, 'TOC should end after line 7');
   });
   
-  test('getCurrentTOC should return null if no TOC exists', () => {
+  test('findExistingTOC should return null if no TOC exists', () => {
     // Find existing TOC in document without TOC
-    const currentTOC = getCurrentTOC(sampleDocument);
+    const lines = sampleDocument.split('\n');
+    const currentTOC = findExistingTOC(lines, 0);
     
     // Verify no TOC was found
     assert.strictEqual(currentTOC, null, 'Should return null for document without TOC');
@@ -126,7 +128,8 @@ This is a test document with no sections.`;
     const tocLines = generateTOCLines(sections);
     
     // Find existing TOC
-    const currentTOC = getCurrentTOC(documentWithTOC);
+    const lines = documentWithTOC.split('\n');
+    const currentTOC = findExistingTOC(lines, 0);
     
     // Replace TOC
     const result = replaceTOC(documentWithTOC, tocLines, currentTOC);

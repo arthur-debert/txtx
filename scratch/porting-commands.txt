@@ -1,0 +1,71 @@
+Porting Commands to the Feature-Based Architecture
+==============================================
+
+This document outlines the process for porting VSCode extension commands to the new feature-based architecture. This architecture separates core business logic from UI/platform concerns, making the code more testable and maintainable.
+
+Step 1: Create Feature Directory Structure
+-----------------------------------------
+- Create a directory for the feature under `src/features/<feature-name>/`
+- Split the functionality into logical files:
+  * `types.ts` - Type definitions specific to the feature
+  * Core functionality files (e.g., `find.ts`, `generate.ts`, etc.)
+  * `index.ts` - Main entry point that exports all functionality
+
+Step 2: Extract Core Logic
+-------------------------
+- Identify the core business logic in the existing command implementation
+- Move this logic to the appropriate files in the feature directory
+- Ensure the logic is pure (no side effects) and works with primitive types (strings, arrays, etc.)
+- Make sure the functions are well-named and have clear responsibilities
+- Add proper JSDoc comments to document the functions
+
+Step 3: Create a Main Entry Point
+--------------------------------
+- In `index.ts`, export all the types and functions from the feature
+- Create a main function that combines the core functionality (if needed)
+- This main function should take primitive inputs and return primitive outputs
+- Example: `processTOC(text: string): string`
+
+Step 4: Update the Backends
+--------------------------
+- Update the headless backend to use the new feature code:
+  * Modify `src/core/backends/headless/<command-name>.ts` to import from the feature
+  * Replace the implementation with calls to the feature functions
+
+- Update the VSCode extension to use the new feature code:
+  * Modify `src/extension/<command-name>.ts` to import from the feature
+  * Keep only the VSCode-specific code (getting document text, applying edits, etc.)
+  * Use the feature functions for the core logic
+
+Step 5: Create Unit Tests
+-----------------------
+- Create a test directory at `tests/unit/features/<feature-name>/`
+- Write tests for each core function in the feature
+- Write integration tests for the main function
+- Ensure tests cover edge cases and error conditions
+- Run the tests to verify the functionality works as expected
+
+Step 6: Clean Up
+--------------
+- Remove any old test files that are no longer needed
+- Update any documentation to reflect the new structure
+- Run the full test suite to ensure everything still works
+
+Benefits of the New Architecture
+-------------------------------
+1. Better separation of concerns - Core logic is independent of UI/platform
+2. Improved testability - Can test business logic without VSCode dependencies
+3. Code reuse - Same core code used in multiple contexts
+4. Easier maintenance - Changes to core logic only need to be made in one place
+
+Example Structure
+---------------
+src/features/toc/
+├── types.ts       # Type definitions
+├── find.ts        # Functions for finding sections and TOC
+├── generate.ts    # Functions for generating TOC content
+├── replace.ts     # Functions for replacing/inserting TOC
+└── index.ts       # Main entry point
+
+tests/unit/features/toc/
+└── toc.test.ts    # Tests for the TOC feature
