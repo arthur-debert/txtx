@@ -1,0 +1,25 @@
+# Input file for basic formatting test
+
+Title
+Author     John Doe
+Date    2025-03-13
+
+1. INTRODUCTION
+
+This is an introduction paragraph.
+It has multiple lines without proper spacing.
+
+1.1. Background
+
+Some background information.
+
+- Item 1
+- Item 2
+- Item 3
+
+    This is a code block.
+    It should be preserved.
+
+2. DETAILS
+
+More details here.

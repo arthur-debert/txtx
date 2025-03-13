@@ -56,6 +56,15 @@ import {
   HeadlessCancellationTokenSource
 } from './event-handling';
 
+// Export format commands
+export { formatCommands } from './format-commands';
+
+// Export reference commands
+export { checkDocumentReferences } from './reference-commands';
+
+// Export numbering commands
+export { fixDocumentNumbering } from './numbering-commands';
+
 /**
  * Headless Backend class
  * Implements the Backend interface with real functionality that doesn't depend on VSCode

@@ -1,0 +1,56 @@
+# Input file for full formatting test
+
+Title
+Author        John Doe
+Date          2025-03-13
+
+TABLE OF CONTENTS
+-----------------
+
+Title
+Author        John Doe
+Date          2025-03-13
+1. INTRODUCTION
+This is an introduction paragraph.
+It has multiple lines without proper spacing.
+    1.1. Background
+Some background information.
+2. DETAILS
+This section has details about the document.
+    2.1. Subsection One
+Content for subsection one.
+    2.2. Subsection Two
+Content for subsection two.
+3. CONCLUSION
+This is the conclusion of the document.
+In the text, we can reference footnotes like this[^1] and this[^2].
+
+1. INTRODUCTION
+
+This is an introduction paragraph.
+It has multiple lines without proper spacing.
+
+1.1. Background
+
+Some background information.
+
+2. DETAILS
+
+This section has details about the document.
+
+2.1. Subsection One
+
+Content for subsection one.
+
+2.2. Subsection Two
+
+Content for subsection two.
+
+3. CONCLUSION
+
+This is the conclusion of the document.
+
+[^1]: This is a footnote.
+[^2]: This is another footnote.
+
+In the text, we can reference footnotes like this[^1] and this[^2].

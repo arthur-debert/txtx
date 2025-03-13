@@ -1,0 +1,6 @@
+1. Hello
+2. There 
+3. World
+
+# this is the "template form" where users simply list items as 1. and the 
+# fix / formatter should be able to order them

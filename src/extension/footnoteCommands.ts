@@ -1,13 +1,6 @@
 import * as vscode from "vscode";
-import { FOOTNOTE_REGEX, FOOTNOTE_REFERENCE_REGEX } from "./constants";
 import { sendNotification } from "./notifications";
-
-// Define interface for footnote declaration
-interface FootnoteDeclaration {
-    originalNumber: string;
-    text: string;
-    position: number;
-}
+import processFootnotes from "../features/footnotes";
 
 /**
  * Number footnotes sequentially and update references
@@ -28,68 +21,14 @@ async function numberFootnotes(document: vscode.TextDocument): Promise<boolean> 
     }
 
     try {
-        // Get the entire document text
         const text = document.getText();
         
-        // Find all footnote declarations and their positions
-        const footnoteDeclarations: FootnoteDeclaration[] = [];
-        let match;
+        // Process the footnotes using the feature
+        const result = processFootnotes(text);
         
-        // Reset the regex lastIndex
-        FOOTNOTE_REGEX.lastIndex = 0;
-        while ((match = FOOTNOTE_REGEX.exec(text)) !== null) {
-            const footnoteNumber = match[1];
-            const footnoteText = match[2];
-            const position = match.index;
-            
-            footnoteDeclarations.push({
-                originalNumber: footnoteNumber,
-                text: footnoteText,
-                position: position
-            });
-        }
-        
-        // Sort footnote declarations by their position in the document
-        footnoteDeclarations.sort((a, b) => a.position - b.position);
-        
-        // Create a mapping from original footnote numbers to new sequential numbers
-        const footnoteMap: Record<string, string> = {};
-        for (let i = 0; i < footnoteDeclarations.length; i++) {
-            footnoteMap[footnoteDeclarations[i].originalNumber] = (i + 1).toString();
-        }
-        
-        // Create a new document text with updated footnote numbers
-        let newText = '';
-        let lastIndex = 0;
-        
-        // Process the text character by character
-        for (let i = 0; i < text.length; i++) {
-            if (text[i] === '[' && i + 1 < text.length && /\d/.test(text[i + 1])) {
-                // Found a potential footnote reference or declaration
-                let j = i + 1;
-                let numStr = '';
-                while (j < text.length && /\d/.test(text[j])) {
-                    numStr += text[j];
-                    j++;
-                }
-                
-                if (j < text.length && text[j] === ']') {
-                    // This is a footnote reference or declaration
-                    const originalNumber = numStr;
-                    const newNumber = footnoteMap[originalNumber];
-                    
-                    if (newNumber) {
-                        newText += text.substring(lastIndex, i) + '[' + newNumber + ']';
-                        lastIndex = j + 1;
-                        i = j;
-                    }
-                }
-            }
-        }
-        
-        // Add any remaining text
-        if (lastIndex < text.length) {
-            newText += text.substring(lastIndex);
+        if (!result.success) {
+            sendNotification('FOOTNOTE_ERROR', result.error);
+            return false;
         }
         
         // Replace the entire document text
@@ -97,7 +36,8 @@ async function numberFootnotes(document: vscode.TextDocument): Promise<boolean> 
             new vscode.Position(0, 0),
             new vscode.Position(document.lineCount - 1, document.lineAt(document.lineCount - 1).text.length)
         );
-        await editor.edit(editBuilder => {
+        await editor.edit((editBuilder) => {
+            const newText = result.newText || text;
             editBuilder.replace(fullRange, newText);
         });
         

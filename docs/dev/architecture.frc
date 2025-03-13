@@ -1,23 +1,34 @@
 
     DESIGN SIMPLE
 
-this code base is designed in order to minimize and isolate the vscode enviromnet specifics from the core logic. 
+This code base is designed in order to minimize and isolate the vscode environment specifics from the core logic. 
 
-this makes testing much easier, but also reuse (for things line a command line formatter for rfcdoc). 
+This makes testing much easier, but also reuse (for things line a command line formatter for rfcdoc). 
 
-    1. BACKENDS
+    1. Logic isolation
 
-hence apis have backends, that is a piece of code that can execute ops in a particular environment.  there are two main enviroments: 
+    Everything that is business rules, logic related (that is , is not bound to a particular ui / enviroment) should be isolated, preferably with pure functions under src/features src/models and others.
 
-    1.1. HEADLESS
+    This is the place where the bulk of the functionality resides and should be by far the largest part of the code. 
+
+    
+    2. environment Wrappers
+
+    To make this isolated code be used in a structured way by the various environments we expose in api in src/core/backends/api.ts that give you access to those, regardless of the runtime. 
+
+    2.1 BACKENDS
+
+hence apis have backends, that is a piece of code that can execute ops in a particular environment.  there are two main environments: 
+
+    2.1.1 HEADLESS
 
     Doesn't need vscode or any ui, can run as a process. this is the core backend and all business logic should be captured by it. 
 
-    1.2 VSCODE
+    2.2.w VSCODE
     
-    Requires the vscode enviromnt (where users install the exenstion) but also for integration testing. the goal is to have this be a thin layer, so that integration tests are few and simple.
+    Requires the vscode environment (where users install the extension for integration testing. the goal is to have this be a thin layer, so that integration tests are few and simple.
 
-    2. LAYOUT
+    2.3 LAYOUT
 
         /src/core/code/backends/<backend-name>/index.ts -> entry point for backend
         /src/core/code/backends/<backend-name>/<feature>.ts -> features in ts files

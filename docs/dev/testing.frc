@@ -91,6 +91,34 @@ This document provides a reference for testing in the rfcdoc project.
        - enableTestNotification: Enables a specific notification
        - disableTestNotification: Disables a specific notification
 
+    4.2 Tansform Test Utilities
+
+    Since much of the code is about getting an input string and changing it to 
+    an expected output, we have a structure that facilitates this. 
+
+    How to use it: 
+
+    1. Create a pair of input string and expected string.
+        a. create a directory for it in tests/integration/fixtures/transform-examples 
+        b. for every pair you want to check expected and actual text, create the expected text version (ending in .rfc and the expected output version ending in .txt) with the same names.
+        c. both documents can have comments # whatever, for context, which will
+        get stripped. we'll compare only the main body of code.
+        d. call the helper with the path  to the pair you are checking and the function to transform, for example: 
+
+         ## typescript
+|        // Test a single case
+|        await runTransformTest({
+|          testDir: TRANSFORM_EXAMPLES_DIR,
+|          testName: 'test-case-name',
+|          transformFn: myTransformFunction
+|        });
+|        
+|        // Test all cases in a directory
+|        await runTransformTestsInDirectory(
+|          TRANSFORM_EXAMPLES_DIR,
+|          myTransformFunction
+|        );
+
 5. Running Tests
 
    5.1 Command Line
@@ -113,3 +141,4 @@ This document provides a reference for testing in the rfcdoc project.
        - Set breakpoints in test files
        - Use the "Extension Tests" launch configuration
        - View variables, call stack, and step through code
+| 

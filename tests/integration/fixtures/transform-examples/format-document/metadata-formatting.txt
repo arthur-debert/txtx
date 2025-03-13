@@ -1,0 +1,8 @@
+# Input file for metadata formatting test
+
+Title         Document Title
+Author        John Doe
+Date          2025-03-13
+Status        Draft
+Version 1.0
+Keywords      RFC, Documentation, Format

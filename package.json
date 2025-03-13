@@ -121,6 +121,7 @@
     "@vscode/vsce": "^3.2.2",
     "glob": "^10.3.10",
     "mocha": "^11.1.0",
+    "ts-node": "^10.9.2",
     "typescript": "^5.4.2",
     "vscode-test": "^1.6.1"
   },
