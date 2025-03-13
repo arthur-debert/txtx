@@ -118,43 +118,14 @@ async function runIntegrationTests() {
     const integrationFixturesPath = path.join(extensionDevelopmentPath, 'tests', 'integration', 'fixtures');
     const testIntegrationFixturesPath = path.join(testWorkspacePath, 'tests', 'integration', 'fixtures');
     copyDir(integrationFixturesPath, testIntegrationFixturesPath);
-
-    // Create settings.json to ensure .rfc files are associated with our extension
-    const settingsPath = path.join(testWorkspacePath, '.vscode');
-    if (!fs.existsSync(settingsPath)) {
-      fs.mkdirSync(settingsPath, { recursive: true });
-    }
-    fs.writeFileSync(
-      path.join(settingsPath, 'settings.json'),
-      JSON.stringify({
-        'files.associations': {
-          '*.rfc': 'rfcdoc'
-        }
-      }, null, 2)
-    );
-
-    // Create a symlink to our extension in the extensions directory
-    const extensionsDir = path.join(extensionDevelopmentPath, '.vscode-test', 'extensions');
-    if (!fs.existsSync(extensionsDir)) {
-      fs.mkdirSync(extensionsDir, { recursive: true });
-    }
-    const extensionLink = path.join(extensionsDir, 'rfcdoc.rfcdoc-format');
-    if (fs.existsSync(extensionLink)) {
-      fs.unlinkSync(extensionLink);
-    }
-    fs.symlinkSync(extensionDevelopmentPath, extensionLink, 'junction');
-
+    
     // Download VS Code, unzip it and run the integration test
     await runTests({
       extensionDevelopmentPath,
       extensionTestsPath,
+      // Don't disable extensions, and make sure our extension is loaded
       launchArgs: [
-        // Open our test workspace
         testWorkspacePath,
-        // Add extension search path
-        `--extensions-dir=${extensionsDir}`,
-        // Use our test settings
-        `--user-data-dir=${path.join(extensionDevelopmentPath, '.vscode-test', 'user-data')}`,
         // Ensure our extension is activated
         '--enable-proposed-api=rfcdoc.rfcdoc-format'
       ]

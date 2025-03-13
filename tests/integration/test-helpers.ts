@@ -87,7 +87,11 @@ export function resetNotificationConfig() {
  */
 export function getFixturePath(fixtureName: string): string {
   // Use the original fixtures directory
-  const projectRoot = path.resolve(__dirname, '..', '..');
+  // When running from dist, we need to go up one more level to reach the project root
+  const isDist = __dirname.includes('dist');
+  const projectRoot = isDist 
+    ? path.resolve(__dirname, '..', '..', '..') 
+    : path.resolve(__dirname, '..', '..');
   return path.join(projectRoot, 'fixtures', fixtureName);
 }
 
@@ -98,6 +102,10 @@ export function getFixturePath(fixtureName: string): string {
  */
 export function getTestFixturePath(fixtureName: string): string {
   // Use the original fixtures directory
-  const integrationTestsRoot = path.resolve(__dirname, '..', '..', 'tests', 'integration');
+  // When running from dist, we need to go up one more level to reach the project root
+  const isDist = __dirname.includes('dist');
+  const integrationTestsRoot = isDist
+    ? path.resolve(__dirname, '..', '..', '..', 'tests', 'integration')
+    : path.resolve(__dirname, '..', '..', 'tests', 'integration');
   return path.join(integrationTestsRoot, 'fixtures', fixtureName);
 }
