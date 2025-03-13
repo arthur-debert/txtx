@@ -1,0 +1,21 @@
+# Expected output for section formatting test
+
+1. SECTION ONE
+
+Some content.
+
+2. SECTION TWO
+
+More content.
+
+3. SECTION THREE
+
+Even more content.
+
+3.1. Subsection
+
+Subsection content.
+
+3.2. Another Subsection
+
+More subsection content.

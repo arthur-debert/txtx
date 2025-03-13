@@ -4,12 +4,16 @@
  */
 
 import * as vscode from 'vscode';
+
 import { 
   Backend, Position, Range, Selection, Uri, TextDocument, TextEditor, 
   Disposable, WorkspaceEdit, TextEditorDecorationType, DiagnosticCollection,
   DocumentSymbolProvider, DocumentLinkProvider, FoldingRangeProvider, 
   CompletionItemProvider, OutputChannel, WorkspaceFolder, Diagnostic
 } from '../../types';
+
+// Export format commands
+export { formatCommands } from './format-commands';
 
 /**
  * VSCode Live Backend class
