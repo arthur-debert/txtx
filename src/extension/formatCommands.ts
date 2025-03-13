@@ -3,6 +3,8 @@ import { SECTION_REGEX, NUMBERED_SECTION_REGEX, ALTERNATIVE_SECTION_REGEX } from
 import { numberFootnotes } from "./footnoteCommands";
 import { sendNotification } from "./notifications";
 import * as vscodeLib from "./vscode.lib";
+import { formatCommands } from "../core/backends/headless";
+import { isMetadata } from "../core/backends/headless/toc-generator";
 
 /**
  * Format a document according to the RFC specification
@@ -63,44 +65,19 @@ async function generateTOC(document: vscode.TextDocument): Promise<boolean> {
     try {
         // Get the entire document text
         const text = document.getText();
-        const lines = text.split('\n');
 
-        // Find all sections in the document
-        const sections = vscodeLib.findSections(text, SECTION_REGEX, NUMBERED_SECTION_REGEX, ALTERNATIVE_SECTION_REGEX);
+        // Use the headless implementation to generate the TOC
+        const newText = formatCommands.generateTOC(text);
         
-        if (sections.length === 0) {
+        // If the text didn't change, there were no sections
+        if (newText === text) {
             sendNotification('TOC_NO_SECTIONS');
             return false;
         }
         
-        // Generate the TOC lines
-        const tocLines = generateTOCLines(sections);
-        
-        // Find the position to insert the TOC
-        const tocPosition = findTOCPosition(lines);
-        
-        // Check if there's an existing TOC to replace
-        const existingTOC = findExistingTOC(lines, tocPosition);
-        
-        // Insert or replace the TOC
-        if (existingTOC) {
-            // Replace the existing TOC
-            const startLine = existingTOC.startLine;
-            const endLine = existingTOC.endLine;
-            
-            const range = new vscode.Range(
-                new vscode.Position(startLine, 0),
-                new vscode.Position(endLine, lines[endLine].length)
-            );
-
-            await vscodeLib.applyEdit(editor, range, tocLines.join('\n'));
-        } else {
-            // Insert a new TOC
-            const position = new vscode.Position(tocPosition, 0);
-            await editor.edit(editBuilder => { 
-                editBuilder.insert(position, tocLines.join('\n') + '\n\n');
-            });
-        }
+        // Apply the changes to the document
+        const fullRange = vscodeLib.getDocumentRange(document);
+        await vscodeLib.applyEdit(editor, fullRange, newText);
         
         sendNotification('TOC_SUCCESS');
         return true;
@@ -148,96 +125,6 @@ async function fullFormatting(document: vscode.TextDocument): Promise<boolean> {
         sendNotification('FULL_FORMAT_ERROR', error);
         return false;
     }
-}
-
-/**
- * Generate TOC lines based on the sections
- * @param sections - The sections
- * @returns - The TOC lines
- */
-function generateTOCLines(sections: Array<{name: string, level: number, line: number, prefix: string}>): string[] {
-    const tocLines = [
-        'TABLE OF CONTENTS',
-        '-----------------',
-        ''
-    ];
-    
-    for (const section of sections) {
-        // Add indentation for subsections (single level of indentation)
-        const indent = section.level > 1 ? '    ' : '';
-        
-        // Add the section to the TOC
-        tocLines.push(`${indent}${section.name.trim()}`);
-    }
-    
-    return tocLines;
-}
-
-/**
- * Find the position to insert the TOC
- * @param lines - The document lines
- * @returns - The line number to insert the TOC
- */
-function findTOCPosition(lines: string[]): number {
-    // Look for the end of the metadata section
-    let inMetadata = false;
-    let metadataEnd = -1;
-    
-    for (let i = 0; i < lines.length; i++) {
-        const line = lines[i].trim();
-        
-        if (isMetadata(line)) {
-            inMetadata = true;
-            metadataEnd = i;
-        } else if (inMetadata && line === '') {
-            // End of metadata section
-            return metadataEnd + 2;
-        }
-    }
-    
-    // If no metadata section, look for the first blank line after the title
-    if (lines.length > 2 && lines[1].match(/^-+$/)) {
-        // Title with underline
-        for (let i = 2; i < lines.length; i++) {
-            if (lines[i].trim() === '') {
-                return i + 1;
-            }
-        }
-    }
-    
-    // Default to line 3 (after title)
-    return Math.min(3, lines.length);
-}
-
-/**
- * Find an existing TOC in the document
- * @param lines - The document lines
- * @param startPosition - The position to start looking from
- * @returns - The existing TOC or null
- */
-function findExistingTOC(lines: string[], startPosition: number): {startLine: number, endLine: number} | null {
-    // Look for "TABLE OF CONTENTS" header
-    for (let i = 0; i < lines.length; i++) {
-        if (lines[i].trim() === 'TABLE OF CONTENTS') {
-            // Found TOC header
-            const startLine = i;
-            
-            // Find the end of the TOC
-            let endLine = startLine;
-            for (let j = startLine + 1; j < lines.length; j++) {
-                if (lines[j].trim() === '' && j + 1 < lines.length && isSection(lines[j + 1].trim())) {
-                    // Found a blank line followed by a section
-                    endLine = j;
-                    break;
-                }
-                endLine = j;
-            }
-            
-            return { startLine, endLine };
-        }
-    }
-    
-    return null;
 }
 
 /**
@@ -380,16 +267,6 @@ function isSection(line: string): boolean {
     }
     
     return false;
-}
-
-/**
- * Check if a line is a metadata entry
- * @param line - The line to check
- * @returns - Whether the line is a metadata entry
- */
-function isMetadata(line: string): boolean {
-    // Metadata format: "Key          Value"
-    return /^[A-Za-z][A-Za-z\s]+\s{2,}[A-Za-z0-9]/.test(line);
 }
 
 /**
