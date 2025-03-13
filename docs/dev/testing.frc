@@ -94,7 +94,7 @@ This document provides a reference for testing in the rfcdoc project.
     4.2 Tansform Test Utilities
 
     Since much of the code is about getting an input string and changing it to 
-    an expected ouput, we have a structure that facilitates this. 
+    an expected output, we have a structure that facilitates this. 
 
     How to use it: 
 
