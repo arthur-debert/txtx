@@ -50,6 +50,13 @@ async function main() {
     if (!fs.existsSync(distDir)) {
       console.warn('Warning: dist directory not found. You may need to run "npm run compile" first.');
     }
+
+    // Copy package.json to dist directory to help with extension loading
+    const packageJsonPath = path.join(extensionDevelopmentPath, 'package.json');
+    const distPackageJsonPath = path.join(distDir, 'package.json');
+    if (fs.existsSync(packageJsonPath) && fs.existsSync(distDir)) {
+      fs.copyFileSync(packageJsonPath, distPackageJsonPath);
+    }
     
     // Default to running both test types if none specified
     if (!testType || (testType !== 'unit' && testType !== 'integration')) {
@@ -100,7 +107,10 @@ async function runUnitTests(specificTests: string[] = []) {
  */
 async function runIntegrationTests() {
   try {
+    // The folder containing the Extension Manifest package.json (root of the project)
     const extensionDevelopmentPath = path.resolve(__dirname, '../');
+    
+    // The path to the extension tests script (compiled version)
     const extensionTestsPath = path.resolve(__dirname, './integration/index');
     
     // Set up test workspace
@@ -108,27 +118,51 @@ async function runIntegrationTests() {
     if (!fs.existsSync(testWorkspacePath)) {
       fs.mkdirSync(testWorkspacePath, { recursive: true });
     }
-
+    
     // Copy fixtures to test workspace
     const fixturesPath = path.join(extensionDevelopmentPath, 'fixtures');
     const testFixturesPath = path.join(testWorkspacePath, 'fixtures');
     copyDir(fixturesPath, testFixturesPath);
-
+    
     // Copy integration test fixtures
     const integrationFixturesPath = path.join(extensionDevelopmentPath, 'tests', 'integration', 'fixtures');
     const testIntegrationFixturesPath = path.join(testWorkspacePath, 'tests', 'integration', 'fixtures');
     copyDir(integrationFixturesPath, testIntegrationFixturesPath);
     
+    // Create settings.json to ensure .rfc files are associated with our extension
+    const settingsPath = path.join(testWorkspacePath, '.vscode');
+    if (!fs.existsSync(settingsPath)) {
+      fs.mkdirSync(settingsPath, { recursive: true });
+    }
+    fs.writeFileSync(
+      path.join(settingsPath, 'settings.json'),
+      JSON.stringify({
+        'files.associations': {
+          '*.rfc': 'rfcdoc'
+        }
+      }, null, 2)
+    );
+    
+    // Create a user data directory for VS Code
+    const userDataDir = path.join(extensionDevelopmentPath, '.vscode-test', 'user-data');
+    if (!fs.existsSync(userDataDir)) {
+      fs.mkdirSync(userDataDir, { recursive: true });
+    }
+
+    // Define launch arguments
+    const launchArgs = [
+      testWorkspacePath,
+      '--disable-extensions'
+    ];
+
+    // Pass launch arguments to the test environment via environment variable
+    process.env.VSCODE_LAUNCH_ARGS = JSON.stringify(launchArgs);
+    
     // Download VS Code, unzip it and run the integration test
     await runTests({
       extensionDevelopmentPath,
       extensionTestsPath,
-      // Don't disable extensions, and make sure our extension is loaded
-      launchArgs: [
-        testWorkspacePath,
-        // Ensure our extension is activated
-        '--enable-proposed-api=rfcdoc.rfcdoc-format'
-      ]
+      launchArgs
     });
     
     console.log('Integration tests completed successfully');
