@@ -215,6 +215,22 @@ To test with only specific extensions enabled:
 
 - None at this time
 
+## Development
+
+### Pre-commit Hooks
+
+This project uses Husky and lint-staged to enforce code quality standards before commits:
+
+- **Linting**: All TypeScript files are automatically linted and fixed using ESLint
+- **Formatting**: Markdown, JSON, and YAML files are automatically formatted using Prettier
+- **Unit Tests**: All unit tests must pass before a commit is allowed
+
+To skip the pre-commit hooks in exceptional cases (not recommended), use:
+
+```bash
+git commit -m "Your message" --no-verify
+```
+
 ## Release Notes
 
 ### 0.1.0

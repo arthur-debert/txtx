@@ -99,7 +99,8 @@
     "test": "node ./dist/tests/runTest.js",
     "test:unit": "npm run compile && tsc -p ./tests && node ./dist/tests/runTest.js unit",
     "test:integration": "npm run compile && tsc -p ./tests && node ./dist/tests/runTest.js integration",
-    "build": "tsc -p ./"
+    "build": "tsc -p ./",
+    "prepare": "husky"
   },
   "repository": {
     "type": "git",
@@ -116,16 +117,34 @@
     "@types/mocha": "^10.0.10",
     "@types/node": "^20.11.30",
     "@types/vscode": "^1.98.0",
+    "@typescript-eslint/eslint-plugin": "^8.26.1",
+    "@typescript-eslint/parser": "^8.26.1",
     "@vscode/test-cli": "^0.0.10",
     "@vscode/test-electron": "^2.4.1",
     "@vscode/vsce": "^3.2.2",
+    "eslint": "^9.22.0",
+    "eslint-plugin-prettier": "^5.2.3",
     "glob": "^10.3.10",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.5.0",
     "mocha": "^11.1.0",
+    "prettier": "^3.5.3",
     "ts-node": "^10.9.2",
     "typescript": "^5.4.2",
     "vscode-test": "^1.6.1"
   },
   "dependencies": {
     "js-yaml": "^4.1.0"
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "eslint --fix"
+    ],
+    "*.md": [
+      "prettier --write"
+    ],
+    "*.{json,yaml,yml}": [
+      "prettier --write"
+    ]
   }
 }
