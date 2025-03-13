@@ -21,3 +21,19 @@ export async function fixNumbering(document: TextDocument): Promise<boolean> {
   console.error('Current backend does not implement fixNumbering');
   return false;
 }
+
+/**
+ * Check references in a document
+ * @param document - The document to check references in
+ * @returns - Whether the reference check was successful
+ */
+export async function checkReferences(document: TextDocument): Promise<boolean> {
+  // Forward to the current backend
+  if (BackendManager.current.checkReferences) {
+    return await BackendManager.current.checkReferences(document);
+  }
+  
+  // If the backend doesn't implement this method, return false
+  console.error('Current backend does not implement checkReferences');
+  return false;
+}

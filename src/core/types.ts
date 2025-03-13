@@ -356,4 +356,7 @@ export interface Backend extends VSCodeAPI {
   
   // Numbering commands
   fixNumbering?(document: TextDocument): Promise<boolean>;
+  
+  // Reference commands
+  checkReferences?(document: TextDocument): Promise<boolean>;
 }

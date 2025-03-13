@@ -406,3 +406,37 @@ export async function fixNumbering(document: vscode.TextDocument): Promise<boole
     return false;
   }
 }
+
+/**
+ * Check references in a document
+ * @param document - The VSCode document to process
+ * @returns - Whether the operation was successful
+ */
+export async function checkReferences(document: vscode.TextDocument): Promise<boolean> {
+  try {
+    // Only process RFC files
+    if (document.languageId !== 'rfcdoc' || !document.fileName.endsWith('.rfc')) {
+      sendNotification('REFERENCE_RFC_ONLY');
+      return false;
+    }
+
+    const editor = getActiveEditor();
+    if (!editor) {
+      sendNotification('REFERENCE_NO_EDITOR');
+      return false;
+    }
+
+    // Get the document text
+    const text = document.getText();
+    
+    // Use the VSCode Live backend directly via command
+    // This avoids type compatibility issues between VSCode and our API types
+    const result = await vscode.commands.executeCommand('rfcdoc.checkReferences.internal', text, document.fileName);
+    
+    // The result is handled by the command itself (showing diagnostics, etc.)
+    return result === true;
+  } catch (error) {
+    sendNotification('REFERENCE_ERROR', error);
+    return false;
+  }
+}
