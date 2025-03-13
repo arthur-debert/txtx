@@ -353,4 +353,10 @@ export interface VSCodeAPI {
 export interface Backend extends VSCodeAPI {
   // Additional methods for testing
   setDocumentContent?(uri: Uri, content: string): TextDocument;
+  
+  // Numbering commands
+  fixNumbering?(document: TextDocument): Promise<boolean>;
+  
+  // Reference commands
+  checkReferences?(document: TextDocument): Promise<boolean>;
 }

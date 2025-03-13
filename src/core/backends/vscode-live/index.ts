@@ -15,6 +15,15 @@ import {
 // Export format commands
 export { formatCommands } from './format-commands';
 
+// Export footnote commands
+export { numberFootnotes } from './footnote-commands';
+
+// Export numbering commands
+export { fixNumbering } from './numbering-commands';
+
+// Export reference commands
+export { checkReferences } from './reference-commands';
+
 /**
  * VSCode Live Backend class
  * Implements the Backend interface using the actual VSCode API

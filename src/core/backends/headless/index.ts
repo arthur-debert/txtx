@@ -59,6 +59,18 @@ import {
 // Export format commands
 export { formatCommands } from './format-commands';
 
+// Export new format commands
+export { formatDocumentCommand } from './format-document-command';
+export { generateTOCCommand } from './generate-toc-command';
+export { fullFormattingCommand } from './full-formatting-command';
+
+// Export utility functions for backward compatibility
+export { formatDocument } from './format-document-command';
+export { fullFormatting } from './full-formatting-command';
+
+// Export footnote commands
+export { numberFootnotes } from './footnote-commands';
+
 // Export reference commands
 export { checkDocumentReferences } from './reference-commands';
 
