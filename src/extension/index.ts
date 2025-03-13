@@ -9,6 +9,7 @@ import { registerFootnoteCommands } from "./footnoteCommands";
 import { registerExportCommands } from "./exportCommands";
 import { registerReferenceCommands } from "./referenceCommands";
 import { registerNumberingCommands } from "./numberingCommands";
+import { fixDocumentNumbering } from "../core/backends/headless/numbering-commands";
 import * as vscodeLib from "./vscode.lib";
 
 let outputChannel: vscode.OutputChannel;
@@ -66,6 +67,15 @@ export function activate(context: vscode.ExtensionContext): void {
 
     // Register the numbering commands
     registerNumberingCommands(context, outputChannel);
+    
+    // Register internal command for numbering fix
+    // This is used by the vscode.lib.ts fixNumbering function
+    context.subscriptions.push(
+        vscode.commands.registerCommand('rfcdoc.fixNumbering.internal', async (text: string, filePath: string) => {
+            return await fixDocumentNumbering(text, filePath);
+        })
+    );
+    outputChannel.appendLine('Internal numbering fix command registered');
     
     console.log('RfcDoc Format extension activated');
 }

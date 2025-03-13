@@ -8,6 +8,8 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
 import { sendNotification } from './notifications';
+import * as coreApi from '../core/api';
+import { NumberingFixResult } from '../features/numbering/types';
 
 /**
  * Interface for section information
@@ -360,4 +362,47 @@ export async function waitForCondition(
   }
   
   return false;
+}
+
+/**
+ * Fix numbering in ordered lists and section headers
+ * @param document - The VSCode document to process
+ * @returns - Whether the operation was successful
+ */
+export async function fixNumbering(document: vscode.TextDocument): Promise<boolean> {
+  try {
+    // Only process RFC files
+    if (document.languageId !== 'rfcdoc' || !document.fileName.endsWith('.rfc')) {
+      sendNotification('NUMBERING_RFC_ONLY');
+      return false;
+    }
+
+    const editor = getActiveEditor();
+    if (!editor) {
+      sendNotification('NUMBERING_NO_EDITOR');
+      return false;
+    }
+
+    // Get the document text
+    const text = document.getText();
+    
+    // Use the VSCode Live backend directly via command
+    // This avoids type compatibility issues between VSCode and our API types
+    const result = await vscode.commands.executeCommand<NumberingFixResult>('rfcdoc.fixNumbering.internal', text, document.fileName);
+    
+    if (!result || typeof result !== 'object' || !('success' in result) || !result.success || !('fixedText' in result) || !result.fixedText) {
+      sendNotification('NUMBERING_ERROR', result && 'error' in result ? result.error : 'Unknown error');
+      return false;
+    }
+    
+    // Replace the entire document text
+    const fullRange = getDocumentRange(document);
+    
+    await applyEdit(editor, fullRange, result.fixedText as string);
+    sendNotification('NUMBERING_SUCCESS', result.linesChanged);
+    return true;
+  } catch (error) {
+    sendNotification('NUMBERING_ERROR', error);
+    return false;
+  }
 }

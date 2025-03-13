@@ -6,7 +6,8 @@
  */
 
 import { BackendManager } from './backend-manager';
-import { VSCodeAPI } from './types';
+import { VSCodeAPI, TextDocument } from './types';
+import { fixNumbering as fixNumberingImpl } from './api-extensions';
 
 /**
  * Create a proxy that forwards all property accesses and method calls to the current backend
@@ -60,5 +61,14 @@ const api: VSCodeAPI = {
   },
 };
 
-// Export the API
-export = api;
+// Add additional API functions
+const fixNumbering = fixNumberingImpl;
+
+// Create a merged API object with both the VSCodeAPI and additional functions
+const mergedApi = {
+  ...api,
+  fixNumbering
+};
+
+// Export the merged API
+export = mergedApi;
