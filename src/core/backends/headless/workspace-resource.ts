@@ -10,11 +10,10 @@ import {
   TextDocument,
   WorkspaceEdit,
   WorkspaceFolder,
-  TextEdit,
   Position,
   TextLine,
 } from '../../types';
-import { HeadlessUri, HeadlessPosition, HeadlessTextLine, HeadlessRange } from './document-text';
+import { HeadlessUri, HeadlessPosition, HeadlessRange } from './document-text';
 import { applyTextEdit } from './document-text';
 
 /**
@@ -97,7 +96,8 @@ export class HeadlessWorkspace {
    * @param uri The URI to get the workspace folder for
    * @returns The workspace folder that contains the URI, or undefined if none
    */
-  getWorkspaceFolder(uri: Uri): WorkspaceFolder | undefined {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  getWorkspaceFolder(_uri: Uri): WorkspaceFolder | undefined {
     // Simple implementation that returns the first workspace folder
     // In a real implementation, we would check if the URI is contained in any workspace folder
     return this._workspaceFolders[0];
