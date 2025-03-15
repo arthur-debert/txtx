@@ -1,0 +1,44 @@
+{
+  "type": "document",
+  "children": [
+    {
+      "type": "paragraph",
+      "content": "This is a paragraph block.",
+      "indentation": 0
+    },
+    {
+      "type": "paragraph",
+      "content": "This is another paragraph block.",
+      "indentation": 0
+    },
+    {
+      "type": "title",
+      "content": "This is a numbered title",
+      "indentation": 0,
+      "sequence": {
+        "style": "technical",
+        "value": "1"
+      }
+    },
+    {
+      "type": "title",
+      "content": "With multiple items",
+      "indentation": 0,
+      "sequence": {
+        "style": "technical",
+        "value": "2"
+      }
+    },
+    {
+      "type": "title",
+      "content": "This is a simple title",
+      "indentation": 0,
+      "style": "simple"
+    },
+    {
+      "type": "paragraph",
+      "content": "This is an indented paragraph",
+      "indentation": 4
+    }
+  ]
+}

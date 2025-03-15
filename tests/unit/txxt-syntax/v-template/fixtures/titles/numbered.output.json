@@ -1,0 +1,9 @@
+{
+  "type": "title",
+  "content": "This is a numbered title",
+  "indentation": 0,
+  "sequence": {
+    "style": "technical",
+    "value": "1"
+  }
+}

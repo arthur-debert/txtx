@@ -1,0 +1,360 @@
+1. Abstract
+
+We are writing the tooling for txxt, a plain text format that is inspired by the plain text old school usenet and rfcs conventions.
+
+2. Deliverables
+
+We aim to deliver the following:
+
+1. A format specification
+2. A linter
+3. A formatter
+4. A language server
+5. A VSCode extension that encompasses all of the previous items.
+
+
+3. The txxt format - The human story
+
+There are a few unusual things about this format that differs from most, and are worth highlighting as they have significant implications in the design decisions and functionality.
+
+3.1 Wet source
+It's not a technical format, hence it doesn't have strict format / interop. It's more relaxed and laid back (it was the 70s after all).
+
+Input text is being produced by users, not machines, hence it needs to be very accommodating of small styles and variations.
+
+3.2 Tribal and proud
+
+It's been used by a number of smaller communities but very cohesive ones. Hence the format has developed a few dialects, small variations on it that have valid social meaning, and we should be accommodating of that.
+
+
+4. The txxt format - The technical story
+
+To reflect these human needs we introduced the following ideas:
+
+4.1 Document Structure
+
+The document is composed of blocks (non-terminals) which are high-level structural elements like paragraphs, lists, or titles. Each block is composed of tokens (the smallest meaningful units) which are formed from lexemes (sequences of characters).
+
+Example:
+```
+This is a paragraph block with multiple tokens.
+
+1. This is a list block
+2. With multiple list items
+```
+
+4.2 Dialects and Styles
+
+With time the evolutionary tree created variations in certain parts of the format, for example on section titles or table of contents.
+
+4.2.1 Flavors and Variations
+
+For example, nested list numbering. The software folks tend to like nested ordered lists to always be numerical, like this:
+
+1. Big Item
+    1.1 Smaller items
+        1.1.1  Detail
+
+While other folks like the numerical, letter, roman trio like this:
+
+1. Big Item
+    a. Smaller items
+        i. Detail
+
+We can think of ordered lists having different flavors, which is true for most elements. And in the same flavor, there are small variations that should be accommodated, for example:
+
+1 Big Item
+    a Smaller items
+        i Detail
+
+Or
+
+1) Big Item
+    a) Smaller items
+        i) Detail
+
+In this case, we can think of flavors having a canonical form, the one we're describing and the one to be used when formatting text. And variations, that is, forms that we can parse and transform (and can be treated as warnings not errors, for example).
+
+4.3. Dialects
+
+And then we have a dialect, which is an ensemble of flavors. Like a certain dialect will use flavor X for section titles and flavor Z for lists.
+
+4.4 Putting it all together
+
+The txxt format will have a set of elements that it defines and understands. Each of these elements has different flavors and each flavor may have variations. So the code must be mindful about these and their relationship so we can be flexible in what we accept and strict in what we produce.
+
+In practical terms for every language element we need to have a list of flavors, each one with a mandatory canonical form and optional variations.
+
+4.5 Challenges
+
+This is all good in theory, but in practice this makes it tricky for parsing. Luckily, these variations tend to be small and predictable.
+
+It does however, mean that we need to be careful when constructing the language syntax, so that we don't end up with ambiguous or conflicting rules.
+
+5. Technical architecture
+
+Since the txxt code will be primarily running in VSCode, it's imperative that it works well within the editor environment. As a bonus, the platform offers many features that are particularly useful for document formats, such as an intuitive syntax declaration system.
+
+5.1 TextMate Grammars
+
+TextMate grammars provide a powerful foundation for our implementation:
+
+1. We can extract the .tmLanguage.json or .tmLanguage.xml grammar file from our VSCode extension.
+2. Using the vscode-textmate npm package (and its oniguruma dependency), we can parse and tokenize txxt documents based on our grammar, even outside of VSCode.
+3. This approach provides syntax highlighting and a foundation for linting without requiring a parser built from scratch.
+
+5.2 Headless Operation
+
+For flexibility and broader application:
+
+1. The vscode-textmate library and Language Server Protocol (LSP) servers can operate in headless environments.
+2. This means our tooling can function without requiring a full VSCode installation, expanding its utility.
+
+This architecture aligns with our deliverables while accommodating the format's need for flexibility across different dialects and variations.
+
+5.3 Language Server Protocol (LSP)
+
+Language server protocol was introduced by Microsoft for VSCode and other editors. It provides a standardized way for editors to communicate with language servers, enabling features like syntax highlighting, code completion, and error checking.
+
+It has become a de-facto standard that has improved the overall developer experience by providing a consistent interface for language servers.
+
+Implementing an LSP server involves creating a server that adheres to the LSP protocol. This server should be able to handle requests from the editor, such as text document synchronization, code completion, and diagnostic reporting.
+
+While this is no small task, the largest amount of work lies in having the linter/parser/formatter expose the needed functionality. For old code bases, this can be a significant undertaking.
+
+However, for our project, all the things needed are things we plan to do. By combining our design approach with libraries like vscode-languageserver, we can implement an LSP server with minimal effort.
+
+
+6. Next Steps
+
+Since this is a friendly project without strict business requirements, we can keep things lightweight but focused. Here are the key areas we should tackle next:
+
+6.2 Implementation Plan for Session 6
+
+The implementation will focus on the dialect and flavor system, with all code residing in @src/core/txxt-syntax and tests in tests/unit/txxt-syntax.
+
+6.2.1 Core Data Structures
+
+The implementation uses three main interfaces to represent our dialect system:
+
+1. Variation: Represents a specific way to write something, with a pattern to match it and optional warnings
+2. Flavor: Groups variations together with a canonical form
+3. Dialect: Combines flavors for different elements into a complete style
+
+See [Appendix A: Core Data Structures](#appendix-a-core-data-structures) for the detailed interface definitions.
+
+6.2.2 Two-Stage Parsing Approach
+
+The parser uses a two-stage approach to handle the complexity of variations while maintaining simplicity:
+
+1. Block Isolation Stage
+   - Identifies basic block boundaries and types
+   - Captures indentation and line numbers
+   - Simple, fast, and reliable
+
+2. Block Parsing Stage
+   - Handles dialect-specific parsing
+   - Identifies variations within blocks
+   - Transforms to canonical form
+
+This approach provides several benefits:
+
+1. **Simplified Grammar**
+   - TextMate grammar focuses on block-level scoping
+   - Easier to maintain and extend
+   - Better performance (fewer regex patterns to match)
+
+2. **Better Error Handling**
+   - Block-level errors are isolated
+   - Easier to provide meaningful error messages
+   - Partial document parsing is possible
+
+3. **Efficient Dialect Processing**
+   - Each block can be processed with its specific dialect rules
+   - Variations can be identified within the block context
+   - Easier to implement dialect-specific formatting
+
+4. **Improved Testing**
+   - Can test block isolation independently
+   - Can test block parsing with different dialects
+   - Easier to mock and verify each stage
+
+See [Appendix B: Two-Stage Parser Implementation](#appendix-b-two-stage-parser-implementation) for detailed examples.
+
+6.2.3 Directory Structure
+
+```
+@src/core/txxt-syntax/
+├── dialects/           # Dialect definitions
+├── flavors/           # Flavor definitions
+├── grammar/           # TextMate grammar definitions
+├── parser/           # Parser implementation
+└── formatter/        # Formatting logic
+
+tests/unit/txxt-syntax/
+├── dialects/         # Tests for dialect handling
+├── flavors/         # Tests for flavor variations
+├── grammar/         # Tests for grammar matching
+├── parser/         # Tests for parsing logic
+└── formatter/      # Tests for formatting
+```
+
+6.2.4 Implementation Components
+
+1. Grammar Integration
+   - Extend TextMate grammar to include dialect-specific patterns
+   - Use capture groups to identify both canonical and variation forms
+   - Add scopes that indicate which dialect/flavor is being used
+
+2. Parser Enhancement
+   - Create dialect-aware parser
+   - Detect dialect being used in document
+   - Parse both canonical and variation forms
+   - Transform variations to canonical form during formatting
+
+3. Linter Integration
+   - Add dialect-specific linting rules
+   - Provide warnings for non-canonical forms
+   - Allow configuration of which variations are acceptable
+
+6.2.5 Testing Strategy
+
+1. Unit Tests
+   - Pattern matching for variations
+   - Dialect detection
+   - Flavor validation
+   - Grammar matching
+
+2. Integration Tests
+   - End-to-end formatting
+   - Linting with different dialects
+   - Parser with mixed content
+
+3. Test Cases
+   - Mixed dialect usage
+   - Edge cases in pattern matching
+   - Format conversion between dialects
+
+6.2.6 Key Features
+
+- Dialect detection and validation
+- Variation pattern matching and transformation
+- Warning system for non-canonical forms
+- Format conversion between dialects
+- Integration with existing linter and formatter
+
+This implementation plan provides a foundation for handling multiple dialects and variations while maintaining a single grammar, making it easy to extend and modify in the future.
+
+---
+
+## Appendices
+
+### Appendix A: Core Data Structures
+
+```typescript
+interface Variation {
+  pattern: string;        // Regex pattern to match this variation
+  priority: number;       // Higher priority variations are checked first
+  warning?: string;       // Optional warning message when this variation is used
+}
+
+interface Flavor {
+  name: string;          // Unique identifier for this flavor
+  canonicalForm: string; // The standard way to write this element
+  variations: Variation[]; // Allowed variations of this form
+}
+
+interface Dialect {
+  name: string;          // Unique identifier for this dialect
+  flavors: Map<string, Flavor>; // Map of element types to their flavors
+  lineLength: number;    // Maximum line length for this dialect
+  defaultIndent: number; // Default indentation size in spaces
+}
+```
+
+### Appendix B: Two-Stage Parser Implementation
+
+```typescript
+// Stage 1: Block Isolation
+interface Block {
+  type: 'paragraph' | 'list' | 'section' | 'empty';
+  content: string;
+  indent: number;
+  lineNumber: number;
+}
+
+interface BlockParser {
+  // Identifies block boundaries and basic types
+  parseBlocks(text: string): Block[];
+  
+  // Determines if a line is a block boundary
+  isBlockBoundary(line: string): boolean;
+  
+  // Determines basic block type
+  getBlockType(block: string): Block['type'];
+}
+
+// Stage 2: Block Parsing
+interface ParsedBlock {
+  type: string;
+  content: string;
+  dialect: string;
+  flavor: string;
+  variations: Variation[];
+}
+
+interface BlockParser {
+  // Parses a single block with dialect awareness
+  parseBlock(block: Block, dialect: Dialect): ParsedBlock;
+  
+  // Identifies variations within a block
+  identifyVariations(block: Block, flavor: Flavor): Variation[];
+  
+  // Transforms block to canonical form
+  toCanonical(block: ParsedBlock): string;
+}
+```
+
+Example usage:
+
+```typescript
+// Stage 1: Block Isolation
+const text = `1. First section
+    This is an indented paragraph.
+
+2. Second section
+This is a normal paragraph.`;
+
+const blocks = blockParser.parseBlocks(text);
+// Result:
+// [
+//   { type: 'section', content: '1. First section', indent: 0, lineNumber: 1 },
+//   { type: 'paragraph', content: '    This is an indented paragraph.', indent: 4, lineNumber: 2 },
+//   { type: 'empty', content: '', indent: 0, lineNumber: 3 },
+//   { type: 'section', content: '2. Second section', indent: 0, lineNumber: 4 },
+//   { type: 'paragraph', content: 'This is a normal paragraph.', indent: 0, lineNumber: 5 }
+// ]
+
+// Stage 2: Block Parsing
+const parsedBlocks = blocks.map(block => 
+  blockParser.parseBlock(block, documentDialect)
+);
+// Result:
+// [
+//   { 
+//     type: 'section',
+//     content: '1. First section',
+//     dialect: 'document',
+//     flavor: 'section-title',
+//     variations: [{ pattern: '^\\d+\\.\\s+', priority: 1 }]
+//   },
+//   {
+//     type: 'paragraph',
+//     content: '    This is an indented paragraph.',
+//     dialect: 'document',
+//     flavor: 'paragraph',
+//     variations: [{ pattern: '^\\s{4}', priority: 1 }]
+//   },
+//   // ... other blocks
+// ]
+```

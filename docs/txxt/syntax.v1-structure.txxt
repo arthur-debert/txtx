@@ -1,0 +1,89 @@
+This document specifies v1 of the txxt format.
+Versions are just an implementation method, and are unrelated to the actual dialects. It's just a way for us to build the grammar and code slowly.
+Each version will build from the previous one, whereas v1, this one, is the first version of the txxt format.
+
+Design overview
+
+1. Very simple language, where almost all elements are block-level non-terminals.
+2. We'll use TextMate grammars and the vscode lib to parse / lint / do the heavy lifting.
+3. Two stage parser, where the first focus on splitting blocks and the other in parsing each one.
+4. Elements have several small variations. All of these should be parsable, but linting warnings.
+5. For each element one of the accepted forms is deemed as canonical, that is, it does not produce errors and is the one used for the formatter.
+6. The language has dialects, that is a map that specifies what is the canonical form for each element.
+
+ps: for a more complete overview, see ./overview.txxt
+
+PS: I have never done language grammars before, hence I'll probably make use of weird naming and poor definitions. Please signal where the domain has specific lingo that fits more naturally and where the syntax definition is not a good one for specifying a grammar.
+
+1. Structure
+
+1.1 Blocks (Non-terminals)
+
+Blocks are high-level structural elements (non-terminals) in the document, such as paragraphs, lists, or titles. They are separated by empty lines (or lines with whitespace).
+
+Example:
+```
+This is a paragraph block.
+
+This is another paragraph block.
+
+1. This is a list block
+2. With multiple items
+```
+
+We consider the document start and end as an "empty" line, that is, the first block has only to be followed by an empty line, and the last block has only to be preceded by an empty line.
+
+1.2 Tokens and Lexemes
+
+The smallest meaningful units in the document are tokens, which are formed from lexemes (sequences of characters). For example:
+- Words are tokens formed from letter lexemes
+- Numbers are tokens formed from digit lexemes
+- Punctuation marks are tokens formed from single-character lexemes
+
+1.3 Whitespace
+
+Multiple whitespace characters in an otherwise empty line are removed, remaining the empty line.
+
+Multiple white lines can be collapsed to 1.
+
+1.4 Encoding
+
+txxt documents are expected to be encoded in utf-8. If other encoding are detected, we always try to convert them to utf-8. The conversion process:
+1. First attempts to detect the encoding using standard methods
+2. If detection fails, assumes UTF-8
+3. If conversion fails, reports an error and stops processing
+
+1.5 Documents and Files
+
+Each file corresponds to one document.
+
+1.6 Control Characters / Non visible
+
+Control characters and non visible, except for new lines and spaces are to be deleted. This includes:
+- ASCII control characters (0x00-0x1F, except 0x09 tab, 0x0A newline, 0x0D carriage return)
+- Unicode control characters
+- Zero-width spaces and other invisible Unicode characters
+
+1.7 Indentation
+
+Is marked by a series of spaces 2 or 4 spaces are accepted, but the canonical form is 4 spaces. Tabs will be converted to spaces.
+
+Example:
+```
+    This is properly indented (4 spaces)
+  This is also valid but will be converted to 4 spaces
+```
+
+1.8 Line length
+
+Varies in dialects, in most it's 80 chars, while others are 72. We can accept and parse any length but formatting will wrap.
+
+1.9 Dialects
+
+Each document can use a specific dialect, which defines:
+- The canonical form for each block type
+- Allowed variations of those forms
+- Line length limits
+- Other formatting rules
+
+The dialect can be specified at the start of the document or inferred from its content. If no dialect is specified, a default dialect is used.

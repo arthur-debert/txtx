@@ -1,0 +1,44 @@
+{
+  "type": "document",
+  "children": [
+    {
+      "type": "title",
+      "content": "Introduction",
+      "indentation": 0,
+      "style": "simple"
+    },
+    {
+      "type": "paragraph",
+      "content": "This is a minimal document with a title and a paragraph.",
+      "indentation": 0
+    },
+    {
+      "type": "title",
+      "content": "First Section",
+      "indentation": 0,
+      "sequence": {
+        "style": "technical",
+        "value": "1"
+      }
+    },
+    {
+      "type": "paragraph",
+      "content": "This is an indented paragraph under the first section.",
+      "indentation": 4
+    },
+    {
+      "type": "title",
+      "content": "Second Section",
+      "indentation": 0,
+      "sequence": {
+        "style": "technical",
+        "value": "2"
+      }
+    },
+    {
+      "type": "paragraph",
+      "content": "Another indented paragraph.",
+      "indentation": 4
+    }
+  ]
+}

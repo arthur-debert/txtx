@@ -1,0 +1,69 @@
+This document specifies v1 of the txxt format.
+Versions are just an implementation method, and are unrelated to the actual dialects. It's just a way for us to build the grammar and code slowly.
+Each version will build from the previous one, whereas v1, this one, is the first version of the txxt format.
+
+Design overview
+
+1. Very simple language, where almost all elements are block-level non-terminals.
+2. We'll use TextMate grammars and the VSCode lib to parse / lint / do the heavy lifting.
+3. Two stage parser, where the first focus on splitting blocks and the other in parsing each one.
+4. Elements have several small variations. All of these should be parseable, but linting warnings.
+5. For each element one of the accepted forms is deemed as canonical, that is, it does not produce errors and is the one used for the formatter.
+6. The language has dialects, that is a map that specifies what is the canonical form for each element.
+
+ps: for a more complete overview, see ./overview.txxt
+
+PS: I have never done language grammars before, hence I'll probably make use of weird naming and poor definitions. Please signal where the domain has specific lingo that fits more naturally and where the syntax definition is not a good one for specifying a grammar.
+
+
+1. Elements
+
+1.0 Sequence format
+
+Because many elements will touch this, let's talk about sequence formatting in txxt:
+
+- Arbitrary depth
+- Can have two variations: technical and classic.
+
+1.0.1 Technical
+
+All levels are numeral based, as with 1.3.3, 1.34.43.4.33
+Numbers are separated by periods, and can be larger than ten, start at 1.
+
+1.0.2 Classic
+
+This form mixes numerical, letters and roman numerals as in 1.a.ii
+The canonical form requires the hierarchy to be numerical, letters and roman numerals as in 1.a.ii, but we can parse other variations.
+
+1.0.3 Template
+
+The template sequencing is achieved by having all elements on the same level identified by the initial number, letter or roman numeral. as in:
+
+1. Foo
+
+1. Bar
+
+This is taken to be a template, which gives the txxt format the hint to increment and fix the ordering sequence.
+
+In the same document, only one style can be used for titles and another for lists (when we get there), not mixed.
+
+1.1 Title Elements
+
+A title element is defined as a block-level non-terminal element.
+The following variations are accepted:
+- `: Title` - simple title
+- `1. Numbered title` (which can be 1.1 or 1.a and more nested) - ordered title
+- `    Title` (that is no numbering, no colon, but indented) - indented title
+
+The main thing is to be able to tell apart titles and paragraphs.
+
+1.2 Paragraph Elements
+
+A paragraph element is defined as a block-level non-terminal element.
+The following variations are accepted:
+- `Paragraph` - simple paragraph
+- `    Paragraph` - indented paragraph
+
+Paragraphs are separated by line breaks.
+
+Paragraphs will, in the future support inline formatting, but not now.

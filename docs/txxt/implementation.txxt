@@ -1,0 +1,155 @@
+# Implementation Plan
+
+This document outlines the implementation strategy for the txxt format, focusing on leveraging VSCode's infrastructure and TextMate grammars.
+
+## 1. Architecture Overview
+
+The implementation will leverage VSCode's built-in infrastructure to minimize manual parsing work:
+
+1. **TextMate Grammar Layer** (Primary Parser)
+   - Handles syntax recognition
+   - Provides tokenization
+   - Gives scoped ranges
+   - Handles basic syntax highlighting
+
+2. **VSCode Language Server Layer**
+   - Interprets pre-tokenized document
+   - Provides language features
+   - Handles document changes
+
+## 2. Project Structure
+
+```
+src/core/txxt-syntax/v1/
+├── grammar/
+│   └── txxt.tmLanguage.json    # Main parsing rules
+├── language-server/
+│   ├── server.ts              # Interprets grammar results
+│   └── types.ts              # Shared types
+├── dialect/
+│   └── rules.json           # Dialect-specific variations
+└── formatter/
+    └── index.ts            # Uses grammar scopes for formatting
+
+tests/unit/txxt-syntax/v1/
+├── fixtures/
+│   ├── blocks/                # Block isolation tests
+│   │   ├── basic.input.txxt
+│   │   └── basic.output.json  # Expected parse tree
+│   ├── titles/               # Title element tests
+│   │   ├── simple.input.part.txxt
+│   │   ├── simple.output.json
+│   │   ├── numbered.input.part.txxt
+│   │   └── numbered.output.json
+│   ├── paragraphs/           # Paragraph element tests
+│   │   ├── basic.input.part.txxt
+│   │   └── basic.output.json
+│   └── documents/            # Full document tests
+│       ├── minimal.input.txxt
+│       ├── minimal.output.txxt
+│       └── minimal.ast.json   # Expected AST
+├── grammar/
+│   └── txxt.tmLanguage.test.ts
+├── language-server/
+│   └── server.test.ts
+└── formatter/
+    └── index.test.ts
+```
+
+## 3. Implementation Strategy
+
+### 3.1 TextMate Grammar
+
+The grammar will handle most of the parsing work:
+
+```json
+{
+  "scopeName": "text.txxt",
+  "patterns": [
+    {
+      "name": "meta.block.title.txxt",
+      "match": "^(\\d+\\.)+\\s+(.*)$",
+      "captures": {
+        "1": { "name": "markup.heading.sequence.txxt" },
+        "2": { "name": "markup.heading.content.txxt" }
+      }
+    }
+    // ... more patterns
+  ]
+}
+```
+
+### 3.2 Language Server
+
+Instead of manual parsing, we'll interpret the pre-tokenized document:
+
+```typescript
+class DocumentHandler {
+  interpret(tokens: vscode.Token[]): Block[] {
+    // Just interpret pre-parsed tokens
+    return tokens.map(token => {
+      if (token.scope.includes('markup.heading')) {
+        return this.createTitleBlock(token);
+      }
+      // etc...
+    });
+  }
+}
+```
+
+## 4. Development Order
+
+1. **Grammar Development**
+   - Create basic TextMate grammar
+   - Test with simple documents
+   - Add support for all element types
+
+2. **Language Server Setup**
+   - Set up basic server
+   - Implement token interpretation
+   - Add document change handling
+
+3. **Dialect Support**
+   - Define dialect rules
+   - Implement variation detection
+   - Add canonical form conversion
+
+4. **Formatting**
+   - Implement formatter using grammar scopes
+   - Add formatting rules
+   - Test with various inputs
+
+5. **Testing**
+   - Create test fixtures
+   - Implement unit tests
+   - Add integration tests
+
+## 5. Benefits of This Approach
+
+1. **Reduced Code**
+   - Leverages VSCode's parsing infrastructure
+   - Minimizes manual parsing code
+   - Reuses battle-tested components
+
+2. **Better Integration**
+   - Native syntax highlighting
+   - Efficient incremental updates
+   - Better performance
+
+3. **Easier Maintenance**
+   - Clear separation of concerns
+   - Standard VSCode patterns
+   - Well-documented infrastructure
+
+## 6. Version Management
+
+Each version will have its own:
+- Grammar file
+- Language server implementation
+- Test suite
+- Documentation
+
+This allows for:
+- Easy comparison between versions
+- Independent testing
+- Clear migration paths 
