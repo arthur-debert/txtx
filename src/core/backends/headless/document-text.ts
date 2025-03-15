@@ -284,6 +284,17 @@ export class HeadlessTextLine implements TextLine {
   }
 }
 
+interface UriLike {
+  path?: string;
+}
+
+interface MutableTextDocument extends TextDocument {
+  _decorations?: Map<string, Range[]>;
+  getText: () => string;
+  lineCount: number;
+  lineAt: (line: number | Position) => TextLine;
+}
+
 /**
  * Create a text document
  * @param content The content of the document
@@ -293,7 +304,7 @@ export class HeadlessTextLine implements TextLine {
  */
 export function createTextDocument(
   content: string = '',
-  uri: any = {},
+  uri: UriLike | Uri = {},
   languageId: string = 'txxt'
 ): TextDocument {
   const lines = content.split('\n');
@@ -400,10 +411,11 @@ export function createTextEditor(document: TextDocument): TextEditor {
 
     setDecorations: (decorationType: TextEditorDecorationType, ranges: Range[]): void => {
       // Store decorations for the document
-      if (!(document as any)._decorations) {
-        (document as any)._decorations = new Map();
+      const mutableDoc = document as MutableTextDocument;
+      if (!mutableDoc._decorations) {
+        mutableDoc._decorations = new Map();
       }
-      (document as any)._decorations.set(decorationType.id, ranges);
+      mutableDoc._decorations.set(decorationType.id, ranges);
     },
   };
 }
@@ -429,9 +441,10 @@ export function applyTextEdit(document: TextDocument, textEdit: TextEdit): void 
   const lines = newContent.split('\n');
 
   // Update document properties
-  (document as any).getText = () => newContent;
-  (document as any).lineCount = lines.length;
-  (document as any).lineAt = (line: number | Position): TextLine => {
+  const mutableDoc = document as MutableTextDocument;
+  mutableDoc.getText = () => newContent;
+  mutableDoc.lineCount = lines.length;
+  mutableDoc.lineAt = (line: number | Position): TextLine => {
     if (typeof line === 'number') {
       if (line < 0 || line >= lines.length) {
         throw new Error(`Line number out of range: ${line}`);
