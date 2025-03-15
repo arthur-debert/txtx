@@ -8,6 +8,20 @@
   "engines": {
     "vscode": "^1.60.0"
   },
+  "exports": {
+    ".": {
+      "types": "./dist/extension.d.ts",
+      "default": "./dist/extension.js"
+    },
+    "./core": {
+      "types": "./dist/core/api.d.ts",
+      "default": "./dist/core/api.js"
+    },
+    "./features": {
+      "types": "./dist/features/index.d.ts",
+      "default": "./dist/features/index.js"
+    }
+  },
   "categories": [
     "Programming Languages"
   ],
