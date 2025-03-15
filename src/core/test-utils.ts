@@ -5,7 +5,6 @@
 
 import { BackendManager } from './backend-manager';
 import * as fs from 'fs';
-import * as path from 'path';
 import { TextDocument, Uri, TextEditor, Backend } from './types';
 
 /**
@@ -14,7 +13,7 @@ import { TextDocument, Uri, TextEditor, Backend } from './types';
  */
 export interface TestEnvironment {
   backend: Backend;
-  createTextDocument: (content: string, uri?: Uri, languageId?: string) => Promise<TextDocument>;
+  createTextDocument: (content: string, uri?: Uri) => Promise<TextDocument>;
   createTextEditor: (document: TextDocument) => Promise<TextEditor>;
   loadFixture: (fixturePath: string) => Promise<TextDocument>;
 }
@@ -33,7 +32,7 @@ export function setupTestEnvironment(): TestEnvironment {
     backend,
 
     // Helper methods
-    createTextDocument: async (content: string, uri?: Uri, languageId?: string): Promise<TextDocument> => {
+    createTextDocument: async (content: string, uri?: Uri): Promise<TextDocument> => {
       const documentUri = uri || backend.Uri.file('/mock/document.rfc');
       if (backend.setDocumentContent) {
         return backend.setDocumentContent(documentUri, content);

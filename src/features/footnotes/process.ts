@@ -2,7 +2,6 @@ import { FootnoteDeclaration, FootnoteProcessResult } from './types';
 
 // Regular expressions for footnotes
 const FOOTNOTE_REGEX = /^\[(\d+)\] (.+)$/gm;
-const FOOTNOTE_REFERENCE_REGEX = /\[(\d+)\]/g;
 
 /**
  * Find all footnote declarations in the text

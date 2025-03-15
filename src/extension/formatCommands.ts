@@ -1,5 +1,4 @@
 import * as vscode from 'vscode';
-import { sendNotification } from './notifications';
 import * as vscodeLib from './vscode.lib';
 import { formatCommands } from '../core/backends/vscode-live';
 
@@ -13,21 +12,21 @@ function registerFormatCommands(
   outputChannel: vscode.OutputChannel
 ): void {
   // Register commands using vscodeLib
-  const formatDocumentCommand = vscodeLib.registerCommand(
+  vscodeLib.registerCommand(
     context,
     'txxt.formatDocument',
     formatCommands.formatDocument,
     outputChannel
   );
 
-  const generateTOCCommand = vscodeLib.registerCommand(
+  vscodeLib.registerCommand(
     context,
     'txxt.generateTOC',
     formatCommands.generateTOC,
     outputChannel
   );
 
-  const fullFormattingCommand = vscodeLib.registerCommand(
+  vscodeLib.registerCommand(
     context,
     'txxt.fullFormatting',
     formatCommands.fullFormatting,

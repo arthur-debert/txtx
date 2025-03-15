@@ -12,14 +12,12 @@ function registerFootnoteCommands(
   outputChannel: vscode.OutputChannel
 ): void {
   // Register the number footnotes command using the core API
-  const numberFootnotesCommand = vscodeLib.registerCommand(
+  vscodeLib.registerCommand(
     context,
     'txxt.numberFootnotes',
     numberFootnotes,
     outputChannel
   );
-
-  outputChannel.appendLine('Number Footnotes command registered');
 }
 
-export { registerFootnoteCommands, numberFootnotes };
+export { registerFootnoteCommands };

@@ -99,10 +99,9 @@ export function findTOCPosition(lines: string[]): number {
 /**
  * Find an existing TOC in the document
  * @param lines - The document lines
- * @param startPosition - The position to start looking from
  * @returns - The existing TOC or null
  */
-export function findExistingTOC(lines: string[], startPosition: number): TOCLocation | null {
+export function findExistingTOC(lines: string[]): TOCLocation | null {
   // Look for "TABLE OF CONTENTS" header
   for (let i = 0; i < lines.length; i++) {
     if (lines[i].trim() === 'TABLE OF CONTENTS') {
@@ -159,8 +158,4 @@ export function isSection(line: string): boolean {
 export function isMetadata(line: string): boolean {
   // Metadata format: "Key          Value"
   return /^[A-Za-z][A-Za-z\s]+\s{2,}[A-Za-z0-9]/.test(line);
-}
-
-function isUppercaseSection(line: string): boolean {
-  return /^[A-Z][A-Z\s-]+$/.test(line);
 }

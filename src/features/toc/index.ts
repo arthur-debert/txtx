@@ -49,7 +49,7 @@ export function processTOC(text: string): string {
   }
   
   // Step 2: Get the current TOC
-  const currentTOC = findExistingTOC(text.split('\n'), 0);
+  const currentTOC = findExistingTOC(text.split('\n'));
   
   // Step 3: Replace or insert the TOC
   return replaceTOC(text, tocLines, currentTOC);
