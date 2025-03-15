@@ -8,7 +8,8 @@ import {
   DiagnosticSeverity,
   DiagnosticCollection,
   OutputChannel,
-  Uri
+  Uri,
+  Range
 } from '../../types';
 
 /**
@@ -16,13 +17,13 @@ import {
  * Represents a diagnostic, such as a compiler error or warning
  */
 export class HeadlessDiagnostic implements Diagnostic {
-  range: any;
+  range: Range;
   message: string;
   severity: DiagnosticSeverity;
   source?: string;
   code?: string | number;
 
-  constructor(range: any, message: string, severity: DiagnosticSeverity = DiagnosticSeverity.Error, source?: string, code?: string | number) {
+  constructor(range: Range, message: string, severity: DiagnosticSeverity = DiagnosticSeverity.Error, source?: string, code?: string | number) {
     this.range = range;
     this.message = message;
     this.severity = severity;
