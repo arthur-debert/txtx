@@ -19,7 +19,6 @@ import {
   FoldingContext,
   CompletionContext
 } from '../../types';
-import { HeadlessRange } from './document-text';
 
 /**
  * Document Symbol Provider implementation for headless backend
@@ -32,6 +31,7 @@ export class HeadlessDocumentSymbolProvider {
    * @param token A cancellation token
    * @returns An array of document symbols
    */
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   provideDocumentSymbols(document: TextDocument, token: CancellationToken): DocumentSymbol[] | Promise<DocumentSymbol[]> {
     // Parse the document and extract symbols
     // This is a simplified implementation
@@ -84,6 +84,7 @@ export class HeadlessDocumentLinkProvider {
    * @param token A cancellation token
    * @returns An array of document links
    */
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   provideDocumentLinks(document: TextDocument, token: CancellationToken): DocumentLink[] | Promise<DocumentLink[]> {
     // Parse the document and extract links
     // This is a simplified implementation
@@ -136,6 +137,7 @@ export class HeadlessDocumentLinkProvider {
    * @param token A cancellation token
    * @returns The resolved document link
    */
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   resolveDocumentLink(link: DocumentLink, token: CancellationToken): DocumentLink | Promise<DocumentLink> {
     // In a real implementation, this would resolve the link target
     return link;
@@ -154,6 +156,7 @@ export class HeadlessFoldingRangeProvider {
    * @param token A cancellation token
    * @returns An array of folding ranges
    */
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   provideFoldingRanges(document: TextDocument, context: FoldingContext, token: CancellationToken): FoldingRange[] | Promise<FoldingRange[]> {
     // Parse the document and extract folding ranges
     // This is a simplified implementation
@@ -220,6 +223,7 @@ export class HeadlessCompletionItemProvider {
    * @param context The completion context
    * @returns An array of completion items
    */
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   provideCompletionItems(document: TextDocument, position: Position, token: CancellationToken, context: CompletionContext): CompletionItem[] | Promise<CompletionItem[]> {
     // Parse the document and provide completion items
     // This is a simplified implementation
@@ -268,8 +272,9 @@ export class HeadlessCompletionItemProvider {
    * @param token A cancellation token
    * @returns The resolved completion item
    */
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   resolveCompletionItem(item: CompletionItem, token: CancellationToken): CompletionItem | Promise<CompletionItem> {
-    // In a real implementation, this would add more details to the item
+    // In a real implementation, this would resolve additional information for the item
     return item;
   }
 }
