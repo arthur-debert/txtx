@@ -3,7 +3,7 @@
  * Handles backend selection and initialization
  */
 
-import { Backend } from './types';
+import { Backend } from './types.js';
 
 /**
  * Backend Manager class
@@ -20,8 +20,8 @@ class BackendManagerClass {
   async initialize(): Promise<void> {
     // We'll dynamically import the backends to avoid circular dependencies
     // and to ensure they're only loaded when needed
-    const vscodeLive = await import('./backends/vscode-live/index');
-    const headless = await import('./backends/headless/index');
+    const vscodeLive = await import('./backends/vscode-live/index.js');
+    const headless = await import('./backends/headless/index.js');
     this.registerBackend('vscode-live', vscodeLive.VSCodeLiveBackend);
     this.registerBackend('headless', headless.HeadlessBackend);
   }

@@ -2,9 +2,11 @@
  * Unit tests for the Full Formatting Command in the headless backend
  */
 
-import * as assert from 'assert';
-import { fullFormattingCommand } from '../../../../src/core/backends/headless/full-formatting-command';
-import { getErrorMessage } from '../../../../src/core/error-utils';
+import assert from 'assert';
+import path from 'path';
+import { fullFormattingCommand } from '../../../../src/core/backends/headless/full-formatting-command.js';
+import { getErrorMessage } from '../../../../src/core/error-utils.js';
+import { runTransformTest, runTransformTestsInDirectory } from '../../../test-utils/transform-test-utils.js';
 
 suite('Full Formatting Command - Headless Backend', () => {
   // Sample document with various formatting issues, sections, and footnotes

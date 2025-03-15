@@ -2,9 +2,10 @@
  * Unit tests for the Numbering Commands in the headless backend
  */
 
-import * as assert from 'assert';
-import * as path from 'path';
-import { fixDocumentNumbering } from '../../../../src/core/backends/headless/numbering-commands';
+import assert from 'assert';
+import path from 'path';
+import { fixDocumentNumbering } from '../../../../src/core/backends/headless/numbering-commands.js';
+import { runTransformTest, runTransformTestsInDirectory } from '../../../test-utils/transform-test-utils.js';
 
 suite('Numbering Commands - Headless Backend', () => {
   // Test the fixDocumentNumbering function

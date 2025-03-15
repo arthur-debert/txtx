@@ -5,8 +5,8 @@
  */
 
 import * as vscode from 'vscode';
-import { numberFootnotes as headlessNumberFootnotes } from '../headless/footnote-commands';
-import { isCommandResult, getErrorMessage } from '../../error-utils';
+import { numberFootnotes as headlessNumberFootnotes } from '../headless/footnote-commands.js';
+import { isCommandResult, getErrorMessage } from '../../error-utils.js';
 
 /**
  * Number footnotes sequentially and update references

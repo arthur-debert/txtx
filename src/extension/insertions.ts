@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
-import { loadYamlFile } from './yamlLoader';
-import { INSERTION_SEARCH_REGEX } from './constants';
+import { loadYamlFile } from './yamlLoader.js';
+import { INSERTION_SEARCH_REGEX } from './constants.js';
 
 // Define interfaces for insertion items
 interface InsertionItem {

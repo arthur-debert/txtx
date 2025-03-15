@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { loadYamlFile } from './yamlLoader';
+import { loadYamlFile } from './yamlLoader.js';
 
 // Define interface for transformation objects
 interface Transformation {

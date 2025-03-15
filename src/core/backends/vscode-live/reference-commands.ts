@@ -5,7 +5,7 @@
  */
 
 import * as vscode from 'vscode';
-import { checkDocumentReferences as headlessCheckReferences } from '../headless/reference-commands';
+import { checkDocumentReferences as headlessCheckReferences } from '../headless/reference-commands.js';
 
 /**
  * Check references in a document

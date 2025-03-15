@@ -3,8 +3,8 @@
  * This file contains implementations for format-related commands
  */
 
-import { processTOC, isMetadata } from '../../../features/toc';
-import processFootnotes from '../../../features/footnotes';
+import { processTOC, isMetadata } from '../../../features/index.js';
+import { processFootnotes } from '../../../features/index.js';
 
 /**
  * Format lines according to the RFC specification

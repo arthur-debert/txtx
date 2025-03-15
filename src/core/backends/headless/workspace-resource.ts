@@ -12,9 +12,9 @@ import {
   WorkspaceFolder,
   Position,
   TextLine,
-} from '../../types';
-import { HeadlessUri, HeadlessPosition, HeadlessRange } from './document-text';
-import { applyTextEdit } from './document-text';
+} from '../../types.js';
+import { HeadlessUri, HeadlessPosition, HeadlessRange } from './document-text.js';
+import { applyTextEdit } from './document-text.js';
 
 /**
  * Workspace implementation for headless backend

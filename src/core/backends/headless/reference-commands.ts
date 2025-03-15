@@ -6,7 +6,7 @@
  */
 
 import * as path from 'path';
-import { checkReferences, ReferenceCheckResult } from '../../../features/references';
+import { checkReferences, ReferenceCheckResult } from '../../../features/index.js';
 
 /**
  * Check references in a document

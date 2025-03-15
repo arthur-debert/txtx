@@ -1,7 +1,7 @@
 import * as assert from 'assert';
 import * as vscode from 'vscode';
 import * as path from 'path';
-import { isVerbose, openDocument, getTestFixturePath } from './test-helpers';
+import { isVerbose, openDocument, getTestFixturePath } from './test-helpers.js';
 
 suite('txxt Format Extension Tests', function () {
   // 3. Syntax Highlighting Tests

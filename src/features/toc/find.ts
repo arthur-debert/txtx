@@ -2,8 +2,8 @@
  * Functions for finding sections and TOC in a document
  */
 
-import { Section, TOCLocation } from './types';
-import { SECTION_REGEX, NUMBERED_SECTION_REGEX, ALTERNATIVE_SECTION_REGEX } from '../../extension/constants';
+import { Section, TOCLocation } from './types.js';
+import { SECTION_REGEX, NUMBERED_SECTION_REGEX, ALTERNATIVE_SECTION_REGEX } from '../../extension/constants.js';
 
 /**
  * Find sections in document text

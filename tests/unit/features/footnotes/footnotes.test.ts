@@ -2,13 +2,15 @@
  * Unit tests for the Footnotes feature
  */
 
-import * as assert from 'assert';
-import { 
+import assert from 'assert';
+import {
+  processFootnotes,
+  FootnoteDeclaration,
+  FootnoteProcessResult,
   findFootnoteDeclarations,
   createFootnoteNumberMap,
-  updateFootnoteNumbers,
-  processFootnotes
-} from '../../../../src/features/footnotes';
+  updateFootnoteNumbers
+} from '../../../../src/features/index.js';
 
 suite('Footnotes Feature', () => {
   // Sample document with footnotes

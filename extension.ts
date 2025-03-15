@@ -2,7 +2,7 @@
 import * as vscode from "vscode";
 
 // Import the extension module
-import * as extension from "./src/extension";
+import * as extension from './src/extension/index.js';
 
 /**
  * @param {vscode.ExtensionContext} context

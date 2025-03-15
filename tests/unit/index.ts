@@ -2,12 +2,16 @@
  * Unit test setup and runner
  */
 import type { MochaOptions } from 'mocha';
-const path = require('path') as typeof import('path');
-const Mocha = require('mocha');
-const { glob } = require('glob');
+import path from 'path';
+import Mocha from 'mocha';
+import { glob } from 'glob';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Explicitly load test helpers
-require('./testHelpers');
+import './testHelpers.js';
 
 /**
  * Options for running tests
@@ -23,7 +27,7 @@ interface RunOptions {
  * @param options - Test options
  * @returns Promise that resolves when tests complete
  */
-function run(options: RunOptions = {}): Promise<void> {
+export function run(options: RunOptions = {}): Promise<void> {
   // Determine if we're in verbose mode
   const isVerbose = process.env.VERBOSE === 'true';
   
@@ -91,5 +95,3 @@ function run(options: RunOptions = {}): Promise<void> {
       });
   });
 }
-
-module.exports = { run };

@@ -14,7 +14,7 @@ import {
   executeCommand,
   getActiveEditor,
   closeActiveEditor,
-} from './test-helpers';
+} from './test-helpers.js';
 
 suite('txxt Format Extension Tests', function () {
   // 5. Command Tests
@@ -92,7 +92,7 @@ This text should be indented.
         );
 
         // Check metadata formatting
-        const authorLine = lines.find(line => line.startsWith('Author'));
+        const authorLine = lines.find((line: string) => line.startsWith('Author'));
         assert.ok(authorLine, 'Author metadata should exist');
         assert.ok(authorLine.includes('John Doe'), 'Author value should be preserved');
 
@@ -103,7 +103,7 @@ This text should be indented.
         );
 
         // Check section formatting
-        const sectionOneLine = lines.findIndex(line => line.includes('1. Section One'));
+        const sectionOneLine = lines.findIndex((line: string) => line.includes('1. Section One'));
         assert.ok(sectionOneLine > -1, 'Section One should exist');
 
         // Check that there's a blank line after the section header
@@ -114,11 +114,11 @@ This text should be indented.
         );
 
         // Check that bullet points are preserved
-        const bulletPointLine = lines.findIndex(line => line.includes('- This is a bullet point'));
+        const bulletPointLine = lines.findIndex((line: string) => line.includes('- This is a bullet point'));
         assert.ok(bulletPointLine > -1, 'Bullet points should be preserved');
 
         // Check that code blocks are preserved
-        const codeBlockLine = lines.findIndex(line => line.includes('This is a code block.'));
+        const codeBlockLine = lines.findIndex((line: string) => line.includes('This is a code block.'));
         assert.ok(codeBlockLine > -1, 'Code blocks should be preserved');
         assert.ok(
           lines[codeBlockLine].startsWith('    '),
@@ -126,7 +126,7 @@ This text should be indented.
         );
 
         // Check that quotes are preserved
-        const quoteLine = lines.findIndex(line => line.includes('This is a quote'));
+        const quoteLine = lines.findIndex((line: string) => line.includes('This is a quote'));
         assert.ok(quoteLine > -1, 'Quotes should be preserved');
         assert.ok(lines[quoteLine].startsWith('>'), 'Quotes should start with >');
 
@@ -177,21 +177,21 @@ This text should be indented.
         const lines = fixedText.split('\n');
 
         // Check section numbering
-        const introLine = lines.findIndex(line => line.includes('Introduction'));
+        const introLine = lines.findIndex((line: string) => line.includes('Introduction'));
         assert.ok(introLine > -1, 'Introduction section should exist');
         assert.ok(
           lines[introLine].startsWith('1. Introduction'),
           'Introduction should be numbered as 1'
         );
 
-        const mainSectionLine = lines.findIndex(line => line.includes('Main Section'));
+        const mainSectionLine = lines.findIndex((line: string) => line.includes('Main Section'));
         assert.ok(mainSectionLine > -1, 'Main Section should exist');
         assert.ok(
           lines[mainSectionLine].startsWith('2. Main Section'),
           'Main Section should be numbered as 2'
         );
 
-        const subsection1Line = lines.findIndex(line => line.includes('Subsection One'));
+        const subsection1Line = lines.findIndex((line: string) => line.includes('Subsection One'));
         assert.ok(subsection1Line > -1, 'Subsection One should exist');
         assert.ok(
           lines[subsection1Line].includes('2.1') &&
@@ -199,7 +199,7 @@ This text should be indented.
           'Subsection One should be numbered as 2.1'
         );
 
-        const subsection2Line = lines.findIndex(line => line.includes('Subsection Two'));
+        const subsection2Line = lines.findIndex((line: string) => line.includes('Subsection Two'));
         assert.ok(subsection2Line > -1, 'Subsection Two should exist');
         assert.ok(
           lines[subsection2Line].includes('2.2') &&
@@ -207,7 +207,7 @@ This text should be indented.
           'Subsection Two should be numbered as 2.2'
         );
 
-        const conclusionLine = lines.findIndex(line => line.includes('Conclusion'));
+        const conclusionLine = lines.findIndex((line: string) => line.includes('Conclusion'));
         assert.ok(conclusionLine > -1, 'Conclusion section should exist');
         assert.ok(
           lines[conclusionLine].startsWith('3. Conclusion'),

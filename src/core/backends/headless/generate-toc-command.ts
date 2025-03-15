@@ -5,9 +5,8 @@
  * in the headless backend environment.
  */
 
-import { processTOC } from '../../../features/toc';
-import { findSections } from '../../../features/toc';
-import { CommandResult, ErrorCode, createSuccess, createFailure } from '../../error-utils';
+import { processTOC, findSections } from '../../../features/index.js';
+import { CommandResult, ErrorCode, createSuccess, createFailure } from '../../error-utils.js';
 
 /**
  * Generate a table of contents for a document
@@ -32,7 +31,7 @@ export async function generateTOCCommand(
     const sections = findSections(text);
     
     // Check if the document has any numbered sections (e.g., "1. INTRODUCTION")
-    const numberedSections = sections.filter(section => section.prefix && section.prefix.match(/^\d+(\.\d+)*\.$/));
+    const numberedSections = sections.filter((section: { prefix: string | undefined }) => section.prefix && section.prefix.match(/^\d+(\.\d+)*\.$/));
     if (numberedSections.length === 0) {
       return createFailure(
         ErrorCode.NO_SECTIONS_FOUND,

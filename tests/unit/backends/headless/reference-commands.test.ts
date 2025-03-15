@@ -4,7 +4,7 @@
 
 import * as assert from 'assert';
 import * as path from 'path';
-import { checkDocumentReferences } from '../../../../src/core/backends/headless/reference-commands';
+import { checkDocumentReferences } from '../../../../src/core/backends/headless/reference-commands.js';
 
 suite('Reference Commands - Headless Backend', () => {
   // Test the checkDocumentReferences function

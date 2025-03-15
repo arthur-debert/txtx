@@ -18,7 +18,7 @@ import {
   Uri,
   FoldingContext,
   CompletionContext
-} from '../../types';
+} from '../../types.js';
 
 /**
  * Document Symbol Provider implementation for headless backend

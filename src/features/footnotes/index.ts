@@ -6,11 +6,10 @@
  */
 
 // Export types
-export * from './types';
+export * from './types.js';
 
 // Export core functionality
-export * from './process';
+export * from './process.js';
 
 // Re-export the main function for convenience
-import { processFootnotes } from './process';
-export default processFootnotes;
+export { processFootnotes } from './process.js';

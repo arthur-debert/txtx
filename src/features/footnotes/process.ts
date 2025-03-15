@@ -1,4 +1,4 @@
-import { FootnoteDeclaration, FootnoteProcessResult } from './types';
+import { FootnoteDeclaration, FootnoteProcessResult } from './types.js';
 
 // Regular expressions for footnotes
 const FOOTNOTE_REGEX = /^\[(\d+)\] (.+)$/gm;

@@ -10,26 +10,26 @@ import {
   Disposable, WorkspaceEdit, TextEditorDecorationType, DiagnosticCollection,
   DocumentSymbolProvider, DocumentLinkProvider, FoldingRangeProvider, 
   CompletionItemProvider, OutputChannel, WorkspaceFolder, Diagnostic
-} from '../../types';
+} from '../../types.js';
 
 // Export format commands object
-export { formatCommands } from './format-commands';
+export { formatCommands } from './format-commands.js';
 
 // Export individual format commands for direct access
 export { 
   formatDocument, 
   generateTOC as generateTOCCommand,
   fullFormatting as fullFormattingCommand
-} from './format-commands';
+} from './format-commands.js';
 
 // Export footnote commands
-export { numberFootnotes } from './footnote-commands';
+export { numberFootnotes } from './footnote-commands.js';
 
 // Export numbering commands
-export { fixNumbering as fixDocumentNumbering } from './numbering-commands';
+export { fixNumbering as fixDocumentNumbering } from './numbering-commands.js';
 
 // Export reference commands
-export { checkReferences as checkDocumentReferences } from './reference-commands';
+export { checkReferences as checkDocumentReferences } from './reference-commands.js';
 
 // Note: formatDocument and fullFormatting are also exported for backward compatibility
 

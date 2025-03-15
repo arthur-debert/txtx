@@ -3,6 +3,7 @@
   "displayName": "txxt Format",
   "description": "Syntax highlighting for txxt format",
   "version": "0.5.0",
+  "type": "module",
   "publisher": "txxt",
   "engines": {
     "vscode": "^1.60.0"
@@ -106,12 +107,16 @@
   ],
   "main": "./dist/extension.js",
   "scripts": {
+    "clean": "rm -rf dist",
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
-    "pretest": "npm run compile && tsc -p ./tests",
-    "test": "node ./dist/tests/runTest.js",
-    "test:unit": "npm run compile && tsc -p ./tests && node ./dist/tests/runTest.js unit",
+    "pretest": "npm run compile",
+    "test": "npm run test:unit && npm run test:integration",
+    "test:unit": "npm run clean && npm run compile && tsc -p ./tests && node ./dist/tests/runTest.js unit",
     "test:integration": "npm run compile && tsc -p ./tests && node ./dist/tests/runTest.js integration",
+    "lint": "eslint src --ext ts",
+    "package": "vsce package",
+    "publish": "vsce publish",
     "build": "tsc -p ./",
     "prepare": "husky"
   },

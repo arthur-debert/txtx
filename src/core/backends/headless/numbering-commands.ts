@@ -5,7 +5,7 @@
  * in the headless backend environment.
  */
 
-import { fixNumbering, NumberingFixResult } from '../../../features/numbering';
+import { fixNumbering, NumberingFixResult } from '../../../features/index.js';
 
 /**
  * Fix numbering in a document

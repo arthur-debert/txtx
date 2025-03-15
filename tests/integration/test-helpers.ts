@@ -1,9 +1,10 @@
 /**
  * Integration test helpers
  */
-import * as path from 'path';
+import path from 'path';
 import * as vscode from 'vscode';
-import * as fs from 'fs';
+import fs from 'fs';
+import testSetup from '../testSetup.js';
 
 interface TestEnvironment {
   createFile: (fileName: string, content: string) => string;
@@ -19,21 +20,18 @@ interface TestSetup {
   deleteDirIfExists: (dirPath: string) => void;
 }
 
-// Import testSetup with type assertion
-const testSetup = require('../testSetup') as TestSetup;
-
 // Get verbose flag from environment
 export const isVerbose = process.env.VERBOSE === 'true';
 
 // Import extension modules
-import * as vscodeLib from '../../src/extension/vscode.lib';
+import * as vscodeLib from '../../src/extension/vscode.lib.js';
 import { 
   setNotificationConfig, 
   enableNotification, 
   disableNotification, 
   enableAllNotifications, 
   disableAllNotifications 
-} from '../../src/extension/notifications';
+} from '../../src/extension/notifications.js';
 
 // Re-export functions from vscode.lib
 export const {

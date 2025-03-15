@@ -9,8 +9,8 @@ import {
   numberFootnotes,
   generateTOCCommand,
   fullFormattingCommand
-} from '../headless';
-import { isCommandResult, getErrorMessage } from '../../error-utils';
+} from '../headless/index.js';
+import { isCommandResult, getErrorMessage } from '../../error-utils.js';
 
 // Export individual functions for direct access
 export async function formatDocument(document: vscode.TextDocument): Promise<boolean> {

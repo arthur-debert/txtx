@@ -4,7 +4,7 @@
 
 import * as path from 'path';
 import * as fs from 'fs';
-import { DocumentReference, DiagnosticInfo } from './types';
+import { DocumentReference, DiagnosticInfo } from './types.js';
 
 /**
  * Validate a document reference

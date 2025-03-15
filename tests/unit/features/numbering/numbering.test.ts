@@ -2,11 +2,12 @@
  * Unit tests for the Numbering feature
  */
 
-import * as assert from 'assert';
-import { 
+import assert from 'assert';
+import {
   fixNumbering,
+  NumberingFixResult,
   countChangedLines
-} from '../../../../src/features/numbering';
+} from '../../../../src/features/index.js';
 
 suite('Numbering Feature', () => {
   // Test the countChangedLines function

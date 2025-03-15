@@ -6,17 +6,17 @@
  */
 
 // Export types
-export * from './types';
+export * from './types.js';
 
 // Export fix functions
 export {
   fixNumberingInLines,
   countChangedLines
-} from './fix';
+} from './fix.js';
 
 // Import dependencies
-import { fixNumberingInLines, countChangedLines } from './fix';
-import { NumberingFixResult } from './types';
+import { fixNumberingInLines, countChangedLines } from './fix.js';
+import { NumberingFixResult } from './types.js';
 
 /**
  * Fix numbering in document text

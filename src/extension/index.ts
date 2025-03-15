@@ -1,18 +1,18 @@
 import * as vscode from 'vscode';
-import txxtDocumentSymbolProvider from './documentSymbolProvider';
-import txxtDocumentLinkProvider from './documentLinkProvider';
-import { registerTransformations } from './transformations';
-import { registerInsertions } from './insertions';
-import { registerPathCompletionProvider } from './pathCompletionProvider';
-import { registerFormatCommands } from './formatCommands';
-import { registerFootnoteCommands } from './footnoteCommands';
-import { registerExportCommands } from './exportCommands';
-import { registerReferenceCommands } from './referenceCommands';
-import { registerNumberingCommands } from './numberingCommands';
-import { registerLaunchCommands } from './launchCommands';
-import { fixDocumentNumbering } from '../core/backends/headless/numbering-commands';
-import { checkDocumentReferences } from '../core/backends/headless/reference-commands';
-import * as vscodeLib from './vscode.lib';
+import txxtDocumentSymbolProvider from './documentSymbolProvider.js';
+import txxtDocumentLinkProvider from './documentLinkProvider.js';
+import { registerTransformations } from './transformations.js';
+import { registerInsertions } from './insertions.js';
+import { registerPathCompletionProvider } from './pathCompletionProvider.js';
+import { registerFormatCommands } from './formatCommands.js';
+import { registerFootnoteCommands } from './footnoteCommands.js';
+import { registerExportCommands } from './exportCommands.js';
+import { registerReferenceCommands } from './referenceCommands.js';
+import { registerNumberingCommands } from './numberingCommands.js';
+import { registerLaunchCommands } from './launchCommands.js';
+import { fixDocumentNumbering } from '../core/backends/headless/numbering-commands.js';
+import { checkDocumentReferences } from '../core/backends/headless/reference-commands.js';
+import * as vscodeLib from './vscode.lib.js';
 
 let outputChannel: vscode.OutputChannel;
 

@@ -1,7 +1,7 @@
 import * as assert from 'assert';
 import * as vscode from 'vscode';
 import * as path from 'path';
-import { isVerbose, openDocument, getFixturePath } from './test-helpers';
+import { isVerbose, openDocument, getFixturePath } from './test-helpers.js';
 
 suite('txxt Format Extension Tests', function () {
   // 1. Basic Extension Tests

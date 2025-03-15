@@ -14,7 +14,7 @@ import {
   Range,
   Uri,
   SymbolKind
-} from '../../types';
+} from '../../types.js';
 
 /**
  * Document Symbol Provider implementation for headless backend

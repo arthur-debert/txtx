@@ -4,10 +4,10 @@
 // Make this a module
 export {};
 
-const path = require('path') as typeof import('path');
-const fs = require('fs') as typeof import('fs');
-const os = require('os') as typeof import('os');
-const crypto = require('crypto') as typeof import('crypto');
+import path from 'path';
+import fs from 'fs';
+import os from 'os';
+import crypto from 'crypto';
 
 /**
  * Create a temporary directory
@@ -112,7 +112,7 @@ function createTestEnvironment(testDirName?: string): TestEnvironment {
   };
 }
 
-module.exports = {
+export default {
   createTempDirectory,
   createTempFile,
   deleteFileIfExists,

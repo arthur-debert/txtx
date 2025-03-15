@@ -6,7 +6,7 @@
  */
 
 // Export types
-export * from './types';
+export * from './types.js';
 
 // Export find functions
 export {
@@ -15,23 +15,23 @@ export {
   findExistingTOC,
   isSection,
   isMetadata
-} from './find';
+} from './find.js';
 
 // Export generate functions
 export {
   generateTOCLines,
   generateTOC
-} from './generate';
+} from './generate.js';
 
 // Export replace functions
 export {
   replaceTOC
-} from './replace';
+} from './replace.js';
 
 // Import dependencies
-import { generateTOC } from './generate';
-import { findExistingTOC } from './find';
-import { replaceTOC } from './replace';
+import { generateTOC } from './generate.js';
+import { findExistingTOC } from './find.js';
+import { replaceTOC } from './replace.js';
 
 /**
  * Process a document to add or update a table of contents

@@ -2,8 +2,8 @@
  * Functions for generating TOC content
  */
 
-import { Section } from './types';
-import { findSections } from './find';
+import { Section } from './types.js';
+import { findSections } from './find.js';
 
 /**
  * Generate TOC lines based on the sections

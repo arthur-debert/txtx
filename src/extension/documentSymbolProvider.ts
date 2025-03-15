@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { SECTION_REGEX, NUMBERED_SECTION_REGEX, ALTERNATIVE_SECTION_REGEX } from './constants';
+import { SECTION_REGEX, NUMBERED_SECTION_REGEX, ALTERNATIVE_SECTION_REGEX } from './constants.js';
 
 /**
  * Document Symbol Provider for txxt files

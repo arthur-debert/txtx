@@ -8,7 +8,7 @@ import {
   Event,
   Disposable,
   CancellationToken
-} from '../../types';
+} from '../../types.js';
 
 /**
  * Simple implementation of a disposable
