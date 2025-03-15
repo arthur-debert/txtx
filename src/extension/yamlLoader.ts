@@ -3,6 +3,8 @@ import * as path from 'path';
 import * as vscode from 'vscode';
 import * as yaml from 'js-yaml';
 
+type YamlContent = string[][];
+
 /**
  * Load YAML file and parse its contents
  * @param filePath - Path to the YAML file
@@ -12,7 +14,7 @@ import * as yaml from 'js-yaml';
 function loadYamlFile(
   filePath: string,
   outputChannel: vscode.OutputChannel
-): any[] | Record<string, any> {
+): YamlContent {
   try {
     // Resolve the file path relative to the extension directory
     const extensionPath = vscode.extensions.getExtension('txxt-format')?.extensionPath;
@@ -27,7 +29,7 @@ function loadYamlFile(
     const parsedContent = yaml.load(fileContent);
 
     outputChannel.appendLine(`Loaded YAML file: ${filePath}`);
-    return parsedContent as any[] | Record<string, any>;
+    return parsedContent as YamlContent;
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : String(error);
     outputChannel.appendLine(`Error loading YAML file ${filePath}: ${errorMessage}`);
@@ -36,4 +38,4 @@ function loadYamlFile(
   }
 }
 
-export { loadYamlFile };
+export { loadYamlFile, YamlContent };

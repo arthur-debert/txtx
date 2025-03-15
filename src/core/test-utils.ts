@@ -6,17 +6,17 @@
 import { BackendManager } from './backend-manager';
 import * as fs from 'fs';
 import * as path from 'path';
-import { TextDocument, Uri } from './types';
+import { TextDocument, Uri, TextEditor, Backend } from './types';
 
 /**
  * Test environment interface
  * Provides access to the backend and helper methods for testing
  */
 export interface TestEnvironment {
-  backend: any;
-  createTextDocument: (content: string, uri?: any, languageId?: string) => TextDocument;
-  createTextEditor: (document: TextDocument) => any;
-  loadFixture: (fixturePath: string) => TextDocument;
+  backend: Backend;
+  createTextDocument: (content: string, uri?: Uri, languageId?: string) => Promise<TextDocument>;
+  createTextEditor: (document: TextDocument) => Promise<TextEditor>;
+  loadFixture: (fixturePath: string) => Promise<TextDocument>;
 }
 
 /**
@@ -26,26 +26,32 @@ export interface TestEnvironment {
  */
 export function setupTestEnvironment(): TestEnvironment {
   // Switch to headless backend
-  const backend = BackendManager.setBackend('headless');
+  const backend = BackendManager.setBackend('headless') as Backend;
 
   return {
     // Return the backend for direct access to testing methods
     backend,
 
     // Helper methods
-    createTextDocument: (content: string, uri?: any, languageId?: string): TextDocument => {
+    createTextDocument: async (content: string, uri?: Uri, languageId?: string): Promise<TextDocument> => {
       const documentUri = uri || backend.Uri.file('/mock/document.rfc');
-      return (backend as any)._createTextDocument(content, documentUri, languageId || 'txxt');
+      if (backend.setDocumentContent) {
+        return backend.setDocumentContent(documentUri, content);
+      }
+      return backend.workspace.openTextDocument(documentUri);
     },
 
-    createTextEditor: (document: TextDocument): any => {
-      return (backend as any)._createTextEditor(document);
+    createTextEditor: async (document: TextDocument): Promise<TextEditor> => {
+      return backend.window.showTextDocument(document);
     },
 
-    loadFixture: (fixturePath: string): TextDocument => {
+    loadFixture: async (fixturePath: string): Promise<TextDocument> => {
       const content = fs.readFileSync(fixturePath, 'utf8');
       const uri = backend.Uri.file(fixturePath);
-      return (backend as any).setDocumentContent(uri, content);
+      if (backend.setDocumentContent) {
+        return backend.setDocumentContent(uri, content);
+      }
+      return backend.workspace.openTextDocument(uri);
     },
   };
 }
