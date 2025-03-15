@@ -27,21 +27,21 @@ export interface TestEnvironment {
 export function setupTestEnvironment(): TestEnvironment {
   // Switch to headless backend
   const backend = BackendManager.setBackend('headless');
-  
+
   return {
     // Return the backend for direct access to testing methods
     backend,
-    
+
     // Helper methods
     createTextDocument: (content: string, uri?: any, languageId?: string): TextDocument => {
       const documentUri = uri || backend.Uri.file('/mock/document.rfc');
-      return (backend as any)._createTextDocument(content, documentUri, languageId || 'rfcdoc');
+      return (backend as any)._createTextDocument(content, documentUri, languageId || 'txxt');
     },
-    
+
     createTextEditor: (document: TextDocument): any => {
       return (backend as any)._createTextEditor(document);
     },
-    
+
     loadFixture: (fixturePath: string): TextDocument => {
       const content = fs.readFileSync(fixturePath, 'utf8');
       const uri = backend.Uri.file(fixturePath);

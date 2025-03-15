@@ -27,8 +27,8 @@
           "--extensionDevelopmentPath=${workspaceFolder}",
           "--disable-extensions",
           "${workspaceFolder}/fixtures",
-          "--enable-proposed-api=rfcdoc.rfcdoc-format",
-          "--enable-extension=rfcdoc.rfcdoc-format",
+          "--enable-proposed-api=txxt.txxt-format",
+          "--enable-extension=txxt.txxt-format",
           "--enable-extension=vscode.markdown",
           "--enable-extension=esbenp.prettier-vscode"
         ],

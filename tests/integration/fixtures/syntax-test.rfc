@@ -1,7 +1,7 @@
 Syntax Highlighting Test Document
 -------------------------------
 
-This document is used to test syntax highlighting features of the RfcDoc Format extension.
+This document is used to test syntax highlighting features of the txxt Format extension.
 
 1. Text Formatting
 
@@ -67,7 +67,7 @@ This document is used to test syntax highlighting features of the RfcDoc Format 
 
 6. Metadata
 
-   Author        RfcDoc Team
+   Author        txxt Team
    Date          March 10, 2025
    Version       1.0
    Status        Draft

@@ -19,7 +19,7 @@ function createTempDirectory(dirName?: string): string {
   const uniqueId = (crypto as any).randomBytes(8).toString('hex');
   const dirPath = path.join(
     os.tmpdir(),
-    'rfcdoc-tests-' + uniqueId,
+    'txxt-tests-' + uniqueId,
     dirName ? `${dirName}-${uniqueId}` : uniqueId
   );
 
@@ -78,7 +78,7 @@ interface TestEnvironment {
 function createTestEnvironment(testDirName?: string): TestEnvironment {
   const tempDir = createTempDirectory(testDirName);
   const createdFiles: string[] = [];
-  
+
   return {
     /**
      * Create a temporary file for testing
@@ -92,7 +92,7 @@ function createTestEnvironment(testDirName?: string): TestEnvironment {
       createdFiles.push(filePath);
       return filePath;
     },
-    
+
     /**
      * Clean up all created files
      */
@@ -108,7 +108,7 @@ function createTestEnvironment(testDirName?: string): TestEnvironment {
      * Get the path to the temporary directory
      * @returns The path to the temporary directory
      */
-    getTempDir: (): string => tempDir
+    getTempDir: (): string => tempDir,
   };
 }
 
@@ -117,5 +117,5 @@ module.exports = {
   createTempFile,
   deleteFileIfExists,
   deleteDirIfExists,
-  createTestEnvironment
+  createTestEnvironment,
 };

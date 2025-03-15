@@ -32,7 +32,7 @@ if [[ -z ${VERSION} ]]; then
 fi
 
 echo "Current version: ${VERSION}"
-echo "This will trigger a release for rfcdoc-format version ${VERSION}."
+echo "This will trigger a release for txxt-format version ${VERSION}."
 read -r -p "Continue? (y/n): " CONFIRM
 
 if [[ ${CONFIRM} != "y" && ${CONFIRM} != "Y" ]]; then

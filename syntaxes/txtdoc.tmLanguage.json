@@ -1,6 +1,6 @@
 {
-  "name": "RfcDoc",
-  "scopeName": "text.rfcdoc",
+  "name": "txxt",
+  "scopeName": "text.txxt",
   "patterns": [
     {
       "include": "#title"
@@ -39,87 +39,87 @@
   "repository": {
     "title": {
       "match": "^([^\\n]+)\\n-+$",
-      "name": "meta.title.rfcdoc",
+      "name": "meta.title.txxt",
       "captures": {
         "1": {
-          "name": "markup.heading.rfcdoc"
+          "name": "markup.heading.txxt"
         }
       }
     },
     "section": {
       "match": "^([A-Z][^\\n]*)$",
-      "name": "meta.section.rfcdoc",
+      "name": "meta.section.txxt",
       "captures": {
         "1": {
-          "name": "entity.name.section.rfcdoc"
+          "name": "entity.name.section.txxt"
         }
       }
     },
     "numbered_section": {
       "match": "^([0-9]+(?:\\.[0-9]+)*)\\.\\s+([^\\n]*)$",
-      "name": "meta.section.numbered.rfcdoc",
+      "name": "meta.section.numbered.txxt",
       "captures": {
         "1": {
-          "name": "entity.name.section.number.rfcdoc"
+          "name": "entity.name.section.number.txxt"
         },
         "2": {
-          "name": "entity.name.section.title.rfcdoc"
+          "name": "entity.name.section.title.txxt"
         }
       }
     },
     "alternative_section": {
       "match": "^:\\s+([^\\n]*)$",
-      "name": "meta.section.alternative.rfcdoc",
+      "name": "meta.section.alternative.txxt",
       "captures": {
         "1": {
-          "name": "entity.name.section.rfcdoc"
+          "name": "entity.name.section.txxt"
         }
       }
     },
     "list": {
       "patterns": [
         {
-          "name": "markup.list.unnumbered.rfcdoc",
+          "name": "markup.list.unnumbered.txxt",
           "match": "^\\s*-\\s+(.+)$",
           "captures": {
             "1": {
-              "name": "markup.list.item.rfcdoc"
+              "name": "markup.list.item.txxt"
             }
           }
         },
         {
-          "name": "markup.list.numbered.rfcdoc",
+          "name": "markup.list.numbered.txxt",
           "match": "^\\s*(\\d+)\\. (.+)$",
           "captures": {
             "1": {
-              "name": "markup.list.number.rfcdoc"
+              "name": "markup.list.number.txxt"
             },
             "2": {
-              "name": "markup.list.item.rfcdoc"
+              "name": "markup.list.item.txxt"
             }
           }
         },
         {
-          "name": "markup.list.lettered.rfcdoc",
+          "name": "markup.list.lettered.txxt",
           "match": "^\\s*([a-z])\\. (.+)$",
           "captures": {
             "1": {
-              "name": "markup.list.letter.rfcdoc"
+              "name": "markup.list.letter.txxt"
             },
             "2": {
-              "name": "markup.list.item.rfcdoc"
+              "name": "markup.list.item.txxt"
             }
           }
         },
         {
-          "name": "markup.list.roman.rfcdoc",
+          "name": "markup.list.roman.txxt",
           "match": "^\\s*(i|ii|iii|iv|v|vi|vii|viii|ix|x)\\. (.+)$",
           "captures": {
             "1": {
-              "name": "markup.list.roman.rfcdoc"
+              "name": "markup.list.roman.txxt"
             },
             "2": {
-              "name": "markup.list.item.rfcdoc"
+              "name": "markup.list.item.txxt"
             }
           }
         }
@@ -128,71 +128,71 @@
     "code_block": {
       "begin": "^\\s{4}",
       "end": "^(?!\\s{4})",
-      "name": "markup.raw.block.rfcdoc",
-      "contentName": "meta.embedded.block.rfcdoc"
+      "name": "markup.raw.block.txxt",
+      "contentName": "meta.embedded.block.txxt"
     },
     "footnote_reference": {
       "match": "\\[(\\d+)\\]",
-      "name": "meta.footnote.reference.rfcdoc",
+      "name": "meta.footnote.reference.txxt",
       "captures": {
         "1": {
-          "name": "constant.numeric.footnote.rfcdoc"
+          "name": "constant.numeric.footnote.txxt"
         }
       }
     },
     "footnote_declaration": {
       "match": "^\\[(\\d+)\\]\\s+(.+)$",
-      "name": "meta.footnote.declaration.rfcdoc",
+      "name": "meta.footnote.declaration.txxt",
       "captures": {
         "1": {
-          "name": "constant.numeric.footnote.rfcdoc"
+          "name": "constant.numeric.footnote.txxt"
         },
         "2": {
-          "name": "markup.quote.footnote.rfcdoc"
+          "name": "markup.quote.footnote.txxt"
         }
       }
     },
     "reference": {
       "match": "see:\\s+([^#\\s]+)(?:#([\\w-]+))?",
-      "name": "meta.reference.rfcdoc",
+      "name": "meta.reference.txxt",
       "captures": {
         "1": {
-          "name": "string.unquoted.reference.path.rfcdoc"
+          "name": "string.unquoted.reference.path.txxt"
         },
         "2": {
-          "name": "string.unquoted.reference.anchor.rfcdoc"
+          "name": "string.unquoted.reference.anchor.txxt"
         }
       }
     },
     "metadata": {
       "match": "^([A-Za-z0-9 ]+)\\s{2,}(.+)$",
-      "name": "meta.metadata.rfcdoc",
+      "name": "meta.metadata.txxt",
       "captures": {
         "1": {
-          "name": "variable.parameter.metadata.key.rfcdoc"
+          "name": "variable.parameter.metadata.key.txxt"
         },
         "2": {
-          "name": "string.unquoted.metadata.value.rfcdoc"
+          "name": "string.unquoted.metadata.value.txxt"
         }
       }
     },
     "quote": {
       "patterns": [
         {
-          "name": "meta.quote.rfcdoc markup.quote.rfcdoc",
+          "name": "meta.quote.txxt markup.quote.txxt",
           "match": "^>\\s+(.+)$",
           "captures": {
             "1": {
-              "name": "markup.quote.content.rfcdoc"
+              "name": "markup.quote.content.txxt"
             }
           }
         },
         {
-          "name": "meta.quote.nested.rfcdoc markup.quote.nested.rfcdoc",
+          "name": "meta.quote.nested.txxt markup.quote.nested.txxt",
           "match": "^>>\\s+(.+)$",
           "captures": {
             "1": {
-              "name": "markup.quote.nested.content.rfcdoc"
+              "name": "markup.quote.nested.content.txxt"
             }
           }
         }
@@ -202,7 +202,7 @@
       "match": "\\*(.*?)\\*",
       "captures": {
         "1": {
-          "name": "markup.bold.rfcdoc"
+          "name": "markup.bold.txxt"
         }
       }
     },
@@ -210,7 +210,7 @@
       "match": "_(.*?)_",
       "captures": {
         "1": {
-          "name": "markup.italic.rfcdoc"
+          "name": "markup.italic.txxt"
         }
       }
     }

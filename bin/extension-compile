@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Script to package the rfcdoc extension as a .vsix file in the .dist/ directory
+# Script to package the txxt extension as a .vsix file in the .dist/ directory
 # Usage: ./bin/extension-compile
 
 set -e
@@ -12,7 +12,7 @@ DIST_DIR="${ROOT_DIR}/.dist"
 # Create .dist directory if it doesn't exist
 mkdir -p "${DIST_DIR}"
 
-echo "Packaging rfcdoc extension to ${DIST_DIR}..."
+echo "Packaging txxt extension to ${DIST_DIR}..."
 
 # Clean the dist directory
 rm -rf "${DIST_DIR:?}"/*
@@ -27,6 +27,6 @@ fi
 # Package the extension using vsce
 echo "Creating VSIX package..."
 cd "${ROOT_DIR}"
-${VSCE} package -o "${DIST_DIR}/rfcdoc-format.vsix"
+${VSCE} package -o "${DIST_DIR}/txxt-format.vsix"
 
-echo "Packaging complete! Extension VSIX is ready in ${DIST_DIR}/rfcdoc-format.vsix"
+echo "Packaging complete! Extension VSIX is ready in ${DIST_DIR}/txxt-format.vsix"

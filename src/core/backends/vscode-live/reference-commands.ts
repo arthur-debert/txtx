@@ -1,6 +1,6 @@
 /**
  * Reference Commands - VSCode Live Backend
- * 
+ *
  * This module provides VSCode-specific implementations of reference commands.
  */
 
@@ -15,7 +15,7 @@ import { ReferenceCheckResult } from '../../../features/references/types';
  */
 export async function checkReferences(document: vscode.TextDocument): Promise<boolean> {
   // Only process RFC files
-  if (document.languageId !== 'rfcdoc' || !document.fileName.endsWith('.rfc')) {
+  if (document.languageId !== 'txxt' || !document.fileName.endsWith('.rfc')) {
     vscode.window.showWarningMessage('Check References command is only available for .rfc files');
     return false;
   }
@@ -29,28 +29,28 @@ export async function checkReferences(document: vscode.TextDocument): Promise<bo
   try {
     // Get the document text
     const text = document.getText();
-    
+
     // Process references using the headless backend
     const result = await headlessCheckReferences(text, document.fileName);
-    
+
     if (!result.success) {
       const errorMessage = result.diagnostics[0]?.message || 'Unknown error checking references';
       vscode.window.showErrorMessage(errorMessage);
       return false;
     }
-    
+
     if (result.referencesFound === 0) {
       vscode.window.showInformationMessage('No references found in the document');
       return true;
     }
-    
+
     // Report the results
     if (result.diagnostics.length === 0) {
       vscode.window.showInformationMessage('All references are valid');
     } else {
       // Create a diagnostic collection for the document
-      const diagnosticCollection = vscode.languages.createDiagnosticCollection('rfcdoc-references');
-      
+      const diagnosticCollection = vscode.languages.createDiagnosticCollection('txxt-references');
+
       // Convert feature diagnostics to VSCode diagnostics
       const vscodeDiagnostics = result.diagnostics.map(d => {
         // Convert the range
@@ -58,7 +58,7 @@ export async function checkReferences(document: vscode.TextDocument): Promise<bo
           new vscode.Position(d.range.start.line, d.range.start.character),
           new vscode.Position(d.range.end.line, d.range.end.character)
         );
-        
+
         // Convert the severity
         let severity: vscode.DiagnosticSeverity;
         switch (d.severity) {
@@ -77,15 +77,15 @@ export async function checkReferences(document: vscode.TextDocument): Promise<bo
           default:
             severity = vscode.DiagnosticSeverity.Error;
         }
-        
+
         return new vscode.Diagnostic(range, d.message, severity);
       });
-      
+
       diagnosticCollection.set(document.uri, vscodeDiagnostics);
-      
+
       vscode.window.showWarningMessage(`Found ${result.diagnostics.length} invalid references`);
     }
-    
+
     return true;
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : String(error);

@@ -1,6 +1,6 @@
 1. Intro
 
-rfcdoc is a formatter for plain text files based on the old unix way and rfc files. it's meant as an ultra light formatting tool that requires no special syntax nor previewing. 
+txxt is a formatter for plain text files based on the old unix way and rfc files. it's meant as an ultra light formatting tool that requires no special syntax nor previewing. 
 
 2RFC Format Test Document - Comprehensive Example
 -----------------------------------------------

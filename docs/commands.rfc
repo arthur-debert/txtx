@@ -1,32 +1,32 @@
-RfcDoc Extension Commands
+txxt Extension Commands
 ========================
 
-This document describes the commands available in the RfcDoc extension for working with .rfc files.
+This document describes the commands available in the txxt extension for working with .rfc files.
 
 Available Commands
 -----------------
 
 1. Format Document
-   Command: `RfcDoc: Format Document`
+   Command: `txxt: Format Document`
    
-   Applies consistent formatting to your document according to the RfcDoc specification.
+   Applies consistent formatting to your document according to the txxt specification.
    This includes proper line wrapping at 80 characters, consistent indentation, and
    correct session formatting.
 
 2. Generate Table of Contents
-   Command: `RfcDoc: Generate Table of Contents`
+   Command: `txxt: Generate Table of Contents`
    
    Creates or updates a table of contents based on the document's sessions.
    The TOC will reflect the current structure of your document.
 
 3. Number Footnotes
-   Command: `RfcDoc: Number Footnotes`
+   Command: `txxt: Number Footnotes`
    
    Automatically numbers all footnotes in sequential order and updates all
    references to match the new numbering.
 
 4. Full Formatting
-   Command: `RfcDoc: Full Formatting`
+   Command: `txxt: Full Formatting`
    
    Applies all formatting commands in sequence:
    - Format Document
@@ -36,14 +36,14 @@ Available Commands
    Use this command for a complete document refresh.
 
 5. Fix Numbering
-   Command: `RfcDoc: Fix Numbering`
+   Command: `txxt: Fix Numbering`
    
    Automatically fixes the numbering in ordered lists and section headers.
    This ensures that all numbered items increment correctly, including
    nested lists with alternating number and letter markers.
 
 6. Check References
-   Command: `RfcDoc: Check References`
+   Command: `txxt: Check References`
    
    Validates that all document references point to valid targets and reports
    any invalid references found.

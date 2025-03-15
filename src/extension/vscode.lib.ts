@@ -1,9 +1,9 @@
 /**
  * VSCode Library - Common utilities for VSCode extensions and tests
- * 
+ *
  * This library provides reusable functions for common operations in VSCode extensions
  * and their tests, reducing code duplication and improving maintainability.
- * 
+ *
  * IMPORTANT: This is the only file that should directly import from vscode.
  * All other extension files should use this library.
  */
@@ -83,7 +83,11 @@ export async function closeActiveEditor(): Promise<void> {
  * @param text - The text to replace with
  * @returns - Whether the edit was applied
  */
-export async function applyEdit(editor: vscode.TextEditor, range: vscode.Range, text: string): Promise<boolean> {
+export async function applyEdit(
+  editor: vscode.TextEditor,
+  range: vscode.Range,
+  text: string
+): Promise<boolean> {
   return await editor.edit(editBuilder => {
     editBuilder.replace(range, text);
   });
@@ -110,25 +114,27 @@ export function getDocumentRange(document: vscode.TextDocument): vscode.Range {
  * @param document - The document to get sections for
  * @returns - The sections
  */
-export async function getDocumentSections(document: vscode.TextDocument): Promise<DocumentSection[]> {
+export async function getDocumentSections(
+  document: vscode.TextDocument
+): Promise<DocumentSection[]> {
   // Get document symbols
-  const symbols = await vscode.commands.executeCommand(
+  const symbols = (await vscode.commands.executeCommand(
     'vscode.executeDocumentSymbolProvider',
     document.uri
-  ) as vscode.DocumentSymbol[];
-  
+  )) as vscode.DocumentSymbol[];
+
   if (!symbols || symbols.length === 0) {
     return [];
   }
-  
+
   // Process symbols to extract section information
   const sections: DocumentSection[] = [];
-  
+
   for (const symbol of symbols) {
     // Determine section level
     let level = 1;
     let prefix = '';
-    
+
     // Check if it's a numbered section
     const numberedMatch = symbol.name.match(/^(\d+(?:\.\d+)*)\. (.+)$/);
     if (numberedMatch) {
@@ -139,18 +145,18 @@ export async function getDocumentSections(document: vscode.TextDocument): Promis
       // Alternative section
       prefix = ':';
     }
-    
+
     sections.push({
       name: symbol.name,
       level,
       range: symbol.range,
-      prefix
+      prefix,
     });
   }
-  
+
   // Sort sections by line number
   sections.sort((a, b) => a.range.start.line - b.range.start.line);
-  
+
   return sections;
 }
 
@@ -163,14 +169,14 @@ export async function getDocumentSections(document: vscode.TextDocument): Promis
  * @returns - The sections
  */
 export function findSections(
-  text: string, 
-  sectionRegex: RegExp, 
-  numberedSectionRegex: RegExp, 
+  text: string,
+  sectionRegex: RegExp,
+  numberedSectionRegex: RegExp,
   alternativeSectionRegex: RegExp
 ): Section[] {
   const sections: Section[] = [];
   const lines = text.split('\n');
-  
+
   // Find uppercase sections
   sectionRegex.lastIndex = 0;
   let match: RegExpExecArray | null;
@@ -180,10 +186,10 @@ export function findSections(
       name: match[1].trim(),
       level: 1,
       line: lineIndex,
-      prefix: ''
+      prefix: '',
     });
   }
-  
+
   // Find numbered sections
   numberedSectionRegex.lastIndex = 0;
   while ((match = numberedSectionRegex.exec(text)) !== null) {
@@ -191,15 +197,15 @@ export function findSections(
     const sectionNumber = match[1];
     const sectionTitle = match[2].trim();
     const sectionLevel = sectionNumber.split('.').length;
-    
+
     sections.push({
       name: `${sectionNumber}. ${sectionTitle}`,
       level: sectionLevel,
       line: lineIndex,
-      prefix: `${sectionNumber}.`
+      prefix: `${sectionNumber}.`,
     });
   }
-  
+
   // Find alternative sections
   alternativeSectionRegex.lastIndex = 0;
   while ((match = alternativeSectionRegex.exec(text)) !== null) {
@@ -208,13 +214,13 @@ export function findSections(
       name: `: ${match[1].trim()}`,
       level: 1,
       line: lineIndex,
-      prefix: ':'
+      prefix: ':',
     });
   }
-  
+
   // Sort sections by line number
   sections.sort((a, b) => a.line - b.line);
-  
+
   return sections;
 }
 
@@ -241,24 +247,24 @@ export async function executeCommand<T>(command: string, ...args: any[]): Promis
  * @returns - The command registration
  */
 export function registerCommand(
-  context: vscode.ExtensionContext, 
-  command: string, 
-  callback: (document: vscode.TextDocument) => Promise<any>, 
+  context: vscode.ExtensionContext,
+  command: string,
+  callback: (document: vscode.TextDocument) => Promise<any>,
   outputChannel?: vscode.OutputChannel
 ): vscode.Disposable {
   const commandRegistration = vscode.commands.registerCommand(command, async () => {
     const editor = vscode.window.activeTextEditor;
-    if (editor && editor.document.languageId === 'rfcdoc') {
+    if (editor && editor.document.languageId === 'txxt') {
       outputChannel?.appendLine(`Executing ${command} command`);
       await callback(editor.document);
     } else {
-      sendNotification('FOOTNOTE_RFCDOC_ONLY');
+      sendNotification('FOOTNOTE_txxt_ONLY');
     }
   });
-  
+
   context.subscriptions.push(commandRegistration);
   outputChannel?.appendLine(`${command} command registered`);
-  
+
   return commandRegistration;
 }
 
@@ -319,8 +325,8 @@ export function registerCompletionItemProvider(
   outputChannel?: vscode.OutputChannel
 ): vscode.Disposable {
   const registration = vscode.languages.registerCompletionItemProvider(
-    selector, 
-    provider, 
+    selector,
+    provider,
     ...triggerCharacters
   );
   context.subscriptions.push(registration);
@@ -349,8 +355,8 @@ export function createDiagnosticCollection(name: string): vscode.DiagnosticColle
  * @returns - The diagnostic
  */
 export function createDiagnostic(
-  range: vscode.Range, 
-  message: string, 
+  range: vscode.Range,
+  message: string,
   severity: vscode.DiagnosticSeverity
 ): vscode.Diagnostic {
   return new vscode.Diagnostic(range, message, severity);
@@ -363,8 +369,8 @@ export function createDiagnostic(
  * @param diagnostics - The diagnostics to set
  */
 export function setDiagnostics(
-  collection: vscode.DiagnosticCollection, 
-  uri: vscode.Uri, 
+  collection: vscode.DiagnosticCollection,
+  uri: vscode.Uri,
   diagnostics: vscode.Diagnostic[]
 ): void {
   collection.set(uri, diagnostics);
@@ -418,19 +424,19 @@ export function showErrorMessage(message: string): Promise<boolean> {
  * @returns - Whether the condition was met
  */
 export async function waitForCondition(
-  condition: () => Promise<boolean> | boolean, 
-  timeout: number = 5000, 
+  condition: () => Promise<boolean> | boolean,
+  timeout: number = 5000,
   interval: number = 100
 ): Promise<boolean> {
   const start = Date.now();
-  
+
   while (Date.now() - start < timeout) {
     if (await condition()) {
       return true;
     }
     await new Promise(resolve => setTimeout(resolve, interval));
   }
-  
+
   return false;
 }
 
@@ -442,7 +448,7 @@ export async function waitForCondition(
 export async function fixNumbering(document: vscode.TextDocument): Promise<boolean> {
   try {
     // Only process RFC files
-    if (document.languageId !== 'rfcdoc' || !document.fileName.endsWith('.rfc')) {
+    if (document.languageId !== 'txxt' || !document.fileName.endsWith('.rfc')) {
       sendNotification('NUMBERING_RFC_ONLY');
       return false;
     }
@@ -455,20 +461,24 @@ export async function fixNumbering(document: vscode.TextDocument): Promise<boole
 
     // Get the document text
     const text = document.getText();
-    
+
     // Use the VSCode Live backend directly via command
     // This avoids type compatibility issues between VSCode and our API types
-    const result = await vscode.commands.executeCommand<NumberingFixResult>('rfcdoc.fixNumbering.internal', text, document.fileName);
+    const result = await vscode.commands.executeCommand<NumberingFixResult>(
+      'txxt.fixNumbering.internal',
+      text,
+      document.fileName
+    );
 
     // Validate the result
     if (!result || !result.success || !result.fixedText) {
       sendNotification('NUMBERING_ERROR', result?.error || 'Unknown error');
       return false;
     }
-    
+
     // Replace the entire document text
     const fullRange = getDocumentRange(document);
-    
+
     await applyEdit(editor, fullRange, result.fixedText as string);
     sendNotification('NUMBERING_SUCCESS', result.linesChanged);
     return true;
@@ -486,7 +496,7 @@ export async function fixNumbering(document: vscode.TextDocument): Promise<boole
 export async function checkReferences(document: vscode.TextDocument): Promise<boolean> {
   try {
     // Only process RFC files
-    if (document.languageId !== 'rfcdoc' || !document.fileName.endsWith('.rfc')) {
+    if (document.languageId !== 'txxt' || !document.fileName.endsWith('.rfc')) {
       sendNotification('REFERENCE_RFC_ONLY');
       return false;
     }
@@ -499,10 +509,14 @@ export async function checkReferences(document: vscode.TextDocument): Promise<bo
 
     // Get the document text
     const text = document.getText();
-    
+
     // Use the VSCode Live backend directly via command
     // This avoids type compatibility issues between VSCode and our API types
-    const result = await vscode.commands.executeCommand('rfcdoc.checkReferences.internal', text, document.fileName);
+    const result = await vscode.commands.executeCommand(
+      'txxt.checkReferences.internal',
+      text,
+      document.fileName
+    );
 
     // The result is handled by the command itself (showing diagnostics, etc.)
     return result === true;

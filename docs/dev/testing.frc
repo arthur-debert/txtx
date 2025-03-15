@@ -1,15 +1,15 @@
-Testing Reference for rfcdoc
+Testing Reference for txxt
 ------------------------
 
-Author        rfcdoc Team
+Author        txxt Team
 Date          March 10, 2025
 Status        Reference
 
-This document provides a reference for testing in the rfcdoc project.
+This document provides a reference for testing in the txxt project.
 
 1. Test Framework
 
-   The rfcdoc project uses Mocha with TDD UI for testing. Tests are run using
+   The txxt project uses Mocha with TDD UI for testing. Tests are run using
    the @vscode/test-electron package which provides VSCode integration testing
    capabilities.
 

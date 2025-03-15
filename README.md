@@ -1,11 +1,11 @@
-# RfcDoc Format
+# txxt Format
 
 A Visual Studio Code extension that provides syntax highlighting for plain text
 files following old-school Unix guidelines.
 
 ## Features
 
-This extension provides syntax highlighting for the following elements in RfcDoc
+This extension provides syntax highlighting for the following elements in txxt
 files:
 
 - **Document Outline**: Automatic outline view for sections and code blocks
@@ -16,9 +16,9 @@ files:
 
 ## Document Outline
 
-The extension provides document outline support for RfcDoc files:
+The extension provides document outline support for txxt files:
 
-1. Open a RfcDoc file (`.txt`, `.txtx`, or `.rfc`)
+1. Open a txxt file (`.txt`, `.txtx`, or `.rfc`)
 2. Open the Outline view in the Explorer sidebar
 3. The outline will show:
    - Sections (starting with a capital letter)
@@ -29,11 +29,11 @@ when applicable.
 
 ## Themes
 
-This extension includes two custom themes specifically designed for RfcDoc
+This extension includes two custom themes specifically designed for txxt
 files:
 
-- **RfcDoc Dark**: A dark theme optimized for RfcDoc syntax
-- **RfcDoc Light**: A light theme optimized for RfcDoc syntax
+- **txxt Dark**: A dark theme optimized for txxt syntax
+- **txxt Light**: A light theme optimized for txxt syntax
 
 For information on how to customize these themes or create your own, see the
 [VSCode Theme Customization Primer](docs/vscode-theme-primer.md).
@@ -41,13 +41,13 @@ For information on how to customize these themes or create your own, see the
 To activate a theme:
 
 1. Press `Ctrl+K Ctrl+T` or go to File > Preferences > Color Theme
-2. Select either "RfcDoc Dark" or "RfcDoc Light" from the list
+2. Select either "txxt Dark" or "txxt Light" from the list
 
 ## Installation
 
 1. Open VS Code
 2. Press `Ctrl+Shift+X` or `Cmd+Shift+X` to open the Extensions view
-3. Search for "RfcDoc Format"
+3. Search for "txxt Format"
 4. Click Install
 
 ## Defs
@@ -140,9 +140,9 @@ To activate a theme:
 
 ## Document Outline
 
-The extension provides document outline support for RfcDoc files:
+The extension provides document outline support for txxt files:
 
-1. Open a RfcDoc file (`.txt`, `.txtx`, or `.rfc`)
+1. Open a txxt file (`.txt`, `.txtx`, or `.rfc`)
 2. Open the Outline view in the Explorer sidebar
 3. The outline will show:
    - Sections (starting with a capital letter)
@@ -153,11 +153,11 @@ when applicable.
 
 ## Themes
 
-This extension includes two custom themes specifically designed for RfcDoc
+This extension includes two custom themes specifically designed for txxt
 files:
 
-- **RfcDoc Dark**: A dark theme optimized for RfcDoc syntax
-- **RfcDoc Light**: A light theme optimized for RfcDoc syntax
+- **txxt Dark**: A dark theme optimized for txxt syntax
+- **txxt Light**: A light theme optimized for txxt syntax
 
 For information on how to customize these themes or create your own, see the
 [VSCode Theme Customization Primer](docs/vscode-theme-primer.md).
@@ -165,23 +165,23 @@ For information on how to customize these themes or create your own, see the
 To activate a theme:
 
 1. Press `Ctrl+K Ctrl+T` or go to File > Preferences > Color Theme
-2. Select either "RfcDoc Dark" or "RfcDoc Light" from the list
+2. Select either "txxt Dark" or "txxt Light" from the list
 
 ## Installation
 
 1. Open VS Code
 2. Press `Ctrl+Shift+X` or `Cmd+Shift+X` to open the Extensions view
-3. Search for "RfcDoc Format"
+3. Search for "txxt Format"
 4. Click Install
 
 ## Usage
 
 The extension automatically activates for all `.txt`, `.txtx`, and `.rfc` files.
-If you want to manually set a file to use RfcDoc highlighting:
+If you want to manually set a file to use txxt highlighting:
 
 1. Open the file
 2. Click on the language mode indicator in the bottom-right corner of VS Code
-3. Select "RfcDoc" from the list
+3. Select "txxt" from the list
 
 ## Testing the Extension
 
@@ -195,7 +195,7 @@ To test the extension:
 5. Open the sample.txt, sample.txtx, and sample.rfc files in the test-dir
    directory
 6. Check the "txtos" output channel in the Output panel to see debug logs
-7. Verify that both files use the RfcDoc highlighting
+7. Verify that both files use the txxt highlighting
 
 To test with only specific extensions enabled:
 
@@ -204,7 +204,7 @@ To test with only specific extensions enabled:
    extensions only)"
 3. Click the green play button or press F5 to launch a new window
 4. The test-dir directory will open in the new window
-5. Only the RfcDoc Format, Markdown, and Prettier extensions will be enabled
+5. Only the txxt Format, Markdown, and Prettier extensions will be enabled
 6. Open the sample.txt, sample.txtx, or sample.rfc file to test the highlighting
 
 ## Requirements
@@ -236,7 +236,7 @@ git commit -m "Your message" --no-verify
 ### 0.1.0
 
 - Initial release
-- Basic syntax highlighting for RfcDoc format
+- Basic syntax highlighting for txxt format
 - Custom dark and light themes
 
 ### 0.2.0
