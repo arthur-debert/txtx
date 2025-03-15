@@ -15,8 +15,9 @@ type CommandArgs = unknown[];
 
 /**
  * Type for command handler return value
+ * Commands can return any value, undefined, void, or a Promise of these
  */
-type CommandResult = unknown;
+type CommandResult = unknown | undefined | void | Promise<unknown | undefined | void>;
 
 /**
  * Type for extension exports
@@ -98,17 +99,17 @@ export class HeadlessCommands {
    * @param args The command arguments
    * @returns A promise that resolves with the command result
    */
-  async executeCommand(command: string, ...args: CommandArgs): Promise<CommandResult> {
+  async executeCommand<T extends CommandResult>(command: string, ...args: CommandArgs): Promise<T> {
     const handler = this._commands.get(command);
     if (!handler) {
       throw new Error(`Command not found: ${command}`);
     }
     
     try {
-      return await Promise.resolve(handler(...args));
+      return await Promise.resolve(handler(...args)) as T;
     } catch (error) {
       console.error(`Error executing command ${command}:`, error);
-      throw error;
+      throw error instanceof Error ? error : new Error(`Unknown error executing command ${command}`);
     }
   }
 

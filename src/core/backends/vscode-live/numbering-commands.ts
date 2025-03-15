@@ -6,7 +6,6 @@
 
 import * as vscode from 'vscode';
 import { fixDocumentNumbering as headlessFixNumbering } from '../headless/numbering-commands';
-import { NumberingFixResult } from '../../../features/numbering/types';
 
 /**
  * Fix numbering in ordered lists and section headers

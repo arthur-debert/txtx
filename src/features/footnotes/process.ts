@@ -110,6 +110,9 @@ export function processFootnotes(text: string): FootnoteProcessResult {
         
         return { success: true, newText };
     } catch (error) {
-        return { success: false, error };
+        return { 
+            success: false, 
+            error: error instanceof Error ? error : new Error('Unknown error processing footnotes')
+        };
     }
 }

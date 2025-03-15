@@ -6,9 +6,12 @@ import * as vscode from 'vscode';
 type NotificationConfig = Record<string, boolean>;
 
 /**
- * Type for notification message function
+ * Types for notification message functions
  */
-type MessageFunction = (param: any) => string;
+type ErrorMessageFunction = (error: Error) => string;
+type NumberMessageFunction = (count: number) => string;
+type StringMessageFunction = (text: string) => string;
+type MessageFunction = ErrorMessageFunction | NumberMessageFunction | StringMessageFunction;
 
 /**
  * Interface for notification definition
@@ -236,7 +239,7 @@ const notifications: NotificationsMap = {
  * @param param - Optional parameter for dynamic messages
  * @returns - Whether the notification was sent
  */
-export function sendNotification(id: string, param?: any): boolean {
+export function sendNotification(id: string, param?: Error | number | string): boolean {
   // Check if this notification is enabled
   if (!notificationConfig[id]) {
     return false;
@@ -248,9 +251,19 @@ export function sendNotification(id: string, param?: any): boolean {
     return false;
   }
 
-  let message = notification.message;
-  if (typeof message === 'function') {
-    message = message(param);
+  let message: string;
+  if (typeof notification.message === 'string') {
+    message = notification.message;
+  } else if (param === undefined) {
+    message = 'No message provided';
+  } else if (param instanceof Error && typeof notification.message === 'function') {
+    message = (notification.message as ErrorMessageFunction)(param);
+  } else if (typeof param === 'number' && typeof notification.message === 'function') {
+    message = (notification.message as NumberMessageFunction)(param);
+  } else if (typeof param === 'string' && typeof notification.message === 'function') {
+    message = (notification.message as StringMessageFunction)(param);
+  } else {
+    message = 'Invalid message parameter type';
   }
 
   switch (notification.type) {
@@ -315,7 +328,7 @@ export function disableAllNotifications(): void {
  */
 export function setNotificationConfig(config: Record<string, boolean>): void {
   Object.keys(config).forEach(id => {
-    if (notificationConfig.hasOwnProperty(id)) {
+    if (Object.prototype.hasOwnProperty.call(notificationConfig, id)) {
       notificationConfig[id] = !!config[id];
     }
   });

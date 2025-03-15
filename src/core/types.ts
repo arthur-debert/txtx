@@ -82,9 +82,49 @@ export interface TextEditor {
   setDecorations(decorationType: TextEditorDecorationType, ranges: Range[]): void;
 }
 
+export type DocumentSelector = string | string[];
+
+/**
+ * VSCode's ThemeColor type
+ */
+export interface ThemeColor {
+  id: string;
+}
+
+export interface DecorationRenderOptions {
+  isWholeLine?: boolean;
+  backgroundColor?: string | ThemeColor;
+  borderColor?: string | ThemeColor;
+  borderStyle?: string;
+  borderWidth?: string;
+  color?: string | ThemeColor;
+  cursor?: string;
+  letterSpacing?: string;
+  opacity?: string;
+  outline?: string;
+  outlineColor?: string | ThemeColor;
+  outlineStyle?: string;
+  outlineWidth?: string;
+  textDecoration?: string;
+  before?: DecorationInstanceRenderOptions;
+  after?: DecorationInstanceRenderOptions;
+  dark?: DecorationRenderOptions;
+  light?: DecorationRenderOptions;
+}
+
+export interface DecorationInstanceRenderOptions {
+  contentText?: string;
+  color?: string | ThemeColor;
+  backgroundColor?: string | ThemeColor;
+  textDecoration?: string;
+  margin?: string;
+  width?: string;
+  height?: string;
+}
+
 export interface TextEditorDecorationType {
   id: string;
-  options: any;
+  options: DecorationRenderOptions;
 }
 
 export interface WorkspaceEdit {
@@ -224,15 +264,15 @@ export interface MarkdownString {
 
 export interface CancellationToken {
   isCancellationRequested: boolean;
-  onCancellationRequested: Event<any>;
+  onCancellationRequested: Event<void>;
 }
 
 export interface Event<T> {
-  (listener: (e: T) => any, thisArgs?: any, disposables?: Disposable[]): Disposable;
+  (listener: (e: T) => void | Promise<void>, thisArgs?: unknown, disposables?: Disposable[]): Disposable;
 }
 
 export interface Disposable {
-  dispose(): any;
+  dispose(): void;
 }
 
 export interface OutputChannel {
@@ -326,22 +366,22 @@ export interface VSCodeAPI {
     showInformationMessage(message: string): Promise<string | undefined>;
     showWarningMessage(message: string): Promise<string | undefined>;
     showErrorMessage(message: string): Promise<string | undefined>;
-    createTextEditorDecorationType(options: any): TextEditorDecorationType;
+    createTextEditorDecorationType(options: DecorationRenderOptions): TextEditorDecorationType;
   };
   
   // Language APIs
   languages: {
-    registerDocumentSymbolProvider(selector: any, provider: DocumentSymbolProvider): Disposable;
-    registerDocumentLinkProvider(selector: any, provider: DocumentLinkProvider): Disposable;
-    registerFoldingRangeProvider(selector: any, provider: FoldingRangeProvider): Disposable;
-    registerCompletionItemProvider(selector: any, provider: CompletionItemProvider, ...triggerCharacters: string[]): Disposable;
+    registerDocumentSymbolProvider(selector: DocumentSelector, provider: DocumentSymbolProvider): Disposable;
+    registerDocumentLinkProvider(selector: DocumentSelector, provider: DocumentLinkProvider): Disposable;
+    registerFoldingRangeProvider(selector: DocumentSelector, provider: FoldingRangeProvider): Disposable;
+    registerCompletionItemProvider(selector: DocumentSelector, provider: CompletionItemProvider, ...triggerCharacters: string[]): Disposable;
     createDiagnosticCollection(name: string): DiagnosticCollection;
   };
   
   // Command APIs
   commands: {
-    executeCommand(command: string, ...args: any[]): Promise<any>;
-    registerCommand(command: string, callback: (...args: any[]) => any): Disposable;
+    executeCommand<T = void>(command: string, ...args: unknown[]): Promise<T>;
+    registerCommand(command: string, callback: (...args: unknown[]) => unknown): Disposable;
     getCommands(): Promise<string[]>;
   };
 }

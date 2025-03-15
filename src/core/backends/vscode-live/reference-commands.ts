@@ -6,7 +6,6 @@
 
 import * as vscode from 'vscode';
 import { checkDocumentReferences as headlessCheckReferences } from '../headless/reference-commands';
-import { ReferenceCheckResult } from '../../../features/references/types';
 
 /**
  * Check references in a document

@@ -41,11 +41,8 @@ export function generateTOC(text: string): string[] {
 export function getCurrentTOC(text: string): { startLine: number, endLine: number } | null {
   const lines = text.split('\n');
   
-  // Find the position to insert the TOC
-  const tocPosition = findTOCPosition(lines);
-  
   // Check if there's an existing TOC
-  return findExistingTOC(lines, tocPosition);
+  return findExistingTOC(lines);
 }
 
 /**
@@ -105,7 +102,7 @@ export function processTOC(text: string): string {
   }
   
   // Generate the TOC lines
-  const tocLines = generateTOC(text);
+  const tocLines = generateTOCLines(sections);
   
   // If no sections found, return the original text
   if (tocLines.length === 0) {
@@ -126,7 +123,6 @@ export function processTOC(text: string): string {
  */
 export function findSections(text: string): Section[] {
   const sections: Section[] = [];
-  const lines = text.split('\n');
   
   // Find uppercase sections
   SECTION_REGEX.lastIndex = 0;
@@ -237,10 +233,9 @@ export function findTOCPosition(lines: string[]): number {
 /**
  * Find an existing TOC in the document
  * @param lines - The document lines
- * @param startPosition - The position to start looking from
  * @returns - The existing TOC or null
  */
-export function findExistingTOC(lines: string[], startPosition: number): {startLine: number, endLine: number} | null {
+export function findExistingTOC(lines: string[]): {startLine: number, endLine: number} | null {
   // Look for "TABLE OF CONTENTS" header
   for (let i = 0; i < lines.length; i++) {
     if (lines[i].trim() === 'TABLE OF CONTENTS') {
@@ -248,17 +243,25 @@ export function findExistingTOC(lines: string[], startPosition: number): {startL
       const startLine = i;
       
       // Find the end of the TOC
-      let endLine = startLine;
-      for (let j = startLine + 1; j < lines.length; j++) {
-        if (lines[j].trim() === '' && j + 1 < lines.length && isSection(lines[j + 1].trim())) {
-          // Found a blank line followed by a section
-          endLine = j;
-          break;
+      let endLine = i + 1;
+      while (endLine < lines.length) {
+        const line = lines[endLine].trim();
+        if (line === '') {
+          // Check if the next non-empty line is a section
+          let nextNonEmptyLine = '';
+          for (let j = endLine + 1; j < lines.length; j++) {
+            if (lines[j].trim() !== '') {
+              nextNonEmptyLine = lines[j].trim();
+              break;
+            }
+          }
+          
+          if (isSection(nextNonEmptyLine)) {
+            return { startLine, endLine: endLine - 1 };
+          }
         }
-        endLine = j;
+        endLine++;
       }
-      
-      return { startLine, endLine };
     }
   }
   
@@ -277,7 +280,7 @@ export function isSection(line: string): boolean {
   }
   
   // Check for uppercase sections (e.g., "SECTION NAME")
-  if (/^[A-Z][A-Z\s\-]+$/.test(line)) {
+  if (/^[A-Z][A-Z\s-]+$/.test(line)) {
     return true;
   }
   

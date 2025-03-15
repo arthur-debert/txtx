@@ -23,7 +23,7 @@ export enum ErrorCode {
 export interface ErrorInfo {
   code: ErrorCode;
   message: string;
-  details?: any;
+  details?: unknown;
 }
 
 /**
@@ -42,7 +42,7 @@ export interface CommandResult<T> {
  * @param details - Optional additional details
  * @returns - A standardized error object
  */
-export function createError(code: ErrorCode, message: string, details?: any): ErrorInfo {
+export function createError(code: ErrorCode, message: string, details?: unknown): ErrorInfo {
   return { code, message, details };
 }
 
@@ -51,8 +51,8 @@ export function createError(code: ErrorCode, message: string, details?: any): Er
  * @param value - The value to check
  * @returns - Whether the value is a CommandResult
  */
-export function isCommandResult<T>(value: any): value is CommandResult<T> {
-  return value && typeof value === 'object' && 'success' in value;
+export function isCommandResult<T>(value: unknown): value is CommandResult<T> {
+  return Boolean(value) && typeof value === 'object' && value !== null && 'success' in value;
 }
 
 /**
@@ -60,8 +60,8 @@ export function isCommandResult<T>(value: any): value is CommandResult<T> {
  * @param value - The value to check
  * @returns - Whether the value is an ErrorInfo
  */
-export function isErrorInfo(value: any): value is ErrorInfo {
-  return value && typeof value === 'object' && 'code' in value && 'message' in value;
+export function isErrorInfo(value: unknown): value is ErrorInfo {
+  return Boolean(value) && typeof value === 'object' && value !== null && 'code' in value && 'message' in value;
 }
 
 /**
@@ -98,7 +98,7 @@ export function createSuccess<T>(result: T): CommandResult<T> {
  * @param details - Optional additional details
  * @returns - A failure result
  */
-export function createFailure<T>(code: ErrorCode, message: string, details?: any): CommandResult<T> {
+export function createFailure<T>(code: ErrorCode, message: string, details?: unknown): CommandResult<T> {
   return { 
     success: false, 
     error: createError(code, message, details) 

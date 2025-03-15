@@ -12,7 +12,8 @@ import {
   CancellationToken,
   Position,
   Range,
-  Uri
+  Uri,
+  SymbolKind
 } from '../../types';
 
 /**
@@ -26,6 +27,7 @@ export class HeadlessDocumentSymbolProvider {
    * @param token A cancellation token
    * @returns An array of document symbols
    */
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   provideDocumentSymbols(document: TextDocument, token: CancellationToken): DocumentSymbol[] | Promise<DocumentSymbol[]> {
     // Parse the document and extract symbols
     // This is a simplified implementation
@@ -49,7 +51,7 @@ export class HeadlessDocumentSymbolProvider {
           symbols.push({
             name: `${number} ${title}`,
             detail: '',
-            kind: 4 as any, // Class
+            kind: SymbolKind.Class,
             range: range,
             selectionRange: range,
             children: []
@@ -75,6 +77,7 @@ export class HeadlessDocumentLinkProvider {
    * @param token A cancellation token
    * @returns An array of document links
    */
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   provideDocumentLinks(document: TextDocument, token: CancellationToken): DocumentLink[] | Promise<DocumentLink[]> {
     // Parse the document and extract links
     // This is a simplified implementation
@@ -123,6 +126,7 @@ export class HeadlessFoldingRangeProvider {
    * @param token A cancellation token
    * @returns An array of folding ranges
    */
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
   provideFoldingRanges(document: TextDocument, context: any, token: CancellationToken): FoldingRange[] | Promise<FoldingRange[]> {
     // Parse the document and extract folding ranges
     // This is a simplified implementation
@@ -189,6 +193,7 @@ export class HeadlessCompletionItemProvider {
    * @param context The completion context
    * @returns An array of completion items
    */
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
   provideCompletionItems(document: TextDocument, position: Position, token: CancellationToken, context: any): CompletionItem[] | Promise<CompletionItem[]> {
     // Parse the document and provide completion items
     // This is a simplified implementation

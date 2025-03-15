@@ -8,9 +8,7 @@ import {
   formatDocumentCommand,
   numberFootnotes,
   generateTOCCommand,
-  fullFormattingCommand,
-  formatDocument as headlessFormatDocument,
-  fullFormatting as headlessFullFormatting,
+  fullFormattingCommand
 } from '../headless';
 import { isCommandResult, getErrorMessage } from '../../error-utils';
 

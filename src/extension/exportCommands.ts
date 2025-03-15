@@ -4,7 +4,6 @@ import * as path from 'path';
 import { sendNotification } from './notifications';
 import { readFileSync } from 'fs';
 import * as vscodeLib from './vscode.lib';
-import { SECTION_REGEX, NUMBERED_SECTION_REGEX, ALTERNATIVE_SECTION_REGEX } from './constants';
 
 /**
  * Export the document as HTML
@@ -46,7 +45,7 @@ async function exportAsHtml(document: vscode.TextDocument): Promise<boolean> {
     sendNotification('EXPORT_SUCCESS', `${baseName}.html and ${baseName}.css`);
     return true;
   } catch (error) {
-    sendNotification('EXPORT_ERROR', error);
+    sendNotification('EXPORT_ERROR', error instanceof Error ? error : new Error('Unknown error during export'));
     return false;
   }
 }
@@ -343,7 +342,7 @@ function isNumberedSection(line: string): boolean {
  * @returns - Whether the line is an uppercase section header
  */
 function isUppercaseSection(line: string): boolean {
-  return /^[A-Z][A-Z\s\-]+$/.test(line);
+  return /^[A-Z][A-Z\s-]+$/.test(line);
 }
 
 /**
@@ -383,33 +382,6 @@ function splitMetadata(line: string): [string | null, string | null] {
  * @param line - The line to check
  * @returns - Whether the line is a list item
  */
-function isList(line: string): boolean {
-  // Check for bullet lists (e.g., "- Item")
-  if (isBulletList(line)) {
-    return true;
-  }
-
-  // Check for numbered lists (e.g., "1. Item")
-  if (isNumberedList(line)) {
-    return true;
-  }
-
-  // Check for lettered lists (e.g., "a. Item")
-  if (isLetteredList(line)) {
-    return true;
-  }
-
-  // Check for roman numeral lists (e.g., "i. Item")
-  if (isRomanList(line)) {
-    return true;
-  }
-
-  return false;
-}
-
-/**
- * Check if a line is a bullet list item
- */
 function isBulletList(line: string): boolean {
   return /^\s*-\s+\S/.test(line);
 }
@@ -436,31 +408,22 @@ function isRomanList(line: string): boolean {
 }
 
 /**
- * Process document references (see: file.rfc)
- */
-function processDocumentReferences(text: string): string {
-  return text.replace(/see:\s+([^\s]+)/g, '<a class="document-reference" href="$1">see: $1</a>');
-}
-
-/**
- * Register the export commands
+ * Register export commands
  * @param context - The extension context
- * @param outputChannel - The output channel
+ * @param outputChannel - The output channel to log to
  */
 function registerExportCommands(
   context: vscode.ExtensionContext,
   outputChannel: vscode.OutputChannel
 ): void {
-  // Register the export as HTML command
-  const exportAsHtmlCommand = vscodeLib.registerCommand(
+  // Register export as HTML command
+  vscodeLib.registerCommand(
     context,
     'txxt.exportAsHtml',
     exportAsHtml,
     outputChannel
   );
-
-  // Log registration
-  outputChannel.appendLine('Export as HTML command registered');
 }
 
+// Export only the functions that are used
 export { registerExportCommands, exportAsHtml };

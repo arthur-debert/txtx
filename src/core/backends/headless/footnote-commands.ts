@@ -5,7 +5,7 @@
  * in the headless backend environment.
  */
 
-import processFootnotes, { FootnoteProcessResult } from '../../../features/footnotes';
+import processFootnotes from '../../../features/footnotes';
 import { CommandResult, ErrorCode, createSuccess, createFailure } from '../../error-utils';
 
 /**
@@ -33,7 +33,7 @@ export async function numberFootnotes(
     if (!result.success) {
       return createFailure(
         ErrorCode.PROCESSING_ERROR,
-        result.error || 'Error processing footnotes'
+        result.error instanceof Error ? result.error.message : 'Error processing footnotes'
       );
     }
     

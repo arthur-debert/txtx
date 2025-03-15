@@ -13,12 +13,6 @@ import processFootnotes from '../../../features/footnotes';
  */
 function formatLines(lines: string[]): string[] {
   const formattedLines: string[] = [];
-  let inSection = false;
-  let inList = false;
-  let inCodeBlock = false;
-  let inQuote = false;
-  let inMetadata = false;
-  let inNumberedList = false;
   let skipNextLine = false;
   
   for (let i = 0; i < lines.length; i++) {
@@ -35,13 +29,6 @@ function formatLines(lines: string[]): string[] {
     
     // Check for section headers
     if (isSection(line)) {
-      inSection = true;
-      inList = false;
-      inNumberedList = false;
-      inCodeBlock = false;
-      inQuote = false;
-      inMetadata = false;
-      
       // Ensure there's a blank line before sections (except at the start of the document)
       if (i > 0 && formattedLines[formattedLines.length - 1] !== '') {
         formattedLines.push('');
@@ -63,13 +50,6 @@ function formatLines(lines: string[]): string[] {
     
     // Check for metadata
     if (isMetadata(line)) {
-      inMetadata = true;
-      inSection = false;
-      inNumberedList = false;
-      inList = false;
-      inCodeBlock = false;
-      inQuote = false;
-      
       // Format metadata with consistent spacing
       const [key, value] = splitMetadata(line);
       if (key && value) {
@@ -84,47 +64,24 @@ function formatLines(lines: string[]): string[] {
     // Check for lists
     const listType = getListType(line);
     if (listType !== 'none') {
-      // Set the appropriate list state
-      inList = true;      
-      inNumberedList = (listType === 'numbered');
-      inCodeBlock = false;
-      inSection = false;
-      inQuote = false;
-      
-      // For numbered lists, don't add blank lines between items
       formattedLines.push(line);
       continue;
     }
     
     // Check for code blocks (indented with 4 spaces)
     if (line.startsWith('    ') && !line.startsWith('     ')) {
-      inCodeBlock = true;
-      inNumberedList = false;
-      inList = false;
-      inQuote = false;
-      
       formattedLines.push(line);
       continue;
     }
     
     // Check for quotes
     if (line.startsWith('>')) {
-      inQuote = true;
-      inNumberedList = false;
-      inList = false;
-      inCodeBlock = false;
-      
       formattedLines.push(line);
       continue;
     }
     
     // Handle blank lines
     if (line.trim() === '') {
-      inList = false;
-      inNumberedList = false;
-      inCodeBlock = false;
-      inQuote = false;
-      
       formattedLines.push('');
       continue;
     }
@@ -148,7 +105,7 @@ function isSection(line: string): boolean {
   }
   
   // Check for uppercase sections (e.g., "SECTION NAME")
-  if (/^[A-Z][A-Z\s\-]+$/.test(line)) {
+  if (/^[A-Z][A-Z\s-]+$/.test(line)) {
     return true;
   }
   
@@ -201,15 +158,6 @@ function getListType(line: string): 'none' | 'bullet' | 'numbered' | 'lettered' 
   }
   
   return 'none';
-}
-
-/**
- * Check if a line is a list item
- * @param line - The line to check
- * @returns - Whether the line is a list item
- */
-function isList(line: string): boolean {
-  return getListType(line) !== 'none';
 }
 
 /**

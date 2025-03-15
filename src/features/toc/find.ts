@@ -139,7 +139,7 @@ export function isSection(line: string): boolean {
   }
   
   // Check for uppercase sections (e.g., "SECTION NAME")
-  if (/^[A-Z][A-Z\s\-]+$/.test(line)) {
+  if (/^[A-Z][A-Z\s-]+$/.test(line)) {
     return true;
   }
   
@@ -159,4 +159,8 @@ export function isSection(line: string): boolean {
 export function isMetadata(line: string): boolean {
   // Metadata format: "Key          Value"
   return /^[A-Za-z][A-Za-z\s]+\s{2,}[A-Za-z0-9]/.test(line);
+}
+
+function isUppercaseSection(line: string): boolean {
+  return /^[A-Z][A-Z\s-]+$/.test(line);
 }

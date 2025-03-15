@@ -12,7 +12,7 @@ function registerReferenceCommands(
   outputChannel: vscode.OutputChannel
 ): void {
   // Register the check references command
-  const checkReferencesCommand = vscodeLib.registerCommand(
+  vscodeLib.registerCommand(
     context,
     'txxt.checkReferences',
     async (document: vscode.TextDocument) => {
@@ -26,7 +26,7 @@ function registerReferenceCommands(
 
         return success;
       } catch (error) {
-        sendNotification('REFERENCE_ERROR', error);
+        sendNotification('REFERENCE_ERROR', error instanceof Error ? error : new Error('Unknown error during reference check'));
         return false;
       }
     },

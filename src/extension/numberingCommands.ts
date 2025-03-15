@@ -12,7 +12,7 @@ function registerNumberingCommands(
   outputChannel: vscode.OutputChannel
 ): void {
   // Register commands using vscodeLib
-  const fixNumberingCommand = vscodeLib.registerCommand(
+  vscodeLib.registerCommand(
     context,
     'txxt.fixNumbering',
     async (document: vscode.TextDocument) => {
@@ -27,7 +27,7 @@ function registerNumberingCommands(
 
         return success;
       } catch (error) {
-        sendNotification('NUMBERING_ERROR', error);
+        sendNotification('NUMBERING_ERROR', error instanceof Error ? error : new Error('Unknown error during numbering'));
         return false;
       }
     },

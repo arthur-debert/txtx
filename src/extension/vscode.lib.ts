@@ -9,11 +9,8 @@
  */
 
 import * as vscode from 'vscode';
-import * as path from 'path';
 import { sendNotification } from './notifications';
-import { getErrorMessage } from '../core/error-utils';
 import { NumberingFixResult } from '../features/numbering/types';
-import * as coreApi from '../core/api';
 
 /**
  * Interface for section information
@@ -175,7 +172,6 @@ export function findSections(
   alternativeSectionRegex: RegExp
 ): Section[] {
   const sections: Section[] = [];
-  const lines = text.split('\n');
 
   // Find uppercase sections
   sectionRegex.lastIndex = 0;
@@ -234,7 +230,7 @@ export function findSections(
  * @param args - The arguments to pass to the command
  * @returns - The result of the command
  */
-export async function executeCommand<T>(command: string, ...args: any[]): Promise<T> {
+export async function executeCommand<T>(command: string, ...args: unknown[]): Promise<T> {
   return await vscode.commands.executeCommand<T>(command, ...args);
 }
 
@@ -249,7 +245,7 @@ export async function executeCommand<T>(command: string, ...args: any[]): Promis
 export function registerCommand(
   context: vscode.ExtensionContext,
   command: string,
-  callback: (document: vscode.TextDocument) => Promise<any>,
+  callback: (document: vscode.TextDocument) => Promise<unknown>,
   outputChannel?: vscode.OutputChannel
 ): vscode.Disposable {
   const commandRegistration = vscode.commands.registerCommand(command, async () => {
@@ -394,8 +390,9 @@ export function createOutputChannel(name: string): vscode.OutputChannel {
  * @param message - The message to show
  * @returns - The selected item
  */
-export function showInformationMessage(message: string): Promise<boolean> {
-  return Promise.resolve(sendNotification('FORMAT_SUCCESS'));
+export async function showInformationMessage(message: string): Promise<boolean> {
+  const result = await vscode.window.showInformationMessage(message);
+  return result !== undefined;
 }
 
 /**
@@ -403,8 +400,9 @@ export function showInformationMessage(message: string): Promise<boolean> {
  * @param message - The message to show
  * @returns - The selected item
  */
-export function showWarningMessage(message: string): Promise<boolean> {
-  return Promise.resolve(sendNotification('TOC_NO_SECTIONS'));
+export async function showWarningMessage(message: string): Promise<boolean> {
+  const result = await vscode.window.showWarningMessage(message);
+  return result !== undefined;
 }
 
 /**
@@ -483,7 +481,11 @@ export async function fixNumbering(document: vscode.TextDocument): Promise<boole
     sendNotification('NUMBERING_SUCCESS', result.linesChanged);
     return true;
   } catch (error) {
-    sendNotification('NUMBERING_ERROR', error);
+    if (error instanceof Error) {
+      sendNotification('NUMBERING_ERROR', error);
+    } else {
+      sendNotification('NUMBERING_ERROR', new Error('Unknown error'));
+    }
     return false;
   }
 }
@@ -521,7 +523,11 @@ export async function checkReferences(document: vscode.TextDocument): Promise<bo
     // The result is handled by the command itself (showing diagnostics, etc.)
     return result === true;
   } catch (error) {
-    sendNotification('REFERENCE_ERROR', error);
+    if (error instanceof Error) {
+      sendNotification('REFERENCE_ERROR', error);
+    } else {
+      sendNotification('REFERENCE_ERROR', new Error('Unknown error'));
+    }
     return false;
   }
 }

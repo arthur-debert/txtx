@@ -19,15 +19,14 @@ function registerPathCompletionProvider(
     {
       async provideCompletionItems(
         document: vscode.TextDocument,
-        position: vscode.Position,
-        token: vscode.CancellationToken,
-        context: vscode.CompletionContext
+        position: vscode.Position
       ): Promise<vscode.CompletionItem[] | undefined> {
         // Check if we're in a path context
         const linePrefix = document.lineAt(position).text.substring(0, position.character);
 
         // Check if we're typing a path
-        const pathMatch = linePrefix.match(/(?:^|\s)([\.\/][\.\/\w-]*)$/);
+        const filePattern = /^(\.\.?\/|[a-zA-Z]:|\/)([\w.-/]+\/)*[\w.-]*$/;
+        const pathMatch = linePrefix.match(filePattern);
         if (!pathMatch) {
           return undefined;
         }
