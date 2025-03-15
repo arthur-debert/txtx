@@ -3,6 +3,7 @@
  * This backend implements core functionality without VSCode dependencies
  */
 
+import * as vscode from 'vscode';
 import {
   Backend,
   Position,
@@ -11,7 +12,16 @@ import {
   Uri,
   TextDocument,
   TextEditor,
-  DiagnosticCollection
+  DiagnosticCollection,
+  Disposable,
+  DocumentSymbolProvider,
+  DocumentLinkProvider,
+  FoldingRangeProvider,
+  CompletionItemProvider,
+  OutputChannel,
+  WorkspaceEdit,
+  TextEditorDecorationType,
+  WorkspaceFolder
 } from '../../types';
 
 // Import features from separate files
@@ -19,11 +29,9 @@ import {
   HeadlessPosition,
   HeadlessRange,
   HeadlessSelection,
-  HeadlessTextLine,
   HeadlessUri,
   createTextDocument,
-  createTextEditor,
-  applyTextEdit
+  createTextEditor
 } from './document-text';
 
 import {
@@ -34,7 +42,6 @@ import {
 } from './document-analysis';
 
 import {
-  HeadlessDiagnostic,
   HeadlessDiagnosticCollection,
   HeadlessOutputChannel
 } from './diagnostics-notifications';
@@ -45,16 +52,8 @@ import {
 
 import {
   HeadlessDisposable,
-  HeadlessCommands,
-  HeadlessExtension,
-  HeadlessExtensions
+  HeadlessCommands
 } from './command-extension';
-
-import {
-  HeadlessEventEmitter,
-  HeadlessCancellationToken,
-  HeadlessCancellationTokenSource
-} from './event-handling';
 
 // Export format commands
 export { formatCommands } from './format-commands';
@@ -97,25 +96,53 @@ export class HeadlessBackend implements Backend {
   Position: typeof HeadlessPosition = HeadlessPosition;
   
   // Range class
-  Range: any = HeadlessRange;
+  Range: {
+    new(startLine: number, startCharacter: number, endLine: number, endCharacter: number): Range;
+    new(start: Position, end: Position): Range;
+  } = HeadlessRange;
   
   // Selection class
-  Selection: any = HeadlessSelection;
+  Selection: {
+    new(anchorLine: number, anchorCharacter: number, activeLine: number, activeCharacter: number): Selection;
+    new(anchor: Position, active: Position): Selection;
+  } = HeadlessSelection;
   
   // Uri class
-  Uri: any = HeadlessUri;
+  Uri: {
+    file: (path: string) => Uri;
+    parse: (value: string) => Uri;
+  } = HeadlessUri;
   
   // Workspace APIs
-  workspace: any;
+  workspace: {
+    openTextDocument(uri: Uri): Promise<TextDocument>;
+    openTextDocument(fileName: string): Promise<TextDocument>;
+    applyEdit(edit: WorkspaceEdit): Promise<boolean>;
+    getWorkspaceFolder(uri: Uri): WorkspaceFolder | undefined;
+  };
   
   // Window APIs
-  window: any;
+  window: {
+    activeTextEditor: TextEditor | undefined;
+    showTextDocument(document: TextDocument): Promise<TextEditor>;
+    createOutputChannel(name: string): OutputChannel;
+    showInformationMessage(message: string): Promise<string | undefined>;
+    showWarningMessage(message: string): Promise<string | undefined>;
+    showErrorMessage(message: string): Promise<string | undefined>;
+    createTextEditorDecorationType(options: vscode.DecorationRenderOptions): TextEditorDecorationType;
+  };
   
   // Language APIs
-  languages: any;
+  languages: {
+    registerDocumentSymbolProvider(selector: vscode.DocumentSelector, provider: DocumentSymbolProvider): Disposable;
+    registerDocumentLinkProvider(selector: vscode.DocumentSelector, provider: DocumentLinkProvider): Disposable;
+    registerFoldingRangeProvider(selector: vscode.DocumentSelector, provider: FoldingRangeProvider): Disposable;
+    registerCompletionItemProvider(selector: vscode.DocumentSelector, provider: CompletionItemProvider, ...triggerCharacters: string[]): Disposable;
+    createDiagnosticCollection(name: string): DiagnosticCollection;
+  };
   
   // Command APIs
-  commands: any;
+  commands: HeadlessCommands;
   
   /**
    * Constructor
@@ -126,15 +153,16 @@ export class HeadlessBackend implements Backend {
     // Initialize workspace APIs
     this.workspace = this._workspace;
     
-    // Initialize window APIs
-    this.window = {
-      get activeTextEditor() { return this._activeEditor; },
+    // Create window object with proper this binding
+    const windowObj = {
+      activeTextEditor: undefined as TextEditor | undefined,
       showTextDocument: async (document: TextDocument) => {
         if (!this._editors.has(document.uri.fsPath)) {
           const editor = createTextEditor(document);
           this._editors.set(document.uri.fsPath, editor);
         }
         this._activeEditor = this._editors.get(document.uri.fsPath);
+        windowObj.activeTextEditor = this._activeEditor;
         return this._activeEditor as TextEditor;
       },
       createOutputChannel: (name: string) => new HeadlessOutputChannel(name),
@@ -149,25 +177,34 @@ export class HeadlessBackend implements Backend {
       showErrorMessage: (message: string) => {
         console.error(`[ERROR] ${message}`);
         return Promise.resolve(undefined);
+      },
+      createTextEditorDecorationType: (options: vscode.DecorationRenderOptions) => {
+        return {
+          id: Math.random().toString(36).substring(2, 9),
+          options: options
+        };
       }
     };
     
+    // Initialize window APIs
+    this.window = windowObj;
+    
     // Initialize language APIs
     this.languages = {
-      registerDocumentSymbolProvider: (selector: any, provider: any) => {
-        this._documentSymbolProvider = provider;
+      registerDocumentSymbolProvider: (selector: vscode.DocumentSelector, provider: DocumentSymbolProvider) => {
+        this._documentSymbolProvider = provider as HeadlessDocumentSymbolProvider;
         return new HeadlessDisposable(() => { this._documentSymbolProvider = null; });
       },
-      registerDocumentLinkProvider: (selector: any, provider: any) => {
-        this._documentLinkProvider = provider;
+      registerDocumentLinkProvider: (selector: vscode.DocumentSelector, provider: DocumentLinkProvider) => {
+        this._documentLinkProvider = provider as HeadlessDocumentLinkProvider;
         return new HeadlessDisposable(() => { this._documentLinkProvider = null; });
       },
-      registerFoldingRangeProvider: (selector: any, provider: any) => {
-        this._foldingRangeProvider = provider;
+      registerFoldingRangeProvider: (selector: vscode.DocumentSelector, provider: FoldingRangeProvider) => {
+        this._foldingRangeProvider = provider as HeadlessFoldingRangeProvider;
         return new HeadlessDisposable(() => { this._foldingRangeProvider = null; });
       },
-      registerCompletionItemProvider: (selector: any, provider: any) => {
-        this._completionItemProvider = provider;
+      registerCompletionItemProvider: (selector: vscode.DocumentSelector, provider: CompletionItemProvider) => {
+        this._completionItemProvider = provider as HeadlessCompletionItemProvider;
         return new HeadlessDisposable(() => { this._completionItemProvider = null; });
       },
       createDiagnosticCollection: (name: string) => new HeadlessDiagnosticCollection(name)
