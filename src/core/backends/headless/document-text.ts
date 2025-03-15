@@ -12,7 +12,6 @@ import {
   TextEditor,
   TextEditorEdit,
   TextEditorDecorationType,
-  WorkspaceEdit,
   TextEdit,
   Uri,
 } from '../../types';
