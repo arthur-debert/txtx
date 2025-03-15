@@ -5,9 +5,9 @@
  * and directs calls to the appropriate backend based on configuration
  */
 
-import { BackendManager } from './backend-manager';
-import { VSCodeAPI } from './types';
-import { fixNumbering as fixNumberingImpl, checkReferences as checkReferencesImpl } from './api-extensions';
+import { BackendManager } from './backend-manager.js';
+import { VSCodeAPI } from './types.js';
+import { fixNumbering as fixNumberingImpl, checkReferences as checkReferencesImpl } from './api-extensions.js';
 
 /**
  * Create a proxy that forwards all property accesses and method calls to the current backend
@@ -73,4 +73,4 @@ const mergedApi = {
 };
 
 // Export the merged API
-export = mergedApi;
+export default mergedApi;

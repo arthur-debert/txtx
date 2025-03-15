@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { EMOTICONS, EMOTICON_SEARCH_REGEX } from './constants';
+import { EMOTICONS, EMOTICON_SEARCH_REGEX } from './constants.js';
 
 // Define interface for emoticon items
 interface EmoticonItem {

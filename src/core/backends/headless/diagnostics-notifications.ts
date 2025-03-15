@@ -10,7 +10,7 @@ import {
   OutputChannel,
   Uri,
   Range
-} from '../../types';
+} from '../../types.js';
 
 /**
  * Diagnostic implementation for headless backend

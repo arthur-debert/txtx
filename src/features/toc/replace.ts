@@ -2,8 +2,8 @@
  * Functions for replacing or inserting TOC in a document
  */
 
-import { TOCLocation } from './types';
-import { findTOCPosition } from './find';
+import { TOCLocation } from './types.js';
+import { findTOCPosition } from './find.js';
 
 /**
  * Replace or insert a TOC in the document

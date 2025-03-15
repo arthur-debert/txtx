@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
-import * as vscodeLib from './vscode.lib';
-import { formatCommands } from '../core/backends/vscode-live';
+import * as vscodeLib from './vscode.lib.js';
+import { formatCommands } from '../core/backends/vscode-live/index.js';
 
 /**
  * Register the format document command

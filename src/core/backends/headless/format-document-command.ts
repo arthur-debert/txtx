@@ -5,7 +5,7 @@
  * in the headless backend environment.
  */
 
-import { CommandResult, ErrorCode, createSuccess, createFailure } from '../../error-utils';
+import { CommandResult, ErrorCode, createSuccess, createFailure } from '../../error-utils.js';
 
 /**
  * Format lines according to the RFC specification

@@ -2,9 +2,9 @@
  * Unit tests for the Generate TOC Command in the headless backend
  */
 
-import * as assert from 'assert';
-import { generateTOCCommand } from '../../../../src/core/backends/headless/generate-toc-command';
-import { getErrorMessage, ErrorCode } from '../../../../src/core/error-utils';
+import assert from 'assert';
+import { generateTOCCommand } from '../../../../src/core/backends/headless/generate-toc-command.js';
+import { getErrorMessage, ErrorCode } from '../../../../src/core/error-utils.js';
 
 suite('Generate TOC Command - Headless Backend', () => {
   // Sample document with sections

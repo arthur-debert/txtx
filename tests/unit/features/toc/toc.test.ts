@@ -10,7 +10,7 @@ import {
   findExistingTOC,
   replaceTOC,
   processTOC
-} from '../../../../src/features/toc';
+} from '../../../../src/features/index.js';
 
 suite('TOC Feature', () => {
   // Sample document with sections
@@ -83,11 +83,11 @@ This is a test document with no sections.`;
     assert.strictEqual(tocLines[2], '', 'Third line should be empty');
     
     // Check that the TOC includes the sections, but don't check exact positions
-    assert.ok(tocLines.some(line => line.includes('Introduction')), 'Should include Introduction section');
-    assert.ok(tocLines.some(line => line.includes('Main Section')), 'Should include Main Section');
-    assert.ok(tocLines.some(line => line.includes('Subsection One')), 'Should include Subsection One');
-    assert.ok(tocLines.some(line => line.includes('Subsection Two')), 'Should include Subsection Two');
-    assert.ok(tocLines.some(line => line.includes('Conclusion')), 'Should include Conclusion section');
+    assert.ok(tocLines.some((line: string) => line.includes('Introduction')), 'Should include Introduction section');
+    assert.ok(tocLines.some((line: string) => line.includes('Main Section')), 'Should include Main Section');
+    assert.ok(tocLines.some((line: string) => line.includes('Subsection One')), 'Should include Subsection One');
+    assert.ok(tocLines.some((line: string) => line.includes('Subsection Two')), 'Should include Subsection Two');
+    assert.ok(tocLines.some((line: string) => line.includes('Conclusion')), 'Should include Conclusion section');
   });
   
   test('generateTOC should return empty array for document without sections', () => {

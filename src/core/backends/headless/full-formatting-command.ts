@@ -5,10 +5,10 @@
  * in the headless backend environment.
  */
 
-import { processTOC } from '../../../features/toc';
-import processFootnotes from '../../../features/footnotes';
-import { formatDocument } from './format-document-command';
-import { CommandResult, ErrorCode, createSuccess, createFailure } from '../../error-utils';
+import { processTOC } from '../../../features/index.js';
+import { processFootnotes } from '../../../features/index.js';
+import { formatDocument } from './format-document-command.js';
+import { CommandResult, ErrorCode, createSuccess, createFailure } from '../../error-utils.js';
 
 /**
  * Apply full formatting to the document

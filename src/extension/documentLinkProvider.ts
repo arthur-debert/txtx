@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
-import { FOOTNOTE_REGEX, FOOTNOTE_REFERENCE_REGEX, DOCUMENT_REFERENCE_REGEX } from './constants';
+import { FOOTNOTE_REGEX, FOOTNOTE_REFERENCE_REGEX, DOCUMENT_REFERENCE_REGEX } from './constants.js';
 
 /**
  * Document Link Provider for txxt files

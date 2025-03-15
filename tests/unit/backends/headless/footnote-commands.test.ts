@@ -2,10 +2,10 @@
  * Unit tests for the Footnote Commands in the headless backend
  */
 
-import * as assert from 'assert';
+import assert from 'assert';
 import * as path from 'path';
-import { numberFootnotes } from '../../../../src/core/backends/headless/footnote-commands';
-import { getErrorMessage } from '../../../../src/core/error-utils';
+import { numberFootnotes } from '../../../../src/core/backends/headless/footnote-commands.js';
+import { getErrorMessage, ErrorCode } from '../../../../src/core/error-utils.js';
 
 suite('Footnote Commands - Headless Backend', () => {
   // Test the numberFootnotes function

@@ -5,7 +5,7 @@
  */
 
 import * as vscode from 'vscode';
-import { CommandResult, isCommandResult, getErrorMessage, ErrorCode, createError } from '../../error-utils';
+import { CommandResult, isCommandResult, getErrorMessage, ErrorCode, createError } from '../../error-utils.js';
 
 /**
  * Execute a headless command and handle the result

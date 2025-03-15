@@ -1,9 +1,13 @@
 /**
  * Integration test setup and runner
  */
-import * as path from 'path';
-import Mocha = require('mocha');
+import path from 'path';
+import Mocha from 'mocha';
 import { glob } from 'glob';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 interface TestOptions {
   reporter?: string;

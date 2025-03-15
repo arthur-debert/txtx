@@ -1,7 +1,7 @@
 /**
  * Basic unit tests for the headless backend
  */
-import * as assert from 'assert';
+import assert from 'assert';
 
 suite('Headless Backend Unit Tests', () => {
   test('should initialize correctly', () => {

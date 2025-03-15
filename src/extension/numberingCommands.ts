@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
-import { sendNotification } from './notifications';
-import * as vscodeLib from './vscode.lib';
+import { sendNotification } from './notifications.js';
+import * as vscodeLib from './vscode.lib.js';
 
 /**
  * Register the numbering commands

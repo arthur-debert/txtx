@@ -2,9 +2,11 @@
  * Unit tests for the Format Document Command in the headless backend
  */
 
-import * as assert from 'assert';
-import { formatDocumentCommand } from '../../../../src/core/backends/headless/format-document-command';
-import { getErrorMessage } from '../../../../src/core/error-utils';
+import assert from 'assert';
+import path from 'path';
+import { formatDocumentCommand } from '../../../../src/core/backends/headless/format-document-command.js';
+import { getErrorMessage } from '../../../../src/core/error-utils.js';
+import { runTransformTest, runTransformTestsInDirectory } from '../../../test-utils/transform-test-utils.js';
 
 suite('Format Document Command - Headless Backend', () => {
   // Sample document with various formatting issues

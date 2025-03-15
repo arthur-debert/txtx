@@ -1,11 +1,13 @@
-#!/usr/bin/env node
-
-// Make this a module
+#!/usr/bin/env node// Make this a module
 export {};
 
-const path = require('path') as typeof import('path');
-const { runTests } = require('@vscode/test-electron');
-const fs = require('fs');
+import path from 'path';
+import { runTests } from '@vscode/test-electron';
+import fs from 'fs';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 /**
  * Copy directory recursively
@@ -83,14 +85,11 @@ async function runUnitTests(specificTests: string[] = []) {
   try {
     // For unit tests, we don't need to launch VS Code
     // We can run them directly with Mocha
-    const unitTestsPath = path.resolve(__dirname, './unit/index');
+    const unitTestsPath = path.resolve(__dirname, './unit/index.js');
 
     // Import and run the unit tests
-    // Using require here because we need dynamic imports
-    const unitTests = require(unitTestsPath);
+    const unitTests = await import(unitTestsPath);
     await unitTests.run({ specificTests });
-
-    console.log('Unit tests completed successfully');
   } catch (err) {
     console.error('Unit tests failed:', err);
     throw err;

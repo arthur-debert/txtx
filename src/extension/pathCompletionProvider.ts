@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
-import { PATH_COMPLETION_TRIGGERS } from './constants';
-import * as vscodeLib from './vscode.lib';
+import { PATH_COMPLETION_TRIGGERS } from './constants.js';
+import * as vscodeLib from './vscode.lib.js';
 
 /**
  * Register the path completion provider

@@ -6,7 +6,7 @@
 // Make this a module to allow global augmentation
 export {};
 
-const testSetup = require('../testSetup');
+import testSetup from '../testSetup.js';
 
 declare global {
   var testHelpers: {
@@ -56,7 +56,7 @@ global.testHelpers = {
 };
 
 // Export helper functions
-module.exports = {
+export default {
   isVerbose,
   createTestFile,
   getTestDir

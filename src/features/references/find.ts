@@ -2,8 +2,8 @@
  * Functions for finding references in documents
  */
 
-import { DocumentReference } from './types';
-import { DOCUMENT_REFERENCE_REGEX } from '../../extension/constants';
+import { DocumentReference } from './types.js';
+import { DOCUMENT_REFERENCE_REGEX } from '../../extension/constants.js';
 
 /**
  * Find all document references in the given text

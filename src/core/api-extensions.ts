@@ -3,8 +3,8 @@
  * This file extends the core API with additional functions
  */
 
-import { TextDocument } from './types';
-import { BackendManager } from './backend-manager';
+import { TextDocument } from './types.js';
+import { BackendManager } from './backend-manager.js';
 
 /**
  * Fix numbering in ordered lists and section headers

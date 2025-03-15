@@ -14,7 +14,7 @@ import {
   TextEditorDecorationType,
   TextEdit,
   Uri,
-} from '../../types';
+} from '../../types.js';
 
 /**
  * Position class implementation for headless backend

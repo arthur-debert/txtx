@@ -3,9 +3,9 @@
  * These utilities help with setting up and tearing down the test environment
  */
 
-import { BackendManager } from './backend-manager';
+import { BackendManager } from './backend-manager.js';
 import * as fs from 'fs';
-import { TextDocument, Uri, TextEditor, Backend } from './types';
+import { TextDocument, Uri, TextEditor, Backend } from './types.js';
 
 /**
  * Test environment interface

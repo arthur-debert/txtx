@@ -6,8 +6,8 @@
  */
 
 import * as path from 'path';
-import { runTransformTest, runTransformTestsInDirectory } from '../../../test-utils/transform-test-utils';
-import { fixNumbering } from '../../../../src/features/numbering';
+import { runTransformTest, runTransformTestsInDirectory } from '../../../test-utils/transform-test-utils.js';
+import { fixNumbering } from '../../../../src/features/index.js';
 
 const TRANSFORM_EXAMPLES_DIR = path.join(
   __dirname, 

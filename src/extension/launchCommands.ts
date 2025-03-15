@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
-import { sendNotification } from './notifications';
+import { sendNotification } from './notifications.js';
 
 /**
  * Register the launch command

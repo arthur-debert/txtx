@@ -6,7 +6,7 @@
 import { EventEmitter } from 'events';
 import {
   Disposable
-} from '../../types';
+} from '../../types.js';
 
 /**
  * Type for command handler arguments

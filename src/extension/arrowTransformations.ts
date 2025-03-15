@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { ARROW_TRANSFORMATIONS, ArrowTransformation } from './constants';
+import { ARROW_TRANSFORMATIONS, ArrowTransformation } from './constants.js';
 
 /**
  * Register the arrow transformation feature

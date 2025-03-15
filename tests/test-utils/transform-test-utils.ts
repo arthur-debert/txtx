@@ -5,9 +5,9 @@
  * input and expected output files.
  */
 
-import * as fs from 'fs';
-import * as path from 'path';
-import * as assert from 'assert';
+import path from 'path';
+import fs from 'fs';
+import assert from 'assert';
 
 /**
  * Options for the transform test

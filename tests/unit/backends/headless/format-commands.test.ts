@@ -2,10 +2,10 @@
  * Unit tests for the Format Commands in the headless backend
  */
 
-import * as assert from 'assert';
-import * as path from 'path';
-import { formatCommands } from '../../../../src/core/backends/headless/format-commands';
-import { runTransformTest, runTransformTestsInDirectory } from '../../../test-utils/transform-test-utils';
+import assert from 'assert';
+import path from 'path';
+import { formatCommands } from '../../../../src/core/backends/headless/format-commands.js';
+import { runTransformTest, runTransformTestsInDirectory } from '../../../test-utils/transform-test-utils.js';
 
 // Create a directory for format document test fixtures
 const TRANSFORM_EXAMPLES_DIR = path.join(

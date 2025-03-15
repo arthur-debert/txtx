@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
-import * as vscodeLib from './vscode.lib';
-import { numberFootnotes } from '../core/backends/vscode-live';
+import * as vscodeLib from './vscode.lib.js';
+import { numberFootnotes } from '../core/backends/vscode-live/index.js';
 
 /**
  * Register the number footnotes command

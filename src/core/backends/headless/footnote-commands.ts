@@ -5,8 +5,8 @@
  * in the headless backend environment.
  */
 
-import processFootnotes from '../../../features/footnotes';
-import { CommandResult, ErrorCode, createSuccess, createFailure } from '../../error-utils';
+import { processFootnotes } from '../../../features/index.js';
+import { CommandResult, ErrorCode, createSuccess, createFailure } from '../../error-utils.js';
 
 /**
  * Number footnotes sequentially and update references

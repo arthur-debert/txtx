@@ -22,7 +22,7 @@ import {
   WorkspaceEdit,
   TextEditorDecorationType,
   WorkspaceFolder
-} from '../../types';
+} from '../../types.js';
 
 // Import features from separate files
 import {
@@ -32,49 +32,49 @@ import {
   HeadlessUri,
   createTextDocument,
   createTextEditor
-} from './document-text';
+} from './document-text.js';
 
 import {
   HeadlessDocumentSymbolProvider,
   HeadlessDocumentLinkProvider,
   HeadlessFoldingRangeProvider,
   HeadlessCompletionItemProvider
-} from './document-analysis';
+} from './document-analysis.js';
 
 import {
   HeadlessDiagnosticCollection,
   HeadlessOutputChannel
-} from './diagnostics-notifications';
+} from './diagnostics-notifications.js';
 
 import {
   HeadlessWorkspace
-} from './workspace-resource';
+} from './workspace-resource.js';
 
 import {
   HeadlessDisposable,
   HeadlessCommands
-} from './command-extension';
+} from './command-extension.js';
 
 // Export format commands
-export { formatCommands } from './format-commands';
+export { formatCommands } from './format-commands.js';
 
 // Export new format commands
-export { formatDocumentCommand } from './format-document-command';
-export { generateTOCCommand } from './generate-toc-command';
-export { fullFormattingCommand } from './full-formatting-command';
+export { formatDocumentCommand } from './format-document-command.js';
+export { generateTOCCommand } from './generate-toc-command.js';
+export { fullFormattingCommand } from './full-formatting-command.js';
 
 // Export utility functions for backward compatibility
-export { formatDocument } from './format-document-command';
-export { fullFormatting } from './full-formatting-command';
+export { formatDocument } from './format-document-command.js';
+export { fullFormatting } from './full-formatting-command.js';
 
 // Export footnote commands
-export { numberFootnotes } from './footnote-commands';
+export { numberFootnotes } from './footnote-commands.js';
 
 // Export reference commands
-export { checkDocumentReferences } from './reference-commands';
+export { checkDocumentReferences } from './reference-commands.js';
 
 // Export numbering commands
-export { fixDocumentNumbering } from './numbering-commands';
+export { fixDocumentNumbering } from './numbering-commands.js';
 
 /**
  * Headless Backend class

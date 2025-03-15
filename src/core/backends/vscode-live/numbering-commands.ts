@@ -5,7 +5,7 @@
  */
 
 import * as vscode from 'vscode';
-import { fixDocumentNumbering as headlessFixNumbering } from '../headless/numbering-commands';
+import { fixDocumentNumbering as headlessFixNumbering } from '../headless/numbering-commands.js';
 
 /**
  * Fix numbering in ordered lists and section headers

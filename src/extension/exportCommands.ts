@@ -1,9 +1,9 @@
 import * as vscode from 'vscode';
 import * as fs from 'fs';
 import * as path from 'path';
-import { sendNotification } from './notifications';
+import { sendNotification } from './notifications.js';
 import { readFileSync } from 'fs';
-import * as vscodeLib from './vscode.lib';
+import * as vscodeLib from './vscode.lib.js';
 
 /**
  * Export the document as HTML

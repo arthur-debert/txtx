@@ -6,24 +6,24 @@
  */
 
 // Export types
-export * from './types';
+export * from './types.js';
 
 // Export find functions
 export {
   findDocumentReferences,
   getPositionAt
-} from './find';
+} from './find.js';
 
 // Export validate functions
 export {
   validateReference,
   checkAnchorExists
-} from './validate';
+} from './validate.js';
 
 // Import dependencies
-import { findDocumentReferences } from './find';
-import { validateReference } from './validate';
-import { DiagnosticInfo, ReferenceCheckResult } from './types';
+import { findDocumentReferences } from './find.js';
+import { validateReference } from './validate.js';
+import { DiagnosticInfo, ReferenceCheckResult } from './types.js';
 
 /**
  * Check all references in a document

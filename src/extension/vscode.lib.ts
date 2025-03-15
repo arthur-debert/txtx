@@ -9,8 +9,8 @@
  */
 
 import * as vscode from 'vscode';
-import { sendNotification } from './notifications';
-import { NumberingFixResult } from '../features/numbering/types';
+import { sendNotification } from './notifications.js';
+import { NumberingFixResult } from '../features/numbering/types.js';
 
 /**
  * Interface for section information

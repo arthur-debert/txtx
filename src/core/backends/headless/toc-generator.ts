@@ -4,7 +4,7 @@
  */
 
 // Import the regular expressions from constants
-import { SECTION_REGEX, NUMBERED_SECTION_REGEX, ALTERNATIVE_SECTION_REGEX } from '../../../extension/constants';
+import { SECTION_REGEX, NUMBERED_SECTION_REGEX, ALTERNATIVE_SECTION_REGEX } from '../../../extension/constants.js';
 
 /**
  * Interface for section information

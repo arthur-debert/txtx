@@ -2,12 +2,15 @@
  * Unit tests for the References feature
  */
 
-import * as assert from 'assert';
-import { 
+import assert from 'assert';
+import {
+  checkReferences,
+  ReferenceCheckResult,
+  DocumentReference,
+  DiagnosticInfo,
   findDocumentReferences,
-  checkAnchorExists,
-  checkReferences
-} from '../../../../src/features/references';
+  checkAnchorExists
+} from '../../../../src/features/index.js';
 
 suite('References Feature', () => {
   // Sample document with references
