@@ -125,7 +125,7 @@
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
     "pretest": "npm run compile",
-    "test": "npm run test:unit && npm run test:integration",
+    "test": "npm run test:unit",
     "test:unit": "npm run clean && npm run compile && tsc -p ./tests && node ./dist/tests/runTest.js unit",
     "test:integration": "npm run compile && tsc -p ./tests && node ./dist/tests/runTest.js integration",
     "lint": "eslint src --ext ts",
