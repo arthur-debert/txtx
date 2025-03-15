@@ -13,5 +13,5 @@ export interface FootnoteDeclaration {
 export interface FootnoteProcessResult {
     success: boolean;
     newText?: string;
-    error?: any;
+    error?: Error | undefined;
 }

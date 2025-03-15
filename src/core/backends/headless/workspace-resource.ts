@@ -10,11 +10,10 @@ import {
   TextDocument,
   WorkspaceEdit,
   WorkspaceFolder,
-  TextEdit,
   Position,
-  TextLine
+  TextLine,
 } from '../../types';
-import { HeadlessUri, HeadlessPosition, HeadlessTextLine, HeadlessRange } from './document-text';
+import { HeadlessUri, HeadlessPosition, HeadlessRange } from './document-text';
 import { applyTextEdit } from './document-text';
 
 /**
@@ -30,7 +29,7 @@ export class HeadlessWorkspace {
     this._workspaceFolders.push({
       uri: HeadlessUri.file(process.cwd()),
       name: path.basename(process.cwd()),
-      index: 0
+      index: 0,
     });
   }
 
@@ -42,12 +41,12 @@ export class HeadlessWorkspace {
   async openTextDocument(uriOrPath: Uri | string): Promise<TextDocument> {
     // If it's a string, treat it as a path
     const filePath = typeof uriOrPath === 'string' ? uriOrPath : uriOrPath.fsPath;
-    
+
     // Check if we already have this document
     if (this._documents.has(filePath)) {
       return this._documents.get(filePath) as TextDocument;
     }
-    
+
     // Try to read the file if it exists
     let content = '';
     try {
@@ -56,11 +55,11 @@ export class HeadlessWorkspace {
       // File doesn't exist or can't be read, create an empty document
       console.warn(`Could not read file: ${filePath}`, error);
     }
-    
+
     // Create a new document
     const uri = typeof uriOrPath === 'string' ? HeadlessUri.file(uriOrPath) : uriOrPath;
-    const languageId = filePath.endsWith('.rfc') ? 'rfcdoc' : 'plaintext';
-    
+    const languageId = filePath.endsWith('.rfc') ? 'txxt' : 'plaintext';
+
     const document = this._createTextDocument(content, uri, languageId);
     this._documents.set(filePath, document);
     return document;
@@ -97,7 +96,8 @@ export class HeadlessWorkspace {
    * @param uri The URI to get the workspace folder for
    * @returns The workspace folder that contains the URI, or undefined if none
    */
-  getWorkspaceFolder(uri: Uri): WorkspaceFolder | undefined {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  getWorkspaceFolder(_uri: Uri): WorkspaceFolder | undefined {
     // Simple implementation that returns the first workspace folder
     // In a real implementation, we would check if the URI is contained in any workspace folder
     return this._workspaceFolders[0];
@@ -120,7 +120,7 @@ export class HeadlessWorkspace {
     this._workspaceFolders.push({
       uri,
       name,
-      index: this._workspaceFolders.length
+      index: this._workspaceFolders.length,
     });
   }
 
@@ -153,7 +153,8 @@ export class HeadlessWorkspace {
       getText: () => content,
       lineAt: (lineOrPosition: number | Position): TextLine => {
         const lines = content.split('\n');
-        const lineNumber = typeof lineOrPosition === 'number' ? lineOrPosition : lineOrPosition.line;
+        const lineNumber =
+          typeof lineOrPosition === 'number' ? lineOrPosition : lineOrPosition.line;
         if (lineNumber < 0 || lineNumber >= lines.length) {
           throw new Error(`Line number out of range: ${lineNumber}`);
         }
@@ -163,8 +164,9 @@ export class HeadlessWorkspace {
           lineNumber: lineNumber,
           range: new HeadlessRange(lineNumber, 0, lineNumber, text.length),
           rangeIncludingLineBreak: new HeadlessRange(lineNumber, 0, lineNumber, text.length + 1),
-          firstNonWhitespaceCharacterIndex: text.search(/\S/) === -1 ? text.length : text.search(/\S/),
-          isEmptyOrWhitespace: text.trim().length === 0
+          firstNonWhitespaceCharacterIndex:
+            text.search(/\S/) === -1 ? text.length : text.search(/\S/),
+          isEmptyOrWhitespace: text.trim().length === 0,
         };
       },
       positionAt: (offset: number): Position => {
@@ -172,7 +174,7 @@ export class HeadlessWorkspace {
         let lineNum = 0;
         let charNum = 0;
         let currentPos = 0;
-        
+
         while (currentPos <= offset && lineNum < contentLines.length) {
           if (currentPos + contentLines[lineNum].length + 1 > offset) {
             charNum = offset - currentPos;
@@ -181,7 +183,7 @@ export class HeadlessWorkspace {
           currentPos += contentLines[lineNum].length + 1; // +1 for the newline
           lineNum++;
         }
-        
+
         return new HeadlessPosition(lineNum, charNum);
       },
       offsetAt: (position: Position): number => {
@@ -200,7 +202,7 @@ export class HeadlessWorkspace {
       version: 1,
       isDirty: false,
       isClosed: false,
-      save: async () => true
+      save: async () => true,
     };
   }
 }

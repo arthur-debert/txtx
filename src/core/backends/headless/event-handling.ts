@@ -28,7 +28,7 @@ export class HeadlessDisposable implements Disposable {
 /**
  * Simple implementation of an event
  */
-export type HeadlessEvent<T> = (listener: (e: T) => any, thisArgs?: any, disposables?: Disposable[]) => Disposable;
+export type HeadlessEvent<T> = (listener: (e: T) => void | Promise<void>, thisArgs?: unknown, disposables?: Disposable[]) => Disposable;
 
 /**
  * EventEmitter implementation for headless backend
@@ -46,7 +46,8 @@ export class HeadlessEventEmitter<T> {
    * Create an event
    */
   private _createEvent(): Event<T> {
-    return (listener: (e: T) => any, thisArgs?: any, disposables?: Disposable[]): Disposable => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    return (listener: (e: T) => void | Promise<void>, thisArgs?: unknown, disposables?: Disposable[]): Disposable => {
       const wrappedListener = thisArgs ? listener.bind(thisArgs) : listener;
       this._emitter.on('event', wrappedListener);
       
@@ -84,7 +85,7 @@ export class HeadlessEventEmitter<T> {
  */
 export class HeadlessCancellationToken implements CancellationToken {
   private _isCancellationRequested: boolean = false;
-  private _emitter: HeadlessEventEmitter<any> = new HeadlessEventEmitter<any>();
+  private _emitter: HeadlessEventEmitter<void> = new HeadlessEventEmitter<void>();
 
   /**
    * Whether cancellation has been requested
@@ -96,7 +97,7 @@ export class HeadlessCancellationToken implements CancellationToken {
   /**
    * An event which fires when cancellation is requested
    */
-  get onCancellationRequested(): Event<any> {
+  get onCancellationRequested(): Event<void> {
     return this._emitter.event;
   }
 

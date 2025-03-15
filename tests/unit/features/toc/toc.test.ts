@@ -104,7 +104,7 @@ This is a test document with no sections.`;
   test('findExistingTOC should find existing TOC in document', () => {
     // Find existing TOC
     const lines = documentWithTOC.split('\n');
-    const currentTOC = findExistingTOC(lines, 0);
+    const currentTOC = findExistingTOC(lines);
     
     // Verify TOC was found
     assert.ok(currentTOC, 'Should find existing TOC');
@@ -115,7 +115,7 @@ This is a test document with no sections.`;
   test('findExistingTOC should return null if no TOC exists', () => {
     // Find existing TOC in document without TOC
     const lines = sampleDocument.split('\n');
-    const currentTOC = findExistingTOC(lines, 0);
+    const currentTOC = findExistingTOC(lines);
     
     // Verify no TOC was found
     assert.strictEqual(currentTOC, null, 'Should return null for document without TOC');
@@ -129,7 +129,7 @@ This is a test document with no sections.`;
     
     // Find existing TOC
     const lines = documentWithTOC.split('\n');
-    const currentTOC = findExistingTOC(lines, 0);
+    const currentTOC = findExistingTOC(lines);
     
     // Replace TOC
     const result = replaceTOC(documentWithTOC, tocLines, currentTOC);

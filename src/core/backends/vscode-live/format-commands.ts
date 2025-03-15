@@ -8,9 +8,7 @@ import {
   formatDocumentCommand,
   numberFootnotes,
   generateTOCCommand,
-  fullFormattingCommand,
-  formatDocument as headlessFormatDocument,
-  fullFormatting as headlessFullFormatting
+  fullFormattingCommand
 } from '../headless';
 import { isCommandResult, getErrorMessage } from '../../error-utils';
 
@@ -39,7 +37,7 @@ export const formatCommands = {
   formatDocument: async (document: vscode.TextDocument): Promise<boolean> => {
     try {
       // Only format RFC files
-      if (document.languageId !== 'rfcdoc' || !document.fileName.endsWith('.rfc')) {
+      if (document.languageId !== 'txxt' || !document.fileName.endsWith('.rfc')) {
         vscode.window.showInformationMessage('Format command only works on RFC documents.');
         return false;
       }
@@ -52,44 +50,41 @@ export const formatCommands = {
 
       // Get the document text
       const text = document.getText();
-      
+
       // Use the headless implementation to format the document
       const result = await formatDocumentCommand(text, document.fileName);
-      
+
       // Validate result using type guard
       if (!isCommandResult(result)) {
         vscode.window.showErrorMessage('Invalid result from format document command');
         return false;
       }
-      
+
       if (!result.success) {
         vscode.window.showErrorMessage(getErrorMessage(result.error, 'Error formatting document'));
         return false;
       }
-      
+
       // Type guard to ensure result.result is a string
       if (typeof result.result !== 'string') {
         vscode.window.showErrorMessage('Invalid result type from format document command');
         return false;
       }
-      
+
       const formattedText = result.result;
-      
+
       // If the text didn't change, there's nothing to do
       if (formattedText === text) {
         return true;
       }
-      
+
       // Apply the changes to the document
-      const fullRange = new vscode.Range(
-        document.positionAt(0),
-        document.positionAt(text.length)
-      );
-      
+      const fullRange = new vscode.Range(document.positionAt(0), document.positionAt(text.length));
+
       await editor.edit(editBuilder => {
         editBuilder.replace(fullRange, formattedText);
       });
-      
+
       vscode.window.showInformationMessage('Document formatted successfully.');
       return true;
     } catch (error) {
@@ -106,7 +101,7 @@ export const formatCommands = {
   generateTOC: async (document: vscode.TextDocument): Promise<boolean> => {
     try {
       // Only generate TOC for RFC files
-      if (document.languageId !== 'rfcdoc' || !document.fileName.endsWith('.rfc')) {
+      if (document.languageId !== 'txxt' || !document.fileName.endsWith('.rfc')) {
         vscode.window.showInformationMessage('TOC command only works on RFC documents.');
         return false;
       }
@@ -119,16 +114,16 @@ export const formatCommands = {
 
       // Get the document text
       const text = document.getText();
-      
+
       // Use the headless implementation to generate the TOC
       const result = await generateTOCCommand(text, document.fileName);
-      
+
       // Validate result using type guard
       if (!isCommandResult(result)) {
         vscode.window.showErrorMessage('Invalid result from generate TOC command');
         return false;
       }
-      
+
       if (!result.success) {
         // If the error is just that no sections were found, show an information message
         if (result.error?.message === 'No sections found to generate TOC') {
@@ -138,31 +133,28 @@ export const formatCommands = {
         }
         return false;
       }
-      
+
       // Type guard to ensure result.result is a string
       if (typeof result.result !== 'string') {
         vscode.window.showErrorMessage('Invalid result type from generate TOC command');
         return false;
       }
-      
+
       const newText = result.result;
-      
+
       // If the text didn't change, there were no sections
       if (newText === text) {
         vscode.window.showInformationMessage('No sections found to generate TOC.');
         return false;
       }
-      
+
       // Apply the changes to the document
-      const fullRange = new vscode.Range(
-        document.positionAt(0),
-        document.positionAt(text.length)
-      );
-      
+      const fullRange = new vscode.Range(document.positionAt(0), document.positionAt(text.length));
+
       await editor.edit(editBuilder => {
         editBuilder.replace(fullRange, newText);
       });
-      
+
       vscode.window.showInformationMessage('Table of contents generated successfully.');
       return true;
     } catch (error) {
@@ -179,7 +171,7 @@ export const formatCommands = {
   numberFootnotes: async (document: vscode.TextDocument): Promise<boolean> => {
     try {
       // Only number footnotes in RFC files
-      if (document.languageId !== 'rfcdoc' || !document.fileName.endsWith('.rfc')) {
+      if (document.languageId !== 'txxt' || !document.fileName.endsWith('.rfc')) {
         vscode.window.showInformationMessage('Footnote numbering only works on RFC documents.');
         return false;
       }
@@ -192,44 +184,41 @@ export const formatCommands = {
 
       // Get the document text
       const text = document.getText();
-      
+
       // Use the headless implementation to number footnotes
       const result = await numberFootnotes(text, document.fileName);
-      
+
       // Validate result using type guard
       if (!isCommandResult(result)) {
         vscode.window.showErrorMessage('Invalid result from number footnotes command');
         return false;
       }
-      
+
       if (!result.success) {
         vscode.window.showErrorMessage(getErrorMessage(result.error, 'Error numbering footnotes'));
         return false;
       }
-      
+
       // Type guard to ensure result.result is a string
       if (typeof result.result !== 'string') {
         vscode.window.showErrorMessage('Invalid result type from number footnotes command');
         return false;
       }
-      
+
       const newText = result.result;
-      
+
       // If the text didn't change, there were no footnotes
       if (newText === text) {
         return true;
       }
-      
+
       // Apply the changes to the document
-      const fullRange = new vscode.Range(
-        document.positionAt(0),
-        document.positionAt(text.length)
-      );
-      
+      const fullRange = new vscode.Range(document.positionAt(0), document.positionAt(text.length));
+
       await editor.edit(editBuilder => {
         editBuilder.replace(fullRange, newText);
       });
-      
+
       vscode.window.showInformationMessage('Footnotes numbered successfully.');
       return true;
     } catch (error) {
@@ -246,7 +235,7 @@ export const formatCommands = {
   fullFormatting: async (document: vscode.TextDocument): Promise<boolean> => {
     try {
       // Only format RFC files
-      if (document.languageId !== 'rfcdoc' || !document.fileName.endsWith('.rfc')) {
+      if (document.languageId !== 'txxt' || !document.fileName.endsWith('.rfc')) {
         vscode.window.showInformationMessage('Full formatting only works on RFC documents.');
         return false;
       }
@@ -259,49 +248,48 @@ export const formatCommands = {
 
       // Get the document text
       const text = document.getText();
-      
+
       // Use the headless implementation to apply full formatting
       const result = await fullFormattingCommand(text, document.fileName);
-      
+
       // Validate result using type guard
       if (!isCommandResult(result)) {
         vscode.window.showErrorMessage('Invalid result from full formatting command');
         return false;
       }
-      
+
       if (!result.success) {
-        vscode.window.showErrorMessage(getErrorMessage(result.error, 'Error applying full formatting'));
+        vscode.window.showErrorMessage(
+          getErrorMessage(result.error, 'Error applying full formatting')
+        );
         return false;
       }
-      
+
       // Type guard to ensure result.result is a string
       if (typeof result.result !== 'string') {
         vscode.window.showErrorMessage('Invalid result type from full formatting command');
         return false;
       }
-      
+
       const formattedText = result.result;
-      
+
       // If the text didn't change, there's nothing to do
       if (formattedText === text) {
         return true;
       }
-      
+
       // Apply the changes to the document
-      const fullRange = new vscode.Range(
-        document.positionAt(0),
-        document.positionAt(text.length)
-      );
-      
+      const fullRange = new vscode.Range(document.positionAt(0), document.positionAt(text.length));
+
       await editor.edit(editBuilder => {
         editBuilder.replace(fullRange, formattedText);
       });
-      
+
       vscode.window.showInformationMessage('Document fully formatted successfully.');
       return true;
     } catch (error) {
       vscode.window.showErrorMessage(`Error applying full formatting: ${error}`);
       return false;
     }
-  }
+  },
 };

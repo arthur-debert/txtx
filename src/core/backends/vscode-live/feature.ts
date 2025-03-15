@@ -4,17 +4,6 @@
  */
 
 import * as vscode from 'vscode';
-import { 
-  DocumentSymbol, 
-  DocumentLink, 
-  FoldingRange, 
-  CompletionItem,
-  TextDocument,
-  CancellationToken,
-  Position,
-  Range,
-  Uri
-} from '../../types';
 
 /**
  * Document Symbol Provider implementation for VSCode Live backend
@@ -28,6 +17,7 @@ export class VSCodeLiveDocumentSymbolProvider implements vscode.DocumentSymbolPr
    * @param token A cancellation token
    * @returns An array of document symbols
    */
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   provideDocumentSymbols(document: vscode.TextDocument, token: vscode.CancellationToken): vscode.DocumentSymbol[] | Promise<vscode.DocumentSymbol[]> {
     // Parse the document and extract symbols
     // This is a simplified implementation
@@ -78,6 +68,7 @@ export class VSCodeLiveDocumentLinkProvider implements vscode.DocumentLinkProvid
    * @param token A cancellation token
    * @returns An array of document links
    */
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   provideDocumentLinks(document: vscode.TextDocument, token: vscode.CancellationToken): vscode.DocumentLink[] | Promise<vscode.DocumentLink[]> {
     // Parse the document and extract links
     // This is a simplified implementation
@@ -128,6 +119,7 @@ export class VSCodeLiveFoldingRangeProvider implements vscode.FoldingRangeProvid
    * @param token A cancellation token
    * @returns An array of folding ranges
    */
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   provideFoldingRanges(document: vscode.TextDocument, context: vscode.FoldingContext, token: vscode.CancellationToken): vscode.FoldingRange[] | Promise<vscode.FoldingRange[]> {
     // Parse the document and extract folding ranges
     // This is a simplified implementation
@@ -199,6 +191,7 @@ export class VSCodeLiveCompletionItemProvider implements vscode.CompletionItemPr
    * @param context The completion context
    * @returns An array of completion items
    */
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   provideCompletionItems(document: vscode.TextDocument, position: vscode.Position, token: vscode.CancellationToken, context: vscode.CompletionContext): vscode.CompletionItem[] | Promise<vscode.CompletionItem[]> {
     // Parse the document and provide completion items
     // This is a simplified implementation

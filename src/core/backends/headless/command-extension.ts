@@ -9,6 +9,22 @@ import {
 } from '../../types';
 
 /**
+ * Type for command handler arguments
+ */
+type CommandArgs = unknown[];
+
+/**
+ * Type for command handler return value
+ * Commands can return any value, undefined, void, or a Promise of these
+ */
+type CommandResult = unknown | undefined | void | Promise<unknown | undefined | void>;
+
+/**
+ * Type for extension exports
+ */
+type ExtensionExports = Record<string, unknown>;
+
+/**
  * Disposable implementation for headless backend
  * Represents a type which can release resources when no longer needed
  */
@@ -54,7 +70,7 @@ export class HeadlessDisposable implements Disposable {
  * Manages commands and their execution
  */
 export class HeadlessCommands {
-  private _commands: Map<string, (...args: any[]) => any> = new Map();
+  private _commands: Map<string, (...args: CommandArgs) => CommandResult> = new Map();
   private _eventEmitter: EventEmitter = new EventEmitter();
 
   constructor() {
@@ -67,7 +83,7 @@ export class HeadlessCommands {
    * @param callback The command handler
    * @returns A disposable which unregisters the command
    */
-  registerCommand(command: string, callback: (...args: any[]) => any): Disposable {
+  registerCommand(command: string, callback: (...args: CommandArgs) => CommandResult): Disposable {
     this._commands.set(command, callback);
     this._eventEmitter.emit('commandRegistered', command);
     
@@ -83,17 +99,17 @@ export class HeadlessCommands {
    * @param args The command arguments
    * @returns A promise that resolves with the command result
    */
-  async executeCommand(command: string, ...args: any[]): Promise<any> {
+  async executeCommand<T extends CommandResult>(command: string, ...args: CommandArgs): Promise<T> {
     const handler = this._commands.get(command);
     if (!handler) {
       throw new Error(`Command not found: ${command}`);
     }
     
     try {
-      return await Promise.resolve(handler(...args));
+      return await Promise.resolve(handler(...args)) as T;
     } catch (error) {
       console.error(`Error executing command ${command}:`, error);
-      throw error;
+      throw error instanceof Error ? error : new Error(`Unknown error executing command ${command}`);
     }
   }
 
@@ -192,7 +208,7 @@ export class HeadlessExtensions {
 export class HeadlessExtension {
   id: string;
   isActive: boolean = false;
-  exports: any = {};
+  exports: ExtensionExports = {};
   
   constructor(id: string) {
     this.id = id;
@@ -200,9 +216,9 @@ export class HeadlessExtension {
 
   /**
    * Activate the extension
-   * @returns A promise that resolves when the extension is activated
+   * @returns A promise that resolves with the extension exports when the extension is activated
    */
-  async activate(): Promise<any> {
+  async activate(): Promise<ExtensionExports> {
     if (this.isActive) {
       return this.exports;
     }

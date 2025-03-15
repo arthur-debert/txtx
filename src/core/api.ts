@@ -6,7 +6,7 @@
  */
 
 import { BackendManager } from './backend-manager';
-import { VSCodeAPI, TextDocument } from './types';
+import { VSCodeAPI } from './types';
 import { fixNumbering as fixNumberingImpl, checkReferences as checkReferencesImpl } from './api-extensions';
 
 /**

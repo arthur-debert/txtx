@@ -43,13 +43,22 @@ export class VSCodeLiveBackend implements Backend {
   Position: typeof vscode.Position;
   
   // Range constructor
-  Range: any;
+  Range: {
+    new(startLine: number, startCharacter: number, endLine: number, endCharacter: number): Range;
+    new(start: Position, end: Position): Range;
+  };
   
   // Selection constructor
-  Selection: any;
+  Selection: {
+    new(anchorLine: number, anchorCharacter: number, activeLine: number, activeCharacter: number): Selection;
+    new(anchor: Position, active: Position): Selection;
+  };
   
   // Uri static methods
-  Uri: any;
+  Uri: {
+    file: (path: string) => Uri;
+    parse: (value: string) => Uri;
+  };
   
   // Workspace APIs
   workspace: {
@@ -67,22 +76,22 @@ export class VSCodeLiveBackend implements Backend {
     showInformationMessage(message: string): Promise<string | undefined>;
     showWarningMessage(message: string): Promise<string | undefined>;
     showErrorMessage(message: string): Promise<string | undefined>;
-    createTextEditorDecorationType(options: any): TextEditorDecorationType;
+    createTextEditorDecorationType(options: vscode.DecorationRenderOptions): TextEditorDecorationType;
   };
   
   // Language APIs
   languages: {
-    registerDocumentSymbolProvider(selector: any, provider: DocumentSymbolProvider): Disposable;
-    registerDocumentLinkProvider(selector: any, provider: DocumentLinkProvider): Disposable;
-    registerFoldingRangeProvider(selector: any, provider: FoldingRangeProvider): Disposable;
-    registerCompletionItemProvider(selector: any, provider: CompletionItemProvider, ...triggerCharacters: string[]): Disposable;
+    registerDocumentSymbolProvider(selector: vscode.DocumentSelector, provider: DocumentSymbolProvider): Disposable;
+    registerDocumentLinkProvider(selector: vscode.DocumentSelector, provider: DocumentLinkProvider): Disposable;
+    registerFoldingRangeProvider(selector: vscode.DocumentSelector, provider: FoldingRangeProvider): Disposable;
+    registerCompletionItemProvider(selector: vscode.DocumentSelector, provider: CompletionItemProvider, ...triggerCharacters: string[]): Disposable;
     createDiagnosticCollection(name: string): DiagnosticCollection;
   };
   
   // Command APIs
   commands: {
-    executeCommand(command: string, ...args: any[]): Promise<any>;
-    registerCommand(command: string, callback: (...args: any[]) => any): Disposable;
+    executeCommand<T = unknown>(command: string, ...args: unknown[]): Promise<T>;
+    registerCommand(command: string, callback: (...args: unknown[]) => unknown): Disposable;
     getCommands(): Promise<string[]>;
   };
   
@@ -95,27 +104,43 @@ export class VSCodeLiveBackend implements Backend {
     this.Position = vscode.Position;
     
     // Adapt Range constructor to match our interface
-    this.Range = function(startLine: number | Position, startCharacter: number | Position, endLine?: number, endCharacter?: number) {
+    this.Range = (function(
+      startLine: number | Position,
+      startCharacter: number | Position,
+      endLine?: number,
+      endCharacter?: number
+    ): Range {
       if (typeof startLine === 'number') {
-        return new vscode.Range(startLine, startCharacter as number, endLine as number, endCharacter as number);
+        return new vscode.Range(startLine, startCharacter as number, endLine as number, endCharacter as number) as unknown as Range;
       } else {
         return new vscode.Range(
           startLine as unknown as vscode.Position, 
           startCharacter as unknown as vscode.Position
-        );
+        ) as unknown as Range;
       }
+    }) as unknown as {
+      new(startLine: number, startCharacter: number, endLine: number, endCharacter: number): Range;
+      new(start: Position, end: Position): Range;
     };
     
     // Adapt Selection constructor to match our interface
-    this.Selection = function(anchorLine: number | Position, anchorCharacter: number | Position, activeLine?: number, activeCharacter?: number) {
+    this.Selection = (function(
+      anchorLine: number | Position,
+      anchorCharacter: number | Position,
+      activeLine?: number,
+      activeCharacter?: number
+    ): Selection {
       if (typeof anchorLine === 'number') {
-        return new vscode.Selection(anchorLine, anchorCharacter as number, activeLine as number, activeCharacter as number);
+        return new vscode.Selection(anchorLine, anchorCharacter as number, activeLine as number, activeCharacter as number) as unknown as Selection;
       } else {
         return new vscode.Selection(
           anchorLine as unknown as vscode.Position, 
           anchorCharacter as unknown as vscode.Position
-        );
+        ) as unknown as Selection;
       }
+    }) as unknown as {
+      new(anchorLine: number, anchorCharacter: number, activeLine: number, activeCharacter: number): Selection;
+      new(anchor: Position, active: Position): Selection;
     };
     
     // Adapt Uri methods to match our interface
@@ -203,7 +228,7 @@ export class VSCodeLiveBackend implements Backend {
         return await vscode.window.showErrorMessage(message);
       },
       
-      createTextEditorDecorationType: function(options: any): TextEditorDecorationType {
+      createTextEditorDecorationType: function(options: vscode.DecorationRenderOptions): TextEditorDecorationType {
         const decorationType = vscode.window.createTextEditorDecorationType(options);
         return {
           id: decorationType.key || Math.random().toString(36).substring(2, 9),
@@ -214,28 +239,28 @@ export class VSCodeLiveBackend implements Backend {
     
     // Language APIs
     this.languages = {
-      registerDocumentSymbolProvider: function(selector: any, provider: DocumentSymbolProvider): Disposable {
+      registerDocumentSymbolProvider: function(selector: vscode.DocumentSelector, provider: DocumentSymbolProvider): Disposable {
         return vscode.languages.registerDocumentSymbolProvider(
           selector, 
           provider as unknown as vscode.DocumentSymbolProvider
         ) as unknown as Disposable;
       },
       
-      registerDocumentLinkProvider: function(selector: any, provider: DocumentLinkProvider): Disposable {
+      registerDocumentLinkProvider: function(selector: vscode.DocumentSelector, provider: DocumentLinkProvider): Disposable {
         return vscode.languages.registerDocumentLinkProvider(
           selector, 
           provider as unknown as vscode.DocumentLinkProvider
         ) as unknown as Disposable;
       },
       
-      registerFoldingRangeProvider: function(selector: any, provider: FoldingRangeProvider): Disposable {
+      registerFoldingRangeProvider: function(selector: vscode.DocumentSelector, provider: FoldingRangeProvider): Disposable {
         return vscode.languages.registerFoldingRangeProvider(
           selector, 
           provider as unknown as vscode.FoldingRangeProvider
         ) as unknown as Disposable;
       },
       
-      registerCompletionItemProvider: function(selector: any, provider: CompletionItemProvider, ...triggerCharacters: string[]): Disposable {
+      registerCompletionItemProvider: function(selector: vscode.DocumentSelector, provider: CompletionItemProvider, ...triggerCharacters: string[]): Disposable {
         return vscode.languages.registerCompletionItemProvider(
           selector, 
           provider as unknown as vscode.CompletionItemProvider, 
@@ -269,11 +294,11 @@ export class VSCodeLiveBackend implements Backend {
     
     // Command APIs
     this.commands = {
-      executeCommand: async function(command: string, ...args: any[]): Promise<any> {
+      executeCommand: async function<T = unknown>(command: string, ...args: unknown[]): Promise<T> {
         return await vscode.commands.executeCommand(command, ...args);
       },
       
-      registerCommand: function(command: string, callback: (...args: any[]) => any): Disposable {
+      registerCommand: function(command: string, callback: (...args: unknown[]) => unknown): Disposable {
         return vscode.commands.registerCommand(command, callback) as unknown as Disposable;
       },
       
@@ -289,6 +314,7 @@ export class VSCodeLiveBackend implements Backend {
    * @param {string} content The content to set
    * @returns {TextDocument} The document
    */
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   setDocumentContent(uri: Uri, content: string): TextDocument {
     // This is a test-only method that doesn't have a direct VSCode equivalent
     // In a real VSCode environment, we'd need to write to the file system

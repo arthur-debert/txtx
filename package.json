@@ -1,9 +1,9 @@
 {
-  "name": "rfcdoc-format",
-  "displayName": "RfcDoc Format",
-  "description": "Syntax highlighting for RfcDoc format",
+  "name": "txxt-format",
+  "displayName": "txxt Format",
+  "description": "Syntax highlighting for txxt format",
   "version": "0.5.0",
-  "publisher": "rfcdoc",
+  "publisher": "txxt",
   "engines": {
     "vscode": "^1.60.0"
   },
@@ -11,7 +11,7 @@
     "Programming Languages"
   ],
   "keywords": [
-    "rfcdoc",
+    "txxt",
     "documentation",
     "plain text",
     "syntax highlighting"
@@ -19,10 +19,10 @@
   "contributes": {
     "languages": [
       {
-        "id": "rfcdoc",
+        "id": "txxt",
         "aliases": [
-          "RfcDoc",
-          "rfcdoc"
+          "txxt",
+          "txxt"
         ],
         "extensions": [
           ".txtx",
@@ -33,63 +33,76 @@
     ],
     "grammars": [
       {
-        "language": "rfcdoc",
-        "scopeName": "text.rfcdoc",
-        "path": "./syntaxes/rfcdoc.tmLanguage.json"
+        "language": "txxt",
+        "scopeName": "text.txxt",
+        "path": "./syntaxes/txxt.tmLanguage.json"
       }
     ],
     "themes": [
       {
-        "label": "RfcDoc Dark",
+        "label": "txxt Dark",
         "uiTheme": "vs-dark",
-        "path": "./themes/rfcdoc-dark-theme.json"
+        "path": "./themes/txxt-dark-theme.json"
       },
       {
-        "label": "RfcDoc Light",
+        "label": "txxt Light",
         "uiTheme": "vs",
-        "path": "./themes/rfcdoc-light-theme.json"
+        "path": "./themes/txxt-light-theme.json"
       }
     ],
     "commands": [
       {
-        "command": "rfcdoc.formatDocument",
-        "title": "RfcDoc: Format Document",
-        "category": "RfcDoc"
+        "command": "txxt.formatDocument",
+        "title": "txxt: Format Document",
+        "category": "txxt"
       },
       {
-        "command": "rfcdoc.generateTOC",
-        "title": "RfcDoc: Generate Table of Contents",
-        "category": "RfcDoc"
+        "command": "txxt.generateTOC",
+        "title": "txxt: Generate Table of Contents",
+        "category": "txxt"
       },
       {
-        "command": "rfcdoc.numberFootnotes",
-        "title": "RfcDoc: Number Footnotes",
-        "category": "RfcDoc"
+        "command": "txxt.numberFootnotes",
+        "title": "txxt: Number Footnotes",
+        "category": "txxt"
       },
       {
-        "command": "rfcdoc.fullFormatting",
-        "title": "RfcDoc: Full Formatting",
-        "category": "RfcDoc"
+        "command": "txxt.fullFormatting",
+        "title": "txxt: Full Formatting",
+        "category": "txxt"
       },
       {
-        "command": "rfcdoc.checkReferences",
-        "title": "RfcDoc: Check References",
-        "category": "RfcDoc"
+        "command": "txxt.checkReferences",
+        "title": "txxt: Check References",
+        "category": "txxt"
       },
       {
-        "command": "rfcdoc.exportAsHtml",
-        "title": "RfcDoc: Export as HTML",
-        "category": "RfcDoc"
+        "command": "txxt.exportAsHtml",
+        "title": "txxt: Export as HTML",
+        "category": "txxt"
       },
       {
-        "command": "rfcdoc.fixNumbering",
-        "title": "RfcDoc: Fix Numbering",
-        "category": "RfcDoc"
+        "command": "txxt.fixNumbering",
+        "title": "txxt: Fix Numbering",
+        "category": "txxt"
+      },
+      {
+        "command": "txxt.launch",
+        "title": "txxt: Launch",
+        "category": "txxt"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "txxt.launch",
+        "key": "ctrl+shift+l",
+        "mac": "cmd+shift+l",
+        "when": "editorTextFocus && editorLangId == 'txxt'"
       }
     ]
   },
   "activationEvents": [
-    "onLanguage:rfcdoc"
+    "onLanguage:txxt"
   ],
   "main": "./dist/extension.js",
   "scripts": {
@@ -104,15 +117,16 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/rfcdoc/rfcdoc-format.git"
+    "url": "https://github.com/txxt/txxt-format.git"
   },
-  "homepage": "https://github.com/rfcdoc/rfcdoc-format",
+  "homepage": "https://github.com/txxt/txxt-format",
   "bugs": {
-    "url": "https://github.com/rfcdoc/rfcdoc-format/issues"
+    "url": "https://github.com/txxt/txxt-format/issues"
   },
-  "author": "RfcDoc Team",
+  "author": "txxt Team",
   "license": "MIT",
   "devDependencies": {
+    "@eslint/js": "^9.22.0",
     "@types/js-yaml": "^4.0.9",
     "@types/mocha": "^10.0.10",
     "@types/node": "^20.11.30",
@@ -137,7 +151,7 @@
     "js-yaml": "^4.1.0"
   },
   "lint-staged": {
-    "*.{ts,tsx}": [
+    "src/**/*.{ts,tsx}": [
       "eslint --fix"
     ],
     "*.md": [

@@ -69,12 +69,12 @@ export function handleCommandError<T>(
  * @param errorMessage - The error message to show if the type is invalid
  * @returns - Whether the result is of the expected type
  */
-export function validateResultType<T>(
+export function validateResultType<T, V>(
   result: CommandResult<T>,
-  typeValidator: (value: any) => boolean,
+  typeValidator: (value: V) => boolean,
   errorMessage: string
 ): boolean {
-  if (!result.result || !typeValidator(result.result)) {
+  if (!result.result || !typeValidator(result.result as V)) {
     vscode.window.showErrorMessage(errorMessage);
     return false;
   }

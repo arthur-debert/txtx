@@ -2,7 +2,6 @@ import { FootnoteDeclaration, FootnoteProcessResult } from './types';
 
 // Regular expressions for footnotes
 const FOOTNOTE_REGEX = /^\[(\d+)\] (.+)$/gm;
-const FOOTNOTE_REFERENCE_REGEX = /\[(\d+)\]/g;
 
 /**
  * Find all footnote declarations in the text
@@ -110,6 +109,9 @@ export function processFootnotes(text: string): FootnoteProcessResult {
         
         return { success: true, newText };
     } catch (error) {
-        return { success: false, error };
+        return { 
+            success: false, 
+            error: error instanceof Error ? error : new Error('Unknown error processing footnotes')
+        };
     }
 }

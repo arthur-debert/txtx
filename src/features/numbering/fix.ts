@@ -67,7 +67,6 @@ export function fixNumberingInLines(lines: string[]): string[] {
     const listMatch = line.match(/^(\s*)(\d+|[a-z])\.(\s+)(.+)$/i);
     if (listMatch) {
       const indentation = listMatch[1];
-      const marker = listMatch[2];
       const spacing = listMatch[3];
       const content = listMatch[4];
       

@@ -3,7 +3,7 @@
 
 This code base is designed in order to minimize and isolate the vscode environment specifics from the core logic. 
 
-This makes testing much easier, but also reuse (for things line a command line formatter for rfcdoc). 
+This makes testing much easier, but also reuse (for things line a command line formatter for txxt). 
 
     1. Logic isolation
 

@@ -12,7 +12,7 @@ const fs = require('fs');
  */
 function copyDir(src: string, dest: string) {
   if (!fs.existsSync(src)) return;
-  
+
   if (!fs.existsSync(dest)) {
     fs.mkdirSync(dest, { recursive: true });
   }
@@ -41,16 +41,18 @@ async function main() {
     const args = process.argv.slice(2);
     const testType = args[0]; // 'unit', 'integration', or undefined for both
     const specificTests = args.slice(1); // Any additional arguments are specific test files
-    
+
     // The folder containing the Extension Manifest package.json
     const extensionDevelopmentPath = path.resolve(__dirname, '../');
-    
+
     // Check if dist directory exists, if not, warn that compilation might be needed
     const distDir = path.join(extensionDevelopmentPath, 'dist');
     if (!fs.existsSync(distDir)) {
-      console.warn('Warning: dist directory not found. You may need to run "npm run compile" first.');
+      console.warn(
+        'Warning: dist directory not found. You may need to run "npm run compile" first.'
+      );
     }
-    
+
     // Default to running both test types if none specified
     if (!testType || (testType !== 'unit' && testType !== 'integration')) {
       console.log('Running both unit and integration tests...');
@@ -58,7 +60,7 @@ async function main() {
       await runIntegrationTests();
       return;
     }
-    
+
     // Run the specified test type
     if (testType === 'unit') {
       console.log('Running unit tests...');
@@ -82,12 +84,12 @@ async function runUnitTests(specificTests: string[] = []) {
     // For unit tests, we don't need to launch VS Code
     // We can run them directly with Mocha
     const unitTestsPath = path.resolve(__dirname, './unit/index');
-    
+
     // Import and run the unit tests
     // Using require here because we need dynamic imports
     const unitTests = require(unitTestsPath);
     await unitTests.run({ specificTests });
-    
+
     console.log('Unit tests completed successfully');
   } catch (err) {
     console.error('Unit tests failed:', err);
@@ -102,7 +104,7 @@ async function runIntegrationTests() {
   try {
     const extensionDevelopmentPath = path.resolve(__dirname, '../');
     const extensionTestsPath = path.resolve(__dirname, './integration/index');
-    
+
     // Set up test workspace
     const testWorkspacePath = path.join(extensionDevelopmentPath, '.vscode-test', 'test-workspace');
     if (!fs.existsSync(testWorkspacePath)) {
@@ -115,10 +117,20 @@ async function runIntegrationTests() {
     copyDir(fixturesPath, testFixturesPath);
 
     // Copy integration test fixtures
-    const integrationFixturesPath = path.join(extensionDevelopmentPath, 'tests', 'integration', 'fixtures');
-    const testIntegrationFixturesPath = path.join(testWorkspacePath, 'tests', 'integration', 'fixtures');
+    const integrationFixturesPath = path.join(
+      extensionDevelopmentPath,
+      'tests',
+      'integration',
+      'fixtures'
+    );
+    const testIntegrationFixturesPath = path.join(
+      testWorkspacePath,
+      'tests',
+      'integration',
+      'fixtures'
+    );
     copyDir(integrationFixturesPath, testIntegrationFixturesPath);
-    
+
     // Download VS Code, unzip it and run the integration test
     await runTests({
       extensionDevelopmentPath,
@@ -127,10 +139,10 @@ async function runIntegrationTests() {
       launchArgs: [
         testWorkspacePath,
         // Ensure our extension is activated
-        '--enable-proposed-api=rfcdoc.rfcdoc-format'
-      ]
+        '--enable-proposed-api=txxt.txxt-format',
+      ],
     });
-    
+
     console.log('Integration tests completed successfully');
   } catch (err) {
     console.error('Integration tests failed:', err);

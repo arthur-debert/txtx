@@ -23,7 +23,7 @@ export {
 // Import dependencies
 import { findDocumentReferences } from './find';
 import { validateReference } from './validate';
-import { DocumentReference, DiagnosticInfo, ReferenceCheckResult } from './types';
+import { DiagnosticInfo, ReferenceCheckResult } from './types';
 
 /**
  * Check all references in a document

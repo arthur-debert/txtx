@@ -1,6 +1,6 @@
 # Change Log
 
-All notable changes to the "rfcdoc-format" extension will be documented in this
+All notable changes to the "txxt-format" extension will be documented in this
 file.
 
 ## [0.5.0] - 2025-03-10
@@ -9,7 +9,7 @@ file.
 
 - File and folder path completion
 - Added support for .rfc file extension
-- Added support for *bold* text formatting using single asterisks
+- Added support for _bold_ text formatting using single asterisks
 - Disabled default symbol completion to focus on emoticons and paths
 
 ## [0.4.0] - 2025-03-10
@@ -35,9 +35,9 @@ file.
 ### Added
 
 - Initial release
-- Syntax highlighting for RfcDoc format
+- Syntax highlighting for txxt format
 - Support for titles, sections, lists, code blocks, quotes, and emphasis
-- Custom dark and light themes optimized for RfcDoc syntax
+- Custom dark and light themes optimized for txxt syntax
 - Support for both .txt and .txtx file extensions
 - Debug output channel for extension diagnostics
 - Theme customization documentation

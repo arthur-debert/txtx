@@ -17,11 +17,13 @@ class BackendManagerClass {
    * Initialize the backend manager
    * This is called when the module is loaded
    */
-  initialize(): void {
+  async initialize(): Promise<void> {
     // We'll dynamically import the backends to avoid circular dependencies
     // and to ensure they're only loaded when needed
-    this.registerBackend('vscode-live', require('./backends/vscode-live/index').VSCodeLiveBackend);
-    this.registerBackend('headless', require('./backends/headless/index').HeadlessBackend);
+    const vscodeLive = await import('./backends/vscode-live/index');
+    const headless = await import('./backends/headless/index');
+    this.registerBackend('vscode-live', vscodeLive.VSCodeLiveBackend);
+    this.registerBackend('headless', headless.HeadlessBackend);
   }
   
   /**
@@ -30,7 +32,9 @@ class BackendManagerClass {
   get current(): Backend {
     // Lazy load the backends if they haven't been loaded yet
     if (Object.keys(this._backends).length === 0) {
-      this.initialize();
+      // Since initialize is now async, we need to handle this differently
+      // For now, we'll throw an error if the backends aren't loaded
+      throw new Error('Backends not initialized. Please call initialize() first.');
     }
     
     return this._backends[this._currentBackend];
