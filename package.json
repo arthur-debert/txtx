@@ -124,7 +124,7 @@
     "clean": "rm -rf dist",
     "compile": "tsc -p ./ && cp -r src/core/txxt-syntax dist/src/core/",
     "watch": "tsc -watch -p ./",
-    "pretest": ":",
+    "pretest": "npm run compile",
     "test": "tsc -p ./tests && node ./dist/tests/runTest.js unit",
     "test:unit": "tsc -p ./tests && node ./dist/tests/runTest.js unit",
     "test:integration": "npm run compile && tsc -p ./tests && node ./dist/tests/runTest.js integration",

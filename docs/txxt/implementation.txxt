@@ -49,7 +49,8 @@ tests/unit/txxt-syntax/v1/
 │       ├── minimal.output.txxt
 │       └── minimal.ast.json   # Expected AST
 ├── grammar/
-│   └── txxt.tmLanguage.test.ts
+│   ├── txxt.tmLanguage.test.ts
+│   └── v-template.test.ts    # Template for new grammar tests
 ├── language-server/
 │   └── server.test.ts
 └── formatter/
@@ -58,26 +59,55 @@ tests/unit/txxt-syntax/v1/
 
 ## 3. Implementation Strategy
 
-### 3.1 TextMate Grammar
+### 3.1 TextMate Grammar Integration
 
-The grammar will handle most of the parsing work:
+The grammar will handle most of the parsing work. We use the `vscode-textmate` package for grammar parsing:
 
-```json
-{
-  "scopeName": "text.txxt",
-  "patterns": [
-    {
-      "name": "meta.block.title.txxt",
-      "match": "^(\\d+\\.)+\\s+(.*)$",
-      "captures": {
-        "1": { "name": "markup.heading.sequence.txxt" },
-        "2": { "name": "markup.heading.content.txxt" }
-      }
-    }
-    // ... more patterns
-  ]
-}
+```typescript
+import * as vscodeTextmate from 'vscode-textmate';
+import * as oniguruma from 'oniguruma';
+
+// Initialize the registry with oniguruma for regex support
+const registry = new vscodeTextmate.Registry({
+    onigLib: oniguruma.loadWASM()
+});
+
+// Load the grammar
+const grammar = await registry.loadGrammar('text.txxt');
+
+// Tokenize a line
+const lineTokens = grammar.tokenizeLine('1. Title');
 ```
+
+Key points for grammar integration:
+1. Install dependencies:
+   ```bash
+   npm install vscode-textmate oniguruma
+   npm install --save-dev @types/vscode-textmate
+   ```
+
+2. Grammar file structure:
+   ```json
+   {
+     "scopeName": "text.txxt",
+     "patterns": [
+       {
+         "name": "meta.block.title.txxt",
+         "match": "^(\\d+\\.)+\\s+(.*)$",
+         "captures": {
+           "1": { "name": "markup.heading.sequence.txxt" },
+           "2": { "name": "markup.heading.content.txxt" }
+         }
+       }
+       // ... more patterns
+     ]
+   }
+   ```
+
+3. Testing:
+   - Use the template at `tests/unit/txxt-syntax/v1/grammar/v-template.test.ts`
+   - Create fixtures in the appropriate directory under `tests/unit/txxt-syntax/v1/fixtures/`
+   - Run tests with `npm test` or `npm test tests/unit/txxt-syntax/v1/grammar/your-test-file.test.ts`
 
 ### 3.2 Language Server
 
@@ -101,7 +131,7 @@ class DocumentHandler {
 
 1. **Grammar Development**
    - Create basic TextMate grammar
-   - Test with simple documents
+   - Test with simple documents using the test template
    - Add support for all element types
 
 2. **Language Server Setup**
@@ -121,7 +151,7 @@ class DocumentHandler {
 
 5. **Testing**
    - Create test fixtures
-   - Implement unit tests
+   - Implement unit tests using the template
    - Add integration tests
 
 ## 5. Benefits of This Approach
@@ -152,4 +182,18 @@ Each version will have its own:
 This allows for:
 - Easy comparison between versions
 - Independent testing
-- Clear migration paths 
+- Clear migration paths
+
+## 7. Troubleshooting
+
+If you encounter issues with the TextMate grammar implementation:
+
+1. Check the test template at `tests/unit/txxt-syntax/v1/grammar/v-template.test.ts` for proper setup
+2. Verify grammar file structure matches the example in section 3.1
+3. Ensure all dependencies are installed correctly
+4. Run `npm run compile` before running tests
+5. Check the test output for specific tokenization issues
+
+For more detailed examples and test cases, refer to:
+- Test template: `tests/unit/txxt-syntax/v1/grammar/v-template.test.ts`
+- Working example: `tests/unit/txxt-syntax/v1/grammar/txxt.tmLanguage.test.ts` 
