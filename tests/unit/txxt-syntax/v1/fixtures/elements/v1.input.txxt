@@ -1,0 +1,20 @@
+1. Title with sequence
+1.1 Nested sequence
+1.1.1 Deep nested sequence
+
+: Simple colon title
+
+    Indented block with 4 spaces
+  Indented block with 2 spaces
+    Another indented block
+
+Regular paragraph block.
+
+1.2 Another numbered title
+    With indented content
+
+: Another colon title
+    With indented content
+
+This is a paragraph with multiple
+lines that should be joined. 

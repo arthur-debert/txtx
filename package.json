@@ -122,7 +122,7 @@
   "main": "./dist/extension.js",
   "scripts": {
     "clean": "rm -rf dist",
-    "compile": "tsc -p ./",
+    "compile": "tsc -p ./ && cp -r src/core/txxt-syntax dist/src/core/",
     "watch": "tsc -watch -p ./",
     "pretest": ":",
     "test": "tsc -p ./tests && node ./dist/tests/runTest.js unit",
@@ -164,7 +164,8 @@
     "prettier": "^3.5.3",
     "ts-node": "^10.9.2",
     "typescript": "^5.4.2",
-    "vscode-test": "^1.6.1"
+    "vscode-test": "^1.6.1",
+    "vscode-textmate": "^9.2.0"
   },
   "dependencies": {
     "js-yaml": "^4.1.0"

@@ -1,0 +1,72 @@
+{
+  "type": "document",
+  "blocks": [
+    {
+      "type": "title",
+      "style": "numbered",
+      "sequence": "1",
+      "content": "Title with sequence"
+    },
+    {
+      "type": "title",
+      "style": "numbered",
+      "sequence": "1.1",
+      "content": "Nested sequence"
+    },
+    {
+      "type": "title",
+      "style": "numbered",
+      "sequence": "1.1.1",
+      "content": "Deep nested sequence"
+    },
+    {
+      "type": "title",
+      "style": "colon",
+      "content": "Simple colon title"
+    },
+    {
+      "type": "indented",
+      "indent": 4,
+      "content": "Indented block with 4 spaces"
+    },
+    {
+      "type": "indented",
+      "indent": 2,
+      "content": "Indented block with 2 spaces"
+    },
+    {
+      "type": "indented",
+      "indent": 4,
+      "content": "Another indented block"
+    },
+    {
+      "type": "paragraph",
+      "content": "Regular paragraph block."
+    },
+    {
+      "type": "title",
+      "style": "numbered",
+      "sequence": "1.2",
+      "content": "Another numbered title"
+    },
+    {
+      "type": "indented",
+      "indent": 4,
+      "content": "With indented content"
+    },
+    {
+      "type": "title",
+      "style": "colon",
+      "content": "Another colon title"
+    },
+    {
+      "type": "indented",
+      "indent": 4,
+      "content": "With indented content"
+    },
+    {
+      "type": "paragraph",
+      "content": "This is a paragraph with multiple\nlines that should be joined."
+    }
+  ]
+}

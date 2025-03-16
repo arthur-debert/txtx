@@ -1,3 +1,5 @@
+// @ts-check
+/** @type {import('eslint').Linter.Config} */
 module.exports = {
   root: true,
   parser: '@typescript-eslint/parser',
@@ -16,7 +18,8 @@ module.exports = {
     suite: true,
     test: true,
     setup: true,
-    teardown: true
+    teardown: true,
+    global: true
   },
   rules: {
     // Keep strict rules but with appropriate severity

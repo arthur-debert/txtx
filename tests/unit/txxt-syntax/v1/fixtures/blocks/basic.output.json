@@ -1,0 +1,32 @@
+{
+  "type": "document",
+  "blocks": [
+    {
+      "type": "paragraph",
+      "content": "This is a simple paragraph block."
+    },
+    {
+      "type": "title",
+      "style": "numbered",
+      "content": "This is a numbered title block"
+    },
+    {
+      "type": "title",
+      "style": "numbered",
+      "content": "With multiple items"
+    },
+    {
+      "type": "title",
+      "style": "colon",
+      "content": "This is a colon title block"
+    },
+    {
+      "type": "indented",
+      "content": "This is an indented block\nWith multiple lines"
+    },
+    {
+      "type": "paragraph",
+      "content": "This is another paragraph block."
+    }
+  ]
+}
