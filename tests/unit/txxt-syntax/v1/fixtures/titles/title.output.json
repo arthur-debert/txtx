@@ -1,0 +1,58 @@
+[
+  {
+    "tokens": [
+      {
+        "startIndex": 0,
+        "endIndex": 1,
+        "scopes": ["text.txxt", "markup.heading.1.txxt"]
+      },
+      {
+        "startIndex": 1,
+        "endIndex": 11,
+        "scopes": ["text.txxt", "markup.heading.1.content.txxt"]
+      }
+    ]
+  },
+  {
+    "tokens": [
+      {
+        "startIndex": 0,
+        "endIndex": 2,
+        "scopes": ["text.txxt", "markup.heading.2.txxt"]
+      },
+      {
+        "startIndex": 2,
+        "endIndex": 10,
+        "scopes": ["text.txxt", "markup.heading.2.content.txxt"]
+      }
+    ]
+  },
+  {
+    "tokens": [
+      {
+        "startIndex": 0,
+        "endIndex": 3,
+        "scopes": ["text.txxt", "markup.heading.3.txxt"]
+      },
+      {
+        "startIndex": 3,
+        "endIndex": 12,
+        "scopes": ["text.txxt", "markup.heading.3.content.txxt"]
+      }
+    ]
+  },
+  {
+    "tokens": [
+      {
+        "startIndex": 0,
+        "endIndex": 4,
+        "scopes": ["text.txxt", "markup.heading.4.txxt"]
+      },
+      {
+        "startIndex": 4,
+        "endIndex": 18,
+        "scopes": ["text.txxt", "markup.heading.4.content.txxt"]
+      }
+    ]
+  }
+]

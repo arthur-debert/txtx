@@ -1,0 +1,99 @@
+{
+  "lines": [
+    {
+      "line": ": Simple title",
+      "tokens": [
+        {
+          "startIndex": 0,
+          "endIndex": 1,
+          "scopes": ["text.txxt", "meta.block.title.txxt", "markup.heading.colon.txxt"]
+        },
+        {
+          "startIndex": 2,
+          "endIndex": 13,
+          "scopes": ["text.txxt", "meta.block.title.txxt", "markup.heading.content.txxt"]
+        }
+      ]
+    },
+    {
+      "line": "1. Numbered title",
+      "tokens": [
+        {
+          "startIndex": 0,
+          "endIndex": 2,
+          "scopes": [
+            "text.txxt",
+            "meta.block.title.txxt",
+            "markup.heading.sequence.txxt",
+            "markup.heading.sequence.number.txxt"
+          ]
+        },
+        {
+          "startIndex": 3,
+          "endIndex": 15,
+          "scopes": ["text.txxt", "meta.block.title.txxt", "markup.heading.content.txxt"]
+        }
+      ]
+    },
+    {
+      "line": "1.1. Nested numbered title",
+      "tokens": [
+        {
+          "startIndex": 0,
+          "endIndex": 4,
+          "scopes": [
+            "text.txxt",
+            "meta.block.title.txxt",
+            "markup.heading.sequence.txxt",
+            "markup.heading.sequence.number.txxt"
+          ]
+        },
+        {
+          "startIndex": 5,
+          "endIndex": 21,
+          "scopes": ["text.txxt", "meta.block.title.txxt", "markup.heading.content.txxt"]
+        }
+      ]
+    },
+    {
+      "line": "1.1.1. Deeply nested title",
+      "tokens": [
+        {
+          "startIndex": 0,
+          "endIndex": 6,
+          "scopes": [
+            "text.txxt",
+            "meta.block.title.txxt",
+            "markup.heading.sequence.txxt",
+            "markup.heading.sequence.number.txxt"
+          ]
+        },
+        {
+          "startIndex": 7,
+          "endIndex": 24,
+          "scopes": ["text.txxt", "meta.block.title.txxt", "markup.heading.content.txxt"]
+        }
+      ]
+    },
+    {
+      "line": "    Indented title",
+      "tokens": [
+        {
+          "startIndex": 0,
+          "endIndex": 4,
+          "scopes": [
+            "text.txxt",
+            "meta.block.indented.txxt",
+            "markup.indented.whitespace.txxt",
+            "markup.indented.level.txxt"
+          ]
+        },
+        {
+          "startIndex": 4,
+          "endIndex": 16,
+          "scopes": ["text.txxt", "meta.block.indented.txxt", "markup.indented.content.txxt"]
+        }
+      ]
+    }
+  ]
+}

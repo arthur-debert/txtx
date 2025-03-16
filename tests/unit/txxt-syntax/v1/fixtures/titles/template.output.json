@@ -1,0 +1,64 @@
+{
+  "lines": [
+    {
+      "line": "1. First template title",
+      "tokens": [
+        {
+          "startIndex": 0,
+          "endIndex": 2,
+          "scopes": [
+            "text.txxt",
+            "meta.block.template.txxt",
+            "markup.template.sequence.txxt",
+            "markup.template.sequence.number.txxt"
+          ]
+        },
+        {
+          "startIndex": 3,
+          "endIndex": 21,
+          "scopes": ["text.txxt", "meta.block.template.txxt", "markup.template.content.txxt"]
+        }
+      ]
+    },
+    {
+      "line": "1. Second template title",
+      "tokens": [
+        {
+          "startIndex": 0,
+          "endIndex": 2,
+          "scopes": [
+            "text.txxt",
+            "meta.block.template.txxt",
+            "markup.template.sequence.txxt",
+            "markup.template.sequence.number.txxt"
+          ]
+        },
+        {
+          "startIndex": 3,
+          "endIndex": 22,
+          "scopes": ["text.txxt", "meta.block.template.txxt", "markup.template.content.txxt"]
+        }
+      ]
+    },
+    {
+      "line": "1. Third template title",
+      "tokens": [
+        {
+          "startIndex": 0,
+          "endIndex": 2,
+          "scopes": [
+            "text.txxt",
+            "meta.block.template.txxt",
+            "markup.template.sequence.txxt",
+            "markup.template.sequence.number.txxt"
+          ]
+        },
+        {
+          "startIndex": 3,
+          "endIndex": 20,
+          "scopes": ["text.txxt", "meta.block.template.txxt", "markup.template.content.txxt"]
+        }
+      ]
+    }
+  ]
+}

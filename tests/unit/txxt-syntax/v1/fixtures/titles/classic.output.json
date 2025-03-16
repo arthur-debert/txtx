@@ -1,0 +1,84 @@
+{
+  "lines": [
+    {
+      "line": "1.a. Classic title with letter",
+      "tokens": [
+        {
+          "startIndex": 0,
+          "endIndex": 4,
+          "scopes": [
+            "text.txxt",
+            "meta.block.title.txxt",
+            "markup.heading.sequence.txxt",
+            "markup.heading.sequence.number.txxt"
+          ]
+        },
+        {
+          "startIndex": 5,
+          "endIndex": 25,
+          "scopes": ["text.txxt", "meta.block.title.txxt", "markup.heading.content.txxt"]
+        }
+      ]
+    },
+    {
+      "line": "1.a.i. Classic title with roman numeral",
+      "tokens": [
+        {
+          "startIndex": 0,
+          "endIndex": 6,
+          "scopes": [
+            "text.txxt",
+            "meta.block.title.txxt",
+            "markup.heading.sequence.txxt",
+            "markup.heading.sequence.number.txxt"
+          ]
+        },
+        {
+          "startIndex": 7,
+          "endIndex": 35,
+          "scopes": ["text.txxt", "meta.block.title.txxt", "markup.heading.content.txxt"]
+        }
+      ]
+    },
+    {
+      "line": "1.a.ii. Classic title with multiple roman numerals",
+      "tokens": [
+        {
+          "startIndex": 0,
+          "endIndex": 7,
+          "scopes": [
+            "text.txxt",
+            "meta.block.title.txxt",
+            "markup.heading.sequence.txxt",
+            "markup.heading.sequence.number.txxt"
+          ]
+        },
+        {
+          "startIndex": 8,
+          "endIndex": 42,
+          "scopes": ["text.txxt", "meta.block.title.txxt", "markup.heading.content.txxt"]
+        }
+      ]
+    },
+    {
+      "line": "1.b. Another classic title with letter",
+      "tokens": [
+        {
+          "startIndex": 0,
+          "endIndex": 4,
+          "scopes": [
+            "text.txxt",
+            "meta.block.title.txxt",
+            "markup.heading.sequence.txxt",
+            "markup.heading.sequence.number.txxt"
+          ]
+        },
+        {
+          "startIndex": 5,
+          "endIndex": 32,
+          "scopes": ["text.txxt", "meta.block.title.txxt", "markup.heading.content.txxt"]
+        }
+      ]
+    }
+  ]
+}

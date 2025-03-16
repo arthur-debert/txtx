@@ -1,0 +1,22 @@
+# VSCode Grammar Implementation
+
+The implementation of TextMate grammars for the txxt format has been consolidated into a simplified GrammarParser class.
+
+For detailed documentation on the grammar parser, including:
+- Basic usage
+- Common operations
+- Creating grammar files
+- Troubleshooting
+- API reference
+
+Please refer to the comprehensive documentation in `grammar.txt`.
+
+## Current Status
+
+We have successfully:
+1. Created a centralized GrammarParser class for managing TextMate grammars
+2. Implemented proper WASM loading for Oniguruma
+3. Added support for embedded languages
+4. Set up comprehensive test infrastructure with simple.test.ts
+
+All implementation details and usage examples are now documented in `grammar.txt`.

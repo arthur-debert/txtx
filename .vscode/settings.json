@@ -1,3 +1,4 @@
 {
-  "marquee.widgets.npm-stats.packageNames": ["txxt-format"]
+  "marquee.widgets.npm-stats.packageNames": ["txxt-format"],
+  "cSpell.words": ["dhall", "thirsparties", "vsccode", "xunit"]
 }

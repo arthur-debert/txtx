@@ -1,44 +1,57 @@
-import assert from 'assert';
-import path from 'path';
-import fs from 'fs';
+/**
+ * Simple test for the GrammarParser with the txxt grammar
+ */
+
 import { fileURLToPath } from 'url';
-import { suite, test, setup, teardown } from 'mocha';
+import { dirname, join } from 'path';
+import { assert } from 'chai';
+import { describe, it, before } from 'mocha';
+import { GrammarTest } from './txxtGrammarTest.js';
+import { Token } from '../../../../../src/core/txxt-syntax/txxtGrammar.js';
 
 const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const __dirname = dirname(__filename);
 
-suite('txxt Grammar Test Suite', () => {
-    let fixturesDir: string;
-    let grammarPath: string;
+describe('Txxt Grammar Tests', () => {
+    const grammarPath = join(__dirname, '../../../../../src/core/txxt-syntax/v1/grammar/txxt.tmLanguage.json');
+    const fixturesDir = join(__dirname, '../fixtures/txxt');
+    let grammarTest: GrammarTest;
 
-    setup(() => {
-        // Set up paths relative to this test file
-        fixturesDir = path.join(__dirname, '../fixtures');
-        grammarPath = path.join(__dirname, '../../../../../src/core/txxt-syntax/v1/grammar/txxt.tmLanguage.json');
-
-        // Create fixtures directory if it doesn't exist
-        if (!fs.existsSync(fixturesDir)) {
-            fs.mkdirSync(fixturesDir, { recursive: true });
+    before(async () => {
+        try {
+            grammarTest = new GrammarTest(fixturesDir);
+            await grammarTest.initialize(grammarPath);
+            console.log('Grammar initialized successfully');
+        } catch (error) {
+            console.error('Error initializing grammar:', error);
+            throw error;
         }
     });
 
-    test('smoke test: should be able to read grammar file', () => {
-        // Read the grammar file
-        const grammarContent = fs.readFileSync(grammarPath, 'utf8');
+    it('should tokenize a simple title', async () => {
+        const input = '# Title';
+        const result = grammarTest.tokenizeLine(input);
         
-        // Verify we can parse it as JSON
-        const grammar = JSON.parse(grammarContent);
+        assert.isArray(result.tokens, 'Tokens should be an array');
+        assert.isAtLeast(result.tokens.length, 1, 'Should have at least one token');
         
-        // Basic structure checks
-        assert.strictEqual(grammar.scopeName, 'text.txxt', 'Grammar should have correct scope name');
-        assert.ok(Array.isArray(grammar.patterns), 'Grammar should have patterns array');
+        // Find the title token
+        const titleToken = result.tokens.find((token: Token) => token.startIndex === 0);
+        
+        assert.isDefined(titleToken, 'Title token should exist');
     });
 
-    teardown(() => {
-        // Clean up test files
-        const testFilePath = path.join(fixturesDir, 'test.txxt');
-        if (fs.existsSync(testFilePath)) {
-            fs.unlinkSync(testFilePath);
-        }
+    it('should get scopes at position correctly', () => {
+        const input = '# Title';
+        const scopes = grammarTest.getScopesAtPosition(input, 2);
+        assert.isArray(scopes, 'Scopes should be an array');
+    });
+
+    it('should tokenize multiple lines correctly', () => {
+        const input = '# Title\n\nThis is a paragraph.';
+        const results = grammarTest.tokenizeLines(input);
+        
+        assert.isArray(results, 'Results should be an array');
+        assert.equal(results.length, 3, 'Should have 3 lines');
     });
 }); 

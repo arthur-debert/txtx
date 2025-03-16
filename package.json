@@ -41,7 +41,8 @@
         ],
         "extensions": [
           ".txtx",
-          ".rfc"
+          ".rfc",
+          ".test.txxt"
         ],
         "configuration": "./language-configuration.json"
       }
@@ -50,7 +51,12 @@
       {
         "language": "txxt",
         "scopeName": "text.txxt",
-        "path": "./syntaxes/txxt.tmLanguage.json"
+        "path": "./src/core/txxt-syntax/v1/grammar/txxt.tmLanguage.json"
+      },
+      {
+        "language": "txxt",
+        "scopeName": "text.txxt.template",
+        "path": "./src/core/txxt-syntax/v1/grammar/v-template.tmLanguage.json"
       }
     ],
     "themes": [
@@ -122,16 +128,17 @@
   "main": "./dist/extension.js",
   "scripts": {
     "clean": "rm -rf dist",
-    "compile": "tsc -p ./ && cp -r src/core/txxt-syntax dist/src/core/",
+    "compile": "tsc -p ./ && cp -r src/core/txxt-syntax dist/src/core/ && cp -r tests/unit/txxt-syntax/v1/fixtures dist/tests/unit/txxt-syntax/v1/ && node copy-wasm.js",
     "watch": "tsc -watch -p ./",
     "pretest": "npm run compile",
     "test": "tsc -p ./tests && node ./dist/tests/runTest.js unit",
     "test:unit": "tsc -p ./tests && node ./dist/tests/runTest.js unit",
     "test:integration": "npm run compile && tsc -p ./tests && node ./dist/tests/runTest.js integration",
+    "test:grammar": "vscode-tmgrammar-test -g src/core/txxt-syntax/v1/grammar/txxt.tmLanguage.json 'tests/unit/txxt-syntax/v1/fixtures/**/*.test.txxt'",
     "lint": "eslint src --ext ts",
     "package": "vsce package",
     "publish": "vsce publish",
-    "build": "tsc -p ./",
+    "build": "tsc -p ./ && node copy-wasm.js",
     "prepare": "husky"
   },
   "repository": {
@@ -155,6 +162,8 @@
     "@vscode/test-cli": "^0.0.10",
     "@vscode/test-electron": "^2.4.1",
     "@vscode/vsce": "^3.2.2",
+    "chai": "^4.4.1",
+    "@types/chai": "^4.3.11",
     "eslint": "^9.22.0",
     "eslint-plugin-prettier": "^5.2.3",
     "glob": "^10.3.10",
@@ -164,8 +173,10 @@
     "prettier": "^3.5.3",
     "ts-node": "^10.9.2",
     "typescript": "^5.4.2",
+    "vscode-oniguruma": "^2.0.1",
     "vscode-test": "^1.6.1",
-    "vscode-textmate": "^9.2.0"
+    "vscode-textmate": "^9.2.0",
+    "vscode-tmgrammar-test": "^0.1.3"
   },
   "dependencies": {
     "js-yaml": "^4.1.0"

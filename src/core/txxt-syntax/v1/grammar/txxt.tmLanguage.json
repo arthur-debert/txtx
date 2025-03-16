@@ -15,12 +15,12 @@
     },
     {
       "name": "meta.block.title.txxt",
-      "begin": "^(\\d+(?:\\.\\d+)*\\.|:)\\s+[^\\n]+$",
+      "begin": "^(\\d+(?:\\.\\d+)*\\.|\\d+\\.(?:[a-z]|i+)\\.|:)\\s+[^\\n]+$",
       "end": "^\\s*$",
       "patterns": [
         {
           "name": "markup.heading.sequence.txxt",
-          "match": "^(\\d+(?:\\.\\d+)*\\.)",
+          "match": "^(\\d+(?:\\.\\d+)*\\.|\\d+\\.(?:[a-z]|i+)\\.)",
           "captures": {
             "1": {
               "name": "markup.heading.sequence.number.txxt"
@@ -33,7 +33,7 @@
         },
         {
           "name": "markup.heading.content.txxt",
-          "match": "(?<=\\d+(?:\\.\\d+)*\\.|:)\\s+(.+)$"
+          "match": "(?<=\\d+(?:\\.\\d+)*\\.|\\d+\\.(?:[a-z]|i+)\\.|:)\\s+(.+)$"
         }
       ]
     },
@@ -54,6 +54,26 @@
         {
           "name": "markup.indented.content.txxt",
           "match": "^\\s+(.+)$"
+        }
+      ]
+    },
+    {
+      "name": "meta.block.template.txxt",
+      "begin": "^\\d+\\.\\s+[^\\n]+$",
+      "end": "^\\s*$",
+      "patterns": [
+        {
+          "name": "markup.template.sequence.txxt",
+          "match": "^(\\d+)\\.",
+          "captures": {
+            "1": {
+              "name": "markup.template.sequence.number.txxt"
+            }
+          }
+        },
+        {
+          "name": "markup.template.content.txxt",
+          "match": "(?<=\\d+\\.)\\s+(.+)$"
         }
       ]
     }

@@ -1,0 +1,216 @@
+TextMate Grammar Parser
+======================
+
+Overview
+--------
+The TextMate Grammar Parser provides a simple way to use TextMate grammars to tokenize text. It uses the VSCode TextMate implementation and Oniguruma regex engine to provide syntax highlighting and tokenization capabilities.
+
+Installation
+-----------
+The parser requires two main dependencies:
+- vscode-textmate: The TextMate grammar engine
+- vscode-oniguruma: The Oniguruma regex engine used by TextMate
+
+Make sure these are installed in your project:
+```
+npm install vscode-textmate vscode-oniguruma
+```
+
+Basic Usage
+----------
+1. Create a parser with a grammar file:
+   ```typescript
+   import { GrammarParser } from './core/txxt-syntax/v1/grammar/txxtGrammar.js';
+   
+   const parser = await GrammarParser.create('path/to/grammar.tmLanguage.json');
+   ```
+
+2. Tokenize a single line:
+   ```typescript
+   const result = parser.tokenizeLine('function hello() { return "world"; }');
+   console.log(result.tokens);
+   // Output will be an array of tokens with their scopes
+   ```
+
+3. Tokenize multiple lines:
+   ```typescript
+   const multiLineResult = parser.tokenizeLines('function hello() {\n  return "world";\n}');
+   console.log(multiLineResult.length); // 3
+   ```
+
+4. Get scopes at a specific position:
+   ```typescript
+   const scopes = parser.getScopesAtPosition('function hello()', 5);
+   console.log(scopes); // ['source.js', 'keyword.control.js']
+   ```
+
+Common Operations
+----------------
+
+1. Finding tokens with specific scopes:
+   ```typescript
+   const line = 'function test() { return 42; }';
+   const result = parser.tokenizeLine(line);
+   
+   // Find all keyword tokens
+   const keywordTokens = result.tokens.filter(token => 
+       token.scopes.some(scope => scope.includes('keyword'))
+   );
+   ```
+
+2. Extracting text from tokens:
+   ```typescript
+   const line = 'function test() { return 42; }';
+   const result = parser.tokenizeLine(line);
+   
+   // Extract text from each token
+   const tokenTexts = result.tokens.map(token => 
+       line.substring(token.startIndex, token.endIndex)
+   );
+   ```
+
+3. Working with rule stacks for multi-line parsing:
+   ```typescript
+   const lines = ['```js', 'function test() {', '  return 42;', '}', '```'];
+   let ruleStack = null;
+   
+   // Process each line while maintaining state
+   const processedLines = lines.map(line => {
+       const result = parser.tokenizeLine(line, ruleStack);
+       ruleStack = result.ruleStack; // Save for next line
+       return result;
+   });
+   ```
+
+4. Using embedded languages:
+   ```typescript
+   // Define embedded languages
+   const embeddedLanguages = [
+       {
+           scopeName: 'source.js',
+           grammarPath: 'path/to/javascript.tmLanguage.json'
+       }
+   ];
+   
+   // Create parser with embedded languages
+   const parser = await GrammarParser.create(
+       'path/to/main.tmLanguage.json', 
+       embeddedLanguages
+   );
+   ```
+
+5. Checking if a position is within a specific scope:
+   ```typescript
+   const line = 'const message = "Hello, world!";';
+   const position = 18; // Position inside the string
+   
+   const scopes = parser.getScopesAtPosition(line, position);
+   const isInString = scopes.some(scope => scope.includes('string'));
+   ```
+
+Creating a Grammar File
+----------------------
+TextMate grammars are JSON files that define patterns for tokenizing text. Here's a simple example:
+
+```json
+{
+  "name": "Simple Test Grammar",
+  "scopeName": "source.test",
+  "patterns": [
+    {
+      "match": "\\b(function|class|const|let|var)\\b",
+      "name": "keyword.control.test"
+    },
+    {
+      "match": "\\b([A-Za-z_][A-Za-z0-9_]*)\\s*\\(",
+      "captures": {
+        "1": {
+          "name": "entity.name.function.test"
+        }
+      }
+    },
+    {
+      "match": "\\b([0-9]+)\\b",
+      "name": "constant.numeric.test"
+    },
+    {
+      "begin": "\"",
+      "end": "\"",
+      "name": "string.quoted.double.test"
+    }
+  ]
+}
+```
+
+Key components of a grammar file:
+- name: The name of the grammar
+- scopeName: The unique identifier for the grammar
+- patterns: An array of pattern objects that define how to tokenize text
+
+Pattern types:
+1. Simple match patterns:
+   ```json
+   {
+     "match": "regex pattern",
+     "name": "scope.name"
+   }
+   ```
+
+2. Begin/end patterns (for multi-line constructs):
+   ```json
+   {
+     "begin": "start regex",
+     "end": "end regex",
+     "name": "scope.name",
+     "patterns": [
+       // Patterns that apply between begin and end
+     ]
+   }
+   ```
+
+3. Include patterns (to reuse patterns):
+   ```json
+   {
+     "include": "#rule-name"
+   }
+   ```
+
+4. Repository (for defining reusable patterns):
+   ```json
+   "repository": {
+     "rule-name": {
+       "patterns": [
+         // Patterns
+       ]
+     }
+   }
+   ```
+
+Troubleshooting
+--------------
+1. WASM loading issues:
+   - Ensure the Oniguruma WASM file is accessible
+   - The parser tries several common locations, but you may need to specify the path
+
+2. Grammar loading issues:
+   - Verify the grammar file path is correct
+   - Check that the grammar file is valid JSON
+   - Ensure the scopeName in the grammar matches what you're requesting
+
+3. Tokenization issues:
+   - Check that your patterns are correctly defined
+   - Use regex testing tools to verify your patterns
+   - Add debug logging to see which patterns are matching
+
+API Reference
+------------
+GrammarParser:
+- create(grammarPath, embeddedLanguages): Creates a new parser instance
+- tokenizeLine(line, previousState): Tokenizes a single line
+- tokenizeLines(text): Tokenizes multiple lines
+- getScopesAtPosition(line, position): Gets scopes at a position
+
+Types:
+- Token: { startIndex, endIndex, scopes }
+- TokenizationResult: { tokens, line, ruleStack }
+- EmbeddedLanguage: { scopeName, grammarPath }

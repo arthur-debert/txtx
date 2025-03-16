@@ -11,6 +11,7 @@ The implementation will leverage VSCode's built-in infrastructure to minimize ma
    - Provides tokenization
    - Gives scoped ranges
    - Handles basic syntax highlighting
+   - See `grammar.txt` for detailed documentation on the grammar parser
 
 2. **VSCode Language Server Layer**
    - Interprets pre-tokenized document
@@ -20,37 +21,40 @@ The implementation will leverage VSCode's built-in infrastructure to minimize ma
 ## 2. Project Structure
 
 ```
-src/core/txxt-syntax/v1/
-├── grammar/
-│   └── txxt.tmLanguage.json    # Main parsing rules
-├── language-server/
-│   ├── server.ts              # Interprets grammar results
-│   └── types.ts              # Shared types
-├── dialect/
-│   └── rules.json           # Dialect-specific variations
-└── formatter/
-    └── index.ts            # Uses grammar scopes for formatting
+src/core/txxt-syntax/
+├── txxtGrammar.ts         # Grammar parser implementation
+├── v1/
+│   ├── grammar/
+│   │   └── txxt.tmLanguage.json   # Main parsing rules
+│   ├── language-server/
+│   │   ├── server.ts              # Interprets grammar results
+│   │   └── types.ts               # Shared types
+│   ├── dialect/
+│   │   └── rules.json             # Dialect-specific variations
+│   └── formatter/
+│       └── index.ts               # Uses grammar scopes for formatting
 
 tests/unit/txxt-syntax/v1/
 ├── fixtures/
 │   ├── blocks/                # Block isolation tests
 │   │   ├── basic.input.txxt
 │   │   └── basic.output.json  # Expected parse tree
-│   ├── titles/               # Title element tests
+│   ├── titles/                # Title element tests
 │   │   ├── simple.input.part.txxt
 │   │   ├── simple.output.json
 │   │   ├── numbered.input.part.txxt
 │   │   └── numbered.output.json
-│   ├── paragraphs/           # Paragraph element tests
+│   ├── paragraphs/            # Paragraph element tests
 │   │   ├── basic.input.part.txxt
 │   │   └── basic.output.json
-│   └── documents/            # Full document tests
+│   └── documents/             # Full document tests
 │       ├── minimal.input.txxt
 │       ├── minimal.output.txxt
 │       └── minimal.ast.json   # Expected AST
 ├── grammar/
-│   ├── txxt.tmLanguage.test.ts
-│   └── v-template.test.ts    # Template for new grammar tests
+│   ├── txxtGrammarTest.ts     # Test helper for grammar
+│   ├── simple.test.ts         # Basic grammar tests
+│   └── txxt.tmLanguage.test.ts # Txxt grammar tests
 ├── language-server/
 │   └── server.test.ts
 └── formatter/
@@ -61,53 +65,18 @@ tests/unit/txxt-syntax/v1/
 
 ### 3.1 TextMate Grammar Integration
 
-The grammar will handle most of the parsing work. We use the `vscode-textmate` package for grammar parsing:
+We've implemented a simplified GrammarParser class that handles all the complexity of working with TextMate grammars. For detailed documentation on how to use this parser, refer to `grammar.txt`.
 
-```typescript
-import * as vscodeTextmate from 'vscode-textmate';
-import * as oniguruma from 'oniguruma';
+Key points:
+1. The GrammarParser handles:
+   - WASM loading for Oniguruma
+   - Grammar initialization
+   - Tokenization
+   - Scope resolution
 
-// Initialize the registry with oniguruma for regex support
-const registry = new vscodeTextmate.Registry({
-    onigLib: oniguruma.loadWASM()
-});
-
-// Load the grammar
-const grammar = await registry.loadGrammar('text.txxt');
-
-// Tokenize a line
-const lineTokens = grammar.tokenizeLine('1. Title');
-```
-
-Key points for grammar integration:
-1. Install dependencies:
-   ```bash
-   npm install vscode-textmate oniguruma
-   npm install --save-dev @types/vscode-textmate
-   ```
-
-2. Grammar file structure:
-   ```json
-   {
-     "scopeName": "text.txxt",
-     "patterns": [
-       {
-         "name": "meta.block.title.txxt",
-         "match": "^(\\d+\\.)+\\s+(.*)$",
-         "captures": {
-           "1": { "name": "markup.heading.sequence.txxt" },
-           "2": { "name": "markup.heading.content.txxt" }
-         }
-       }
-       // ... more patterns
-     ]
-   }
-   ```
-
-3. Testing:
-   - Use the template at `tests/unit/txxt-syntax/v1/grammar/v-template.test.ts`
-   - Create fixtures in the appropriate directory under `tests/unit/txxt-syntax/v1/fixtures/`
-   - Run tests with `npm test` or `npm test tests/unit/txxt-syntax/v1/grammar/your-test-file.test.ts`
+2. For usage examples, see:
+   - Basic usage: `grammar.txt`
+   - Test implementation: `tests/unit/txxt-syntax/v1/grammar/simple.test.ts`
 
 ### 3.2 Language Server
 
@@ -129,10 +98,10 @@ class DocumentHandler {
 
 ## 4. Development Order
 
-1. **Grammar Development**
+1. **Grammar Development** ✓
    - Create basic TextMate grammar
-   - Test with simple documents using the test template
-   - Add support for all element types
+   - Implement GrammarParser for easy integration
+   - Test with simple documents
 
 2. **Language Server Setup**
    - Set up basic server
@@ -151,7 +120,7 @@ class DocumentHandler {
 
 5. **Testing**
    - Create test fixtures
-   - Implement unit tests using the template
+   - Implement unit tests
    - Add integration tests
 
 ## 5. Benefits of This Approach
@@ -186,14 +155,22 @@ This allows for:
 
 ## 7. Troubleshooting
 
-If you encounter issues with the TextMate grammar implementation:
+For detailed troubleshooting information related to the grammar parser, refer to the "Troubleshooting" section in `grammar.txt`.
 
-1. Check the test template at `tests/unit/txxt-syntax/v1/grammar/v-template.test.ts` for proper setup
-2. Verify grammar file structure matches the example in section 3.1
-3. Ensure all dependencies are installed correctly
-4. Run `npm run compile` before running tests
-5. Check the test output for specific tokenization issues
+For other implementation issues:
 
-For more detailed examples and test cases, refer to:
-- Test template: `tests/unit/txxt-syntax/v1/grammar/v-template.test.ts`
-- Working example: `tests/unit/txxt-syntax/v1/grammar/txxt.tmLanguage.test.ts` 
+1. Language Server Issues:
+   - Check connection between grammar and language server
+   - Verify token interpretation logic
+   - Test with simplified documents
+
+2. Formatter Issues:
+   - Ensure formatter has access to grammar scopes
+   - Check formatting rules against test cases
+   - Verify formatter output matches expected format
+
+## 8. References
+
+- Grammar Parser Documentation: `grammar.txt`
+- VSCode TextMate: `/Users/adebert/h/txxt/local/thirsparties/textmate.ts`
+- VSCode Docs: `/Users/adebert/h/txxt/local/thirsparties/textamate-vsccode.md` 

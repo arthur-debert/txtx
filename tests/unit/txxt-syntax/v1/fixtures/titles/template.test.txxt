@@ -1,0 +1,16 @@
+// SYNTAX TEST "text.txxt" "template sequence format titles"
+
+1. First template title
+// <- meta.block.template.txxt
+//^ markup.template.sequence.txxt
+//  ^^^^^^^^^^^^^^^^^^^^ markup.template.content.txxt
+
+1. Second template title
+// <- meta.block.template.txxt
+//^ markup.template.sequence.txxt
+//  ^^^^^^^^^^^^^^^^^^^^ markup.template.content.txxt
+
+1. Third template title
+// <- meta.block.template.txxt
+//^ markup.template.sequence.txxt
+//  ^^^^^^^^^^^^^^^^^^^^ markup.template.content.txxt 
